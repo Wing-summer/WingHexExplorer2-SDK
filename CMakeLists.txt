@@ -39,6 +39,14 @@ add_library(
 
 target_link_libraries(WingPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
+target_compile_options(
+    WingPlugin
+    PRIVATE $<$<AND:$<NOT:$<CXX_COMPILER_ID:MSVC>>,$<CONFIG:Release>>:-g>
+            $<$<CXX_COMPILER_ID:MSVC>:$<$<CONFIG:Release>:/Zi>>)
+
+target_link_options(WingPlugin PRIVATE
+                    $<$<CXX_COMPILER_ID:MSVC>:$<$<CONFIG:Release>:/DEBUG>>)
+
 target_include_directories(WingPlugin PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
 target_compile_definitions(WingPlugin PRIVATE WINGPLUGIN_LIBRARY)
