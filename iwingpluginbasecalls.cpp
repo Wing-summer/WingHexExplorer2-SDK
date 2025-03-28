@@ -127,11 +127,11 @@ IWingPluginBaseCalls::msgWarning(QWidget *parent, const QString &title,
 }
 
 QMessageBox::StandardButton
-IWingPluginBaseCalls::critical(QWidget *parent, const QString &title,
-                               const QString &text,
-                               QMessageBox::StandardButtons buttons,
-                               QMessageBox::StandardButton defaultButton) {
-    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::critical);
+IWingPluginBaseCalls::msgCritical(QWidget *parent, const QString &title,
+                                  const QString &text,
+                                  QMessageBox::StandardButtons buttons,
+                                  QMessageBox::StandardButton defaultButton) {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::msgCritical);
     QMessageBox::StandardButton ret;
     m.invoke(callReceiver(), Qt::DirectConnection, WINGAPI_RETURN_ARG(ret),
              getSenderObj(), WINGAPI_ARG(parent), WINGAPI_ARG(title),

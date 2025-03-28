@@ -231,11 +231,6 @@ public:
     Q_REQUIRED_RESULT bool modBookMark(qsizetype pos, const QString &comment);
     Q_REQUIRED_RESULT bool removeBookMark(qsizetype pos);
     Q_REQUIRED_RESULT bool clearBookMark();
-
-    Q_REQUIRED_RESULT WingHex::ErrFile openCurrent();
-    Q_REQUIRED_RESULT WingHex::ErrFile saveCurrent();
-    Q_REQUIRED_RESULT WingHex::ErrFile exportCurrent(const QString &savename);
-    Q_REQUIRED_RESULT WingHex::ErrFile saveAsCurrent(const QString &savename);
 };
 
 class WINGPLUGIN_EXPORT IWingEditorViewCalls : public IWingPluginCallsOp,
@@ -271,6 +266,10 @@ public:
     Q_REQUIRED_RESULT WingHex::ErrFile saveAsFile(int handle,
                                                   const QString &savename);
 
+    Q_REQUIRED_RESULT WingHex::ErrFile openCurrent();
+    Q_REQUIRED_RESULT WingHex::ErrFile saveCurrent();
+    Q_REQUIRED_RESULT WingHex::ErrFile exportCurrent(const QString &savename);
+    Q_REQUIRED_RESULT WingHex::ErrFile saveAsCurrent(const QString &savename);
     Q_REQUIRED_RESULT WingHex::ErrFile closeCurrent(bool force = false);
 
     // workspace

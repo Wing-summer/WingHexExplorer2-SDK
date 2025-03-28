@@ -76,10 +76,10 @@ public:
         QMessageBox::StandardButtons buttons = QMessageBox::Ok,
         QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
 
-    QMessageBox::StandardButton
-    critical(QWidget *parent, const QString &title, const QString &text,
-             QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-             QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+    QMessageBox::StandardButton msgCritical(
+        QWidget *parent, const QString &title, const QString &text,
+        QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+        QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
 
     void msgAbout(QWidget *parent, const QString &title, const QString &text);
 

@@ -57,15 +57,13 @@ inline QByteArray getFunctionSig(Func &&, const char *fn) {
     do {                                                                       \
         QMutexLocker locker(&__mutex__);                                       \
         static auto CALLNAME = getFunctionSig(FN, __func__);                   \
-        if (!m.isValid()) {                                                    \
-            auto fnMap = callTable();                                          \
-            if (fnMap.contains(CALLNAME)) {                                    \
-                m = fnMap.value(CALLNAME);                                     \
-                Q_ASSERT(m.isValid());                                         \
-            } else {                                                           \
-                qDebug("[InvokeCall] '%s' is not found in call table.",        \
-                       CALLNAME.constData());                                  \
-            }                                                                  \
+        auto fnMap = callTable();                                              \
+        if (fnMap.contains(CALLNAME)) {                                        \
+            m = fnMap.value(CALLNAME);                                         \
+            Q_ASSERT(m.isValid());                                             \
+        } else {                                                               \
+            qDebug("[InvokeCall] '%s' is not found in call table.",            \
+                   CALLNAME.constData());                                      \
         }                                                                      \
     } while (0)
 

@@ -1029,24 +1029,24 @@ ErrFile IWingPluginCalls::openWorkSpace(const QString &filename) {
     return ret;
 }
 
-ErrFile IWingPluginCallsOp::saveAsCurrent(const QString &savename) {
-    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::saveAsCurrent);
+ErrFile IWingPluginCalls::saveAsCurrent(const QString &savename) {
+    SETUP_CALL_CONTEXT(&IWingPluginCalls::saveAsCurrent);
     ErrFile ret;
     m.invoke(callReceiver(), Qt::DirectConnection, WINGAPI_RETURN_ARG(ret),
              getSenderObj(), WINGAPI_ARG(savename));
     return ret;
 }
 
-ErrFile IWingPluginCallsOp::exportCurrent(const QString &savename) {
-    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::exportCurrent);
+ErrFile IWingPluginCalls::exportCurrent(const QString &savename) {
+    SETUP_CALL_CONTEXT(&IWingPluginCalls::exportCurrent);
     ErrFile ret;
     m.invoke(callReceiver(), Qt::DirectConnection, WINGAPI_RETURN_ARG(ret),
              getSenderObj(), WINGAPI_ARG(savename));
     return ret;
 }
 
-ErrFile IWingPluginCallsOp::saveCurrent() {
-    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::saveCurrent);
+ErrFile IWingPluginCalls::saveCurrent() {
+    SETUP_CALL_CONTEXT(&IWingPluginCalls::saveCurrent);
     ErrFile ret;
     m.invoke(callReceiver(), Qt::DirectConnection, WINGAPI_RETURN_ARG(ret),
              getSenderObj());
@@ -1061,8 +1061,8 @@ ErrFile IWingPluginCalls::closeCurrent(bool force) {
     return ret;
 }
 
-ErrFile IWingPluginCallsOp::openCurrent() {
-    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::openCurrent);
+ErrFile IWingPluginCalls::openCurrent() {
+    SETUP_CALL_CONTEXT(&IWingPluginCalls::openCurrent);
     ErrFile ret;
     m.invoke(callReceiver(), Qt::DirectConnection, WINGAPI_RETURN_ARG(ret),
              getSenderObj());
