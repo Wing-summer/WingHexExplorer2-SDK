@@ -4,7 +4,7 @@
 ** You can redistribute this file and/or modify it under the terms of the
 ** BSD 3-Clause.
 **
-** THIS FILE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS”
+** THIS FILE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 ** AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ** IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 ** ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
@@ -21,7 +21,6 @@
 #ifndef WINGEDITORVIEWWIDGET_H
 #define WINGEDITORVIEWWIDGET_H
 
-#include "WingPlugin/wingpluginwidget.h"
 #include "iwingplugincalls.h"
 #include "wingplugin_global.h"
 #include <QWidget>
@@ -30,8 +29,9 @@ namespace WingHex {
 
 class IWingPlugin;
 
-class WINGPLUGIN_EXPORT WingEditorViewWidget : public WingPluginWidget {
-
+class WINGPLUGIN_EXPORT WingEditorViewWidget
+    : public QWidget,
+      protected WingHex::IWingEditorViewCalls {
     Q_OBJECT
 
 public:
@@ -47,13 +47,11 @@ public:
         virtual QString id() const = 0;
 
     public:
-        virtual WingEditorViewWidget *create(WingHex::IWingPlugin *plg,
-                                             QWidget *parent) const = 0;
+        virtual WingEditorViewWidget *create(QWidget *parent) const = 0;
     };
 
 public:
-    explicit WingEditorViewWidget(WingHex::IWingPlugin *plg,
-                                  QWidget *parent = nullptr);
+    explicit WingEditorViewWidget(QWidget *parent = nullptr);
 
     virtual WingEditorViewWidget *clone() = 0;
 

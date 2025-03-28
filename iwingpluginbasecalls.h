@@ -4,7 +4,7 @@
 ** You can redistribute this file and/or modify it under the terms of the
 ** BSD 3-Clause.
 **
-** THIS FILE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS”
+** THIS FILE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 ** AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ** IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 ** ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
@@ -21,7 +21,6 @@
 #ifndef IWINGPLUGINBASECALLS_H
 #define IWINGPLUGINBASECALLS_H
 
-#include "WingPlugin/wingplugincallconvertor.h"
 #include "wingplugincalls.h"
 
 #include <QFileDialog>
@@ -37,7 +36,7 @@ class IWingPluginBase;
 
 class WINGPLUGIN_EXPORT IWingPluginBaseCalls : public WingPluginCalls {
 public:
-    explicit IWingPluginBaseCalls(IWingPluginBase *const caller);
+    explicit IWingPluginBaseCalls(QObject *const caller);
 
 public:
     void toast(const QPixmap &icon, const QString &message);

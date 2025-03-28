@@ -4,7 +4,7 @@
 ** You can redistribute this file and/or modify it under the terms of the
 ** BSD 3-Clause.
 **
-** THIS FILE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS”
+** THIS FILE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
 ** AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 ** IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
 ** ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
@@ -20,9 +20,8 @@
 
 #include "wingeditorviewwidget.h"
 
-WingHex::WingEditorViewWidget::WingEditorViewWidget(IWingPlugin *plg,
-                                                    QWidget *parent)
-    : WingPluginWidget(plg, parent) {}
+WingHex::WingEditorViewWidget::WingEditorViewWidget(QWidget *parent)
+    : QWidget(parent), IWingEditorViewCalls(this) {}
 
 void WingHex::WingEditorViewWidget::raiseView() {
     constexpr auto VIEW_PROPERTY = "__VIEW__";
