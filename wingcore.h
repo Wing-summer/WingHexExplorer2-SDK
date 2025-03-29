@@ -52,10 +52,8 @@ inline QByteArray getFunctionSig(Func &&, const char *fn) {
 }
 
 #define SETUP_CALL_CONTEXT(FN)                                                 \
-    static QMutex __mutex__;                                                   \
-    static QMetaMethod m;                                                      \
+    QMetaMethod m;                                                             \
     do {                                                                       \
-        QMutexLocker locker(&__mutex__);                                       \
         static auto CALLNAME = getFunctionSig(FN, __func__);                   \
         auto fnMap = callTable();                                              \
         if (fnMap.contains(CALLNAME)) {                                        \
