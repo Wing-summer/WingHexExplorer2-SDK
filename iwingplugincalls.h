@@ -277,40 +277,6 @@ public:
 
     // extension
     bool closeAllFiles();
-
-public:
-    bool dataVisualText(const QString &data, const QString &title = {});
-    bool dataVisualTextList(const QStringList &data, const QString &title = {},
-                            WingHex::ClickedCallBack clicked = {},
-                            WingHex::ClickedCallBack dblClicked = {});
-
-    Q_REQUIRED_RESULT bool
-    dataVisualTextTree(const QString &json, const QString &title = {},
-                       WingHex::ClickedCallBack clicked = {},
-                       WingHex::ClickedCallBack dblClicked = {});
-    Q_REQUIRED_RESULT bool
-    dataVisualTextTable(const QString &json, const QStringList &headers,
-                        const QStringList &headerNames = {},
-                        const QString &title = {},
-                        WingHex::ClickedCallBack clicked = {},
-                        WingHex::ClickedCallBack dblClicked = {});
-
-    // API for Qt Plugin Only
-    Q_REQUIRED_RESULT bool
-    dataVisualTextListByModel(QAbstractItemModel *model,
-                              const QString &title = {},
-                              WingHex::ClickedCallBack clicked = {},
-                              WingHex::ClickedCallBack dblClicked = {});
-    Q_REQUIRED_RESULT bool
-    dataVisualTextTableByModel(QAbstractItemModel *model,
-                               const QString &title = {},
-                               WingHex::ClickedCallBack clicked = {},
-                               WingHex::ClickedCallBack dblClicked = {});
-    Q_REQUIRED_RESULT bool
-    dataVisualTextTreeByModel(QAbstractItemModel *model,
-                              const QString &title = {},
-                              WingHex::ClickedCallBack clicked = {},
-                              WingHex::ClickedCallBack dblClicked = {});
 };
 
 class WINGPLUGIN_EXPORT IWingPluginAPICalls : public IWingPluginCalls,
@@ -325,7 +291,6 @@ Q_DECLARE_METATYPE(const char *)
 Q_DECLARE_METATYPE(QGenericArgument)
 Q_DECLARE_METATYPE(QGenericReturnArgument)
 Q_DECLARE_METATYPE(QModelIndex)
-Q_DECLARE_METATYPE(WingHex::ClickedCallBack)
 Q_DECLARE_METATYPE(WingHex::HexPosition)
 
 #endif // IWINGPLUGINCALLS_H

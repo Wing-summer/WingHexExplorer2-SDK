@@ -89,8 +89,6 @@ enum class AppTheme { Dark, Light };
 
 using CallTable = QHash<QByteArray, QMetaMethod>;
 
-using ClickedCallBack = std::function<void(const QModelIndex &)>;
-
 Q_NAMESPACE_EXPORT(WINGPLUGIN_EXPORT)
 
 enum ErrFile : int {
@@ -124,7 +122,5 @@ WINGAPI_ARG_SPEC(QInputDialog::InputDialogOptions);
 WINGAPI_ARG_SPEC(QFileDialog::Options);
 WINGAPI_ARG_SPEC(Qt::InputMethodHints);
 WINGAPI_ARG_SPEC(qsizetype);
-
-WINGAPI_ARG_SPEC(WingHex::ClickedCallBack);
 
 #endif // WINGPLUGIN_GLOBAL_H
