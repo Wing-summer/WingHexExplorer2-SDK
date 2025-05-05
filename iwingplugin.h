@@ -117,7 +117,7 @@ public:
     static_assert(MetaType::MetaMax < MetaType::Array);
 
     struct ScriptFnInfo {
-        MetaType ret;
+        uint ret; // MetaType
         QVector<QPair<MetaType, QString>> params;
         ScriptFn fn;
     };
