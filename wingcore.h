@@ -30,6 +30,8 @@
 #include <QObject>
 #include <QString>
 
+#include <tuple>
+
 constexpr auto CALL_TABLE_PROPERTY = "__CALL_TABLE__";
 constexpr auto CALL_POINTER_PROPERTY = "__CALL_POINTER__";
 
@@ -50,8 +52,9 @@ inline WingHex::FunctionSig getFunctionSig(Func &&, const char *fn) {
 
     if constexpr (FnPointerType::ArgumentCount > 0) {
         Q_ASSERT(types);
-        sig.types.assign(std::initializer_list<int>(
-            types, types + FnPointerType::ArgumentCount));
+        sig.types.resize(FnPointerType::ArgumentCount);
+        std::copy(types, types + FnPointerType::ArgumentCount,
+                  sig.types.begin());
     }
 
     return sig;

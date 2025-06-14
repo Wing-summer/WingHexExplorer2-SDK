@@ -25,6 +25,8 @@
 #include "WingPlugin/wingcore.h"
 
 #include <QAbstractItemModel>
+#include <QGenericReturnArgument>
+#include <QMetaObject>
 
 namespace WingHex {
 
@@ -50,11 +52,10 @@ public:
 public:
     bool existsServiceHost(const QString &puid);
 
-    template <typename ReturnArg, typename... Args>
+    template <typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
-                  QTemplatedMetaMethodReturnArgument<ReturnArg> r,
-                  Args &&...arguments) const {
+                  QMetaMethodReturnArgument r, Args &&...arguments) const {
         auto h =
             QtPrivate::invokeMethodHelper(r, std::forward<Args>(arguments)...);
         return invokeServiceImpl(
@@ -63,25 +64,24 @@ public:
                             h.typeNames.data(), h.metaTypes.data()));
     }
 
-    template <typename ReturnArg, typename... Args>
+    template <typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
                   Args &&...arguments) const {
         return invokeService(puid, method, c, arguments...);
     }
 
-    template <typename ReturnArg, typename... Args>
+    template <typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method,
                   Args &&...arguments) const {
         return invokeService(puid, method, Qt::DirectConnection, arguments...);
     }
 
-    template <typename ReturnArg, typename... Args>
+    template <typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method,
-                  QTemplatedMetaMethodReturnArgument<ReturnArg> r,
-                  Args &&...arguments) const {
+                  QMetaMethodReturnArgument r, Args &&...arguments) const {
         return invokeService(puid, method, Qt::DirectConnection, r,
                              arguments...);
     }
