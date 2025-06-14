@@ -20,27 +20,144 @@
 
 #include "wingpluginwidget.h"
 
+#include "WingPlugin/wingcore.h"
+#include "WingPlugin/wingplugincalls_p.h"
+#include "iwingplugin.h"
+
 using namespace WingHex;
 
 WingPluginWidget::WingPluginWidget(IWingPlugin *plg, QWidget *parent)
-    : QWidget(parent), WingHex::IWingPluginAPICalls(plg) {}
+    : QWidget(parent), WingHex::IWingPluginAPICalls(),
+      d_ptr(new WingPluginCallsCorePrivate) {
+    Q_ASSERT(plg);
 
-WingPluginWidget::~WingPluginWidget() {}
+    {
+        auto var = plg->property(CALL_POINTER_PROPERTY);
+        if (!var.canConvert<quintptr>()) {
+            std::abort();
+        }
+
+        d_ptr->_fnCaller = reinterpret_cast<QObject *>(var.value<quintptr>());
+    }
+
+    {
+        auto var = plg->property(CALL_TABLE_PROPERTY);
+        if (!var.canConvert<QHash<FunctionSig, QMetaMethod>>()) {
+            std::abort();
+        }
+
+        d_ptr->_fnTable = var.value<QHash<FunctionSig, QMetaMethod>>();
+    }
+}
+
+WingPluginWidget::~WingPluginWidget() { delete d_ptr; }
+
+const QObject *WingPluginWidget::getSender() const { return this; }
+
+CallTable WingPluginWidget::callTable() const { return d_ptr->_fnTable; }
+
+QObject *WingPluginWidget::callReceiver() const { return d_ptr->_fnCaller; }
 
 WingPluginDialog::WingPluginDialog(IWingPlugin *plg, QWidget *parent)
-    : QDialog(parent), WingHex::IWingPluginAPICalls(plg) {}
+    : QDialog(parent), WingHex::IWingPluginAPICalls(),
+      d_ptr(new WingPluginCallsCorePrivate) {
+    Q_ASSERT(plg);
 
-WingPluginDialog::~WingPluginDialog() {}
+    {
+        auto var = plg->property(CALL_POINTER_PROPERTY);
+        if (!var.canConvert<quintptr>()) {
+            std::abort();
+        }
+
+        d_ptr->_fnCaller = reinterpret_cast<QObject *>(var.value<quintptr>());
+    }
+
+    {
+        auto var = plg->property(CALL_TABLE_PROPERTY);
+        if (!var.canConvert<QHash<FunctionSig, QMetaMethod>>()) {
+            std::abort();
+        }
+
+        d_ptr->_fnTable = var.value<QHash<FunctionSig, QMetaMethod>>();
+    }
+}
+
+WingPluginDialog::~WingPluginDialog() { delete d_ptr; }
+
+const QObject *WingPluginDialog::getSender() const { return this; }
+
+CallTable WingPluginDialog::callTable() const { return d_ptr->_fnTable; }
+
+QObject *WingPluginDialog::callReceiver() const { return d_ptr->_fnCaller; }
 
 WingPluginWindow::WingPluginWindow(IWingPlugin *plg, QWindow *parent)
-    : QWindow(parent), WingHex::IWingPluginAPICalls(plg) {}
+    : QWindow(parent), WingHex::IWingPluginAPICalls() {
+    init(plg);
+}
 
 WingPluginWindow::WingPluginWindow(IWingPlugin *plg, QScreen *parent)
-    : QWindow(parent), WingHex::IWingPluginAPICalls(plg) {}
+    : QWindow(parent), WingHex::IWingPluginAPICalls() {
+    init(plg);
+}
 
-WingPluginWindow::~WingPluginWindow() {}
+WingPluginWindow::~WingPluginWindow() { delete d_ptr; }
+
+const QObject *WingPluginWindow::getSender() const { return this; }
+
+CallTable WingPluginWindow::callTable() const { return d_ptr->_fnTable; }
+
+QObject *WingPluginWindow::callReceiver() const { return d_ptr->_fnCaller; }
+
+void WingPluginWindow::init(IWingPlugin *plg) {
+    Q_ASSERT(plg);
+    d_ptr = new WingPluginCallsCorePrivate;
+    {
+        auto var = plg->property(CALL_POINTER_PROPERTY);
+        if (!var.canConvert<quintptr>()) {
+            std::abort();
+        }
+
+        d_ptr->_fnCaller = reinterpret_cast<QObject *>(var.value<quintptr>());
+    }
+
+    {
+        auto var = plg->property(CALL_TABLE_PROPERTY);
+        if (!var.canConvert<QHash<FunctionSig, QMetaMethod>>()) {
+            std::abort();
+        }
+
+        d_ptr->_fnTable = var.value<QHash<FunctionSig, QMetaMethod>>();
+    }
+}
 
 WingPluginMainWindow::WingPluginMainWindow(IWingPlugin *plg, QWidget *parent)
-    : QMainWindow(parent), WingHex::IWingPluginAPICalls(plg) {}
+    : QMainWindow(parent), WingHex::IWingPluginAPICalls(),
+      d_ptr(new WingPluginCallsCorePrivate) {
+    Q_ASSERT(plg);
 
-WingPluginMainWindow::~WingPluginMainWindow() {}
+    {
+        auto var = plg->property(CALL_POINTER_PROPERTY);
+        if (!var.canConvert<quintptr>()) {
+            std::abort();
+        }
+
+        d_ptr->_fnCaller = reinterpret_cast<QObject *>(var.value<quintptr>());
+    }
+
+    {
+        auto var = plg->property(CALL_TABLE_PROPERTY);
+        if (!var.canConvert<QHash<FunctionSig, QMetaMethod>>()) {
+            std::abort();
+        }
+
+        d_ptr->_fnTable = var.value<QHash<FunctionSig, QMetaMethod>>();
+    }
+}
+
+WingPluginMainWindow::~WingPluginMainWindow() { delete d_ptr; }
+
+const QObject *WingPluginMainWindow::getSender() const { return this; }
+
+CallTable WingPluginMainWindow::callTable() const { return d_ptr->_fnTable; }
+
+QObject *WingPluginMainWindow::callReceiver() const { return d_ptr->_fnCaller; }

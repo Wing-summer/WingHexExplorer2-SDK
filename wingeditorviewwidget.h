@@ -75,6 +75,18 @@ public slots:
 
     // cloned view will never call it
     virtual void onWorkSpaceNotify(bool isWorkSpace);
+
+    // WingPluginCallConvertor interface
+protected:
+    virtual const QObject *getSender() const override;
+
+    // WingPluginCalls interface
+protected:
+    virtual CallTable callTable() const override;
+    virtual QObject *callReceiver() const override;
+
+private:
+    WingPluginCallsCore *_core;
 };
 
 } // namespace WingHex

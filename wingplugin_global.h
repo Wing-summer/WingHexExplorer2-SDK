@@ -43,33 +43,9 @@
 
 #define WING_SERVICE Q_INVOKABLE
 
-#define WINGAPI_ARG_SPEC(Type)                                                 \
-    inline QArgument<Type> WINGAPI_ARG(const Type &t) {                        \
-        return QArgument<Type>(QT_STRINGIFY(Type), t);                         \
-    }                                                                          \
-    inline QReturnArgument<Type> WINGAPI_RETURN_ARG(Type &t) {                 \
-        return QReturnArgument<Type>(QT_STRINGIFY(Type), t);                   \
-    }
-
-template <typename T>
-inline QArgument<T> WINGAPI_ARG(const T &t) {
-    static QByteArray name;
-    if (name.isEmpty()) {
-        auto m = QMetaType::fromType<std::decay_t<T>>();
-        name = m.name();
-    }
-    return QArgument<std::decay_t<T>>(name, t);
-}
-
-template <typename T>
-inline QReturnArgument<T> WINGAPI_RETURN_ARG(T &t) {
-    static QByteArray name;
-    if (name.isEmpty()) {
-        auto m = QMetaType::fromType<std::decay_t<T>>();
-        name = m.name();
-    }
-    return QReturnArgument<std::decay_t<T>>(name, t);
-}
+#ifndef Q_MOC_RUN
+#define WING_API
+#endif
 
 namespace WingHex {
 
@@ -87,7 +63,20 @@ struct WingDependency {
 
 enum class AppTheme { Dark, Light };
 
-using CallTable = QHash<QByteArray, QMetaMethod>;
+struct FunctionSig {
+    QByteArray fnName;
+    QVarLengthArray<int, 8> types;
+
+    bool operator==(const FunctionSig &other) const {
+        return fnName == other.fnName && types == other.types;
+    }
+};
+
+inline size_t qHash(const FunctionSig &c, size_t seed) noexcept {
+    return qHashMulti(seed, c.fnName, c.types);
+}
+
+using CallTable = QHash<FunctionSig, QMetaMethod>;
 
 Q_NAMESPACE_EXPORT(WINGPLUGIN_EXPORT)
 
@@ -115,12 +104,5 @@ Q_ENUM_NS(SelectionMode)
 
 Q_DECLARE_METATYPE(WingHex::AppTheme)
 Q_DECLARE_METATYPE(WingHex::CallTable)
-
-// Template specialization for typedefs
-WINGAPI_ARG_SPEC(QMessageBox::StandardButtons);
-WINGAPI_ARG_SPEC(QInputDialog::InputDialogOptions);
-WINGAPI_ARG_SPEC(QFileDialog::Options);
-WINGAPI_ARG_SPEC(Qt::InputMethodHints);
-WINGAPI_ARG_SPEC(qsizetype);
 
 #endif // WINGPLUGIN_GLOBAL_H

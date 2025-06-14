@@ -33,11 +33,15 @@ class WingPluginCallsCorePrivate;
 
 class WingPluginCallsCore : public QObject {
     Q_OBJECT
-    friend class WingPluginCalls;
 
 public:
     WingPluginCallsCore();
     virtual ~WingPluginCallsCore();
+
+public:
+    WingHex::CallTable callTable() const;
+
+    QObject *callReceiver() const;
 
     // QObject interface
 public:
@@ -51,18 +55,15 @@ private:
 
 class WINGPLUGIN_EXPORT WingPluginCalls : public WingPluginCallConvertor {
 public:
-    explicit WingPluginCalls(QObject *coreobj);
-    virtual ~WingPluginCalls();
-
-    WingPluginCallsCore *core() const;
+    WingPluginCalls() = default;
+    virtual ~WingPluginCalls() = default;
 
 protected:
-    WingHex::CallTable callTable() const;
+    virtual WingHex::CallTable callTable() const = 0;
 
-    QObject *callReceiver() const;
+    virtual QObject *callReceiver() const = 0;
 
 private:
-    WingPluginCallsCore *_core;
     Q_DISABLE_COPY_MOVE(WingPluginCalls)
 };
 

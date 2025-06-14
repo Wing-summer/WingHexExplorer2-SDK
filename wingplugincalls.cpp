@@ -30,45 +30,14 @@ using namespace WingHex;
 
 Q_DECLARE_METATYPE(QMetaMethod)
 
-WingPluginCalls::WingPluginCalls(QObject *coreobj)
-    : WingPluginCallConvertor(coreobj), _core(new WingPluginCallsCore) {
-    Q_ASSERT(coreobj);
-    coreobj->installEventFilter(_core);
-
-    auto var = coreobj->property(CALL_POINTER_PROPERTY);
-    if (var.canConvert<quintptr>()) {
-        _core->d_ptr->_fnCaller =
-            reinterpret_cast<QObject *>(var.value<quintptr>());
-    }
-
-    var = coreobj->property(CALL_TABLE_PROPERTY);
-    if (var.canConvert<QHash<QByteArray, QMetaMethod>>()) {
-        _core->d_ptr->_fnTable = var.value<QHash<QByteArray, QMetaMethod>>();
-    }
-}
-
-WingPluginCalls::~WingPluginCalls() { delete _core; }
-
-WingHex::CallTable WingPluginCalls::callTable() const {
-    if (_core->d_ptr->_fnTable.isEmpty()) {
-        std::abort();
-    }
-    return _core->d_ptr->_fnTable;
-}
-
-QObject *WingPluginCalls::callReceiver() const {
-    if (_core->d_ptr->_fnCaller == nullptr) {
-        std::abort();
-    }
-    return _core->d_ptr->_fnCaller;
-}
-
-WingPluginCallsCore *WingPluginCalls::core() const { return _core; }
-
 WingPluginCallsCore::WingPluginCallsCore()
     : QObject(), d_ptr(new WingPluginCallsCorePrivate) {}
 
 WingPluginCallsCore::~WingPluginCallsCore() { delete d_ptr; }
+
+QObject *WingPluginCallsCore::callReceiver() const { return d_ptr->_fnCaller; }
+
+CallTable WingPluginCallsCore::callTable() const { return d_ptr->_fnTable; }
 
 bool WingPluginCallsCore::eventFilter(QObject *watched, QEvent *event) {
     if (event->type() == QEvent::DynamicPropertyChange) {
@@ -97,11 +66,11 @@ bool WingPluginCallsCore::eventFilter(QObject *watched, QEvent *event) {
                 }
 
                 auto var = watched->property(CALL_TABLE_PROPERTY);
-                if (!var.canConvert<QHash<QByteArray, QMetaMethod>>()) {
+                if (!var.canConvert<QHash<FunctionSig, QMetaMethod>>()) {
                     std::abort();
                 }
 
-                d->_fnTable = var.value<QHash<QByteArray, QMetaMethod>>();
+                d->_fnTable = var.value<QHash<FunctionSig, QMetaMethod>>();
             }
         }
     }

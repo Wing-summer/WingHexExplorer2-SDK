@@ -21,7 +21,8 @@
 #ifndef IWINGPLUGINBASECALLS_H
 #define IWINGPLUGINBASECALLS_H
 
-#include "wingplugincalls.h"
+#include "WingPlugin/wingplugin_global.h"
+#include "WingPlugin/wingplugincalls.h"
 
 #include <QFileDialog>
 #include <QIcon>
@@ -36,7 +37,7 @@ class IWingPluginBase;
 
 class WINGPLUGIN_EXPORT IWingPluginBaseCalls : public WingPluginCalls {
 public:
-    explicit IWingPluginBaseCalls(QObject *const caller);
+    IWingPluginBaseCalls() = default;
 
 public:
     void toast(const QPixmap &icon, const QString &message);

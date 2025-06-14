@@ -33,7 +33,6 @@ add_library(
     iwingplugincalls.h
     iwingplugincalls.cpp
     wingplugincallconvertor.h
-    wingplugincallconvertor.cpp
     wingpluginwidget.h
     wingpluginwidget.cpp)
 

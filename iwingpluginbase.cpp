@@ -26,7 +26,7 @@
 
 using namespace WingHex;
 
-IWingPluginBase::IWingPluginBase() : IWingPluginBaseCalls(this) {}
+IWingPluginBase::IWingPluginBase() : IWingPluginBaseCalls() {}
 
 QIcon IWingPluginBase::pluginIcon() const { return {}; }
 

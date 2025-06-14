@@ -22,11 +22,20 @@
 
 using namespace WingHex;
 
-IWingDevice::IWingDevice(QObject *parent) : IWingPluginBase() {}
+IWingDevice::IWingDevice(QObject *parent)
+    : IWingPluginBase(), _core(new WingPluginCallsCore) {
+    this->installEventFilter(_core);
+}
 
 QIcon IWingDevice::supportedFileIcon() const { return {}; }
 
 QString IWingDevice::onOpenFileBegin() { return {}; }
+
+const QObject *IWingDevice::getSender() const { return this; }
+
+CallTable IWingDevice::callTable() const { return _core->callTable(); }
+
+QObject *IWingDevice::callReceiver() const { return _core->callReceiver(); }
 
 WingIODevice::WingIODevice(QObject *parent) : QIODevice(parent) {}
 

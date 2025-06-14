@@ -42,6 +42,18 @@ public:
     explicit WingPluginWidget(WingHex::IWingPlugin *plg,
                               QWidget *parent = nullptr);
     virtual ~WingPluginWidget();
+
+    // WingPluginCallConvertor interface
+protected:
+    virtual const QObject *getSender() const override;
+
+    // WingPluginCalls interface
+protected:
+    virtual CallTable callTable() const override;
+    virtual QObject *callReceiver() const override;
+
+private:
+    WingPluginCallsCorePrivate *d_ptr;
 };
 
 class WINGPLUGIN_EXPORT WingPluginDialog
@@ -53,6 +65,18 @@ public:
     explicit WingPluginDialog(WingHex::IWingPlugin *plg,
                               QWidget *parent = nullptr);
     virtual ~WingPluginDialog();
+
+    // WingPluginCallConvertor interface
+protected:
+    virtual const QObject *getSender() const override;
+
+    // WingPluginCalls interface
+protected:
+    virtual CallTable callTable() const override;
+    virtual QObject *callReceiver() const override;
+
+private:
+    WingPluginCallsCorePrivate *d_ptr;
 };
 
 class WINGPLUGIN_EXPORT WingPluginWindow
@@ -66,6 +90,21 @@ public:
     explicit WingPluginWindow(WingHex::IWingPlugin *plg,
                               QScreen *parent = nullptr);
     virtual ~WingPluginWindow();
+
+    // WingPluginCallConvertor interface
+protected:
+    virtual const QObject *getSender() const override;
+
+    // WingPluginCalls interface
+protected:
+    virtual CallTable callTable() const override;
+    virtual QObject *callReceiver() const override;
+
+private:
+    void init(IWingPlugin *plg);
+
+private:
+    WingPluginCallsCorePrivate *d_ptr;
 };
 
 class WINGPLUGIN_EXPORT WingPluginMainWindow
@@ -77,6 +116,18 @@ public:
     explicit WingPluginMainWindow(WingHex::IWingPlugin *plg,
                                   QWidget *parent = nullptr);
     virtual ~WingPluginMainWindow();
+
+    // WingPluginCallConvertor interface
+protected:
+    virtual const QObject *getSender() const override;
+
+    // WingPluginCalls interface
+protected:
+    virtual CallTable callTable() const override;
+    virtual QObject *callReceiver() const override;
+
+private:
+    WingPluginCallsCorePrivate *d_ptr;
 };
 
 } // namespace WingHex

@@ -29,14 +29,13 @@ class IWingPluginBase;
 
 class WingPluginCallConvertor {
 public:
-    WingPluginCallConvertor(QObject *caller);
+    WingPluginCallConvertor() = default;
+    virtual ~WingPluginCallConvertor() = default;
 
 protected:
-    QArgument<QObject *> getSenderObj();
-
-private:
-    QObject *_caller;
+    virtual const QObject *getSender() const = 0;
 };
+
 } // namespace WingHex
 
 #endif // WINGPLUGINCALLCONVERTOR_H

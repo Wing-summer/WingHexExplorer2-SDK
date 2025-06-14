@@ -53,6 +53,18 @@ public:
     virtual WingIODevice *onOpenFile(const QString &path) = 0;
 
     virtual bool onCloseFile(WingIODevice *dev) = 0;
+
+    // WingPluginCallConvertor interface
+protected:
+    virtual const QObject *getSender() const override;
+
+    // WingPluginCalls interface
+protected:
+    virtual CallTable callTable() const override;
+    virtual QObject *callReceiver() const override;
+
+private:
+    WingPluginCallsCore *_core;
 };
 
 } // namespace WingHex

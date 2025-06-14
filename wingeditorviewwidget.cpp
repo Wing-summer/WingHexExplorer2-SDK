@@ -19,9 +19,12 @@
 */
 
 #include "wingeditorviewwidget.h"
+#include "WingPlugin/wingplugincalls.h"
 
 WingHex::WingEditorViewWidget::WingEditorViewWidget(QWidget *parent)
-    : QWidget(parent), IWingEditorViewCalls(this) {}
+    : QWidget(parent), IWingEditorViewCalls(), _core(new WingPluginCallsCore) {
+    this->installEventFilter(_core);
+}
 
 void WingHex::WingEditorViewWidget::raiseView() {
     constexpr auto VIEW_PROPERTY = "__VIEW__";
@@ -33,7 +36,7 @@ void WingHex::WingEditorViewWidget::raiseView() {
     auto id = property(VIEW_ID_PROPERTY).toString();
     if (ptr && !id.isEmpty()) {
         QMetaObject::invokeMethod(ptr, "raiseAndSwitchView",
-                                  Qt::DirectConnection, WINGAPI_ARG(id));
+                                  Qt::DirectConnection, id);
     }
 }
 
@@ -49,4 +52,14 @@ bool WingHex::WingEditorViewWidget::onClosing() { return true; }
 
 void WingHex::WingEditorViewWidget::onWorkSpaceNotify(bool isWorkSpace) {
     Q_UNUSED(isWorkSpace);
+}
+
+const QObject *WingHex::WingEditorViewWidget::getSender() const { return this; }
+
+QObject *WingHex::WingEditorViewWidget::callReceiver() const {
+    return _core->callReceiver();
+}
+
+WingHex::CallTable WingHex::WingEditorViewWidget::callTable() const {
+    return _core->callTable();
 }

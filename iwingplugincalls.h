@@ -22,6 +22,7 @@
 #define IWINGPLUGINCALLS_H
 
 #include "WingPlugin/iwingpluginbasecalls.h"
+#include "WingPlugin/wingcore.h"
 
 #include <QAbstractItemModel>
 
@@ -44,40 +45,46 @@ class IWingPlugin;
 
 class WINGPLUGIN_EXPORT IWingPluginCallsOp : public WingPluginCalls {
 public:
-    explicit IWingPluginCallsOp(QObject *const coreobj);
+    explicit IWingPluginCallsOp();
 
 public:
     bool existsServiceHost(const QString &puid);
 
-    bool invokeService(const QString &puid, const char *method,
-                       Qt::ConnectionType type, QGenericReturnArgument ret,
-                       QGenericArgument val0 = QGenericArgument(nullptr),
-                       QGenericArgument val1 = QGenericArgument(),
-                       QGenericArgument val2 = QGenericArgument(),
-                       QGenericArgument val3 = QGenericArgument(),
-                       QGenericArgument val4 = QGenericArgument());
+    template <typename ReturnArg, typename... Args>
+    QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
+    invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
+                  QTemplatedMetaMethodReturnArgument<ReturnArg> r,
+                  Args &&...arguments) const {
+        auto h =
+            QtPrivate::invokeMethodHelper(r, std::forward<Args>(arguments)...);
+        return invokeServiceImpl(
+            puid,
+            std::make_tuple(method, c, h.parameterCount(), h.parameters.data(),
+                            h.typeNames.data(), h.metaTypes.data()));
+    }
 
-    bool invokeService(const QString &puid, const char *member,
-                       QGenericReturnArgument ret,
-                       QGenericArgument val0 = QGenericArgument(nullptr),
-                       QGenericArgument val1 = QGenericArgument(),
-                       QGenericArgument val2 = QGenericArgument(),
-                       QGenericArgument val3 = QGenericArgument(),
-                       QGenericArgument val4 = QGenericArgument());
+    template <typename ReturnArg, typename... Args>
+    QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
+    invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
+                  Args &&...arguments) const {
+        return invokeService(puid, method, c, arguments...);
+    }
 
-    bool invokeService(const QString &puid, const char *member,
-                       Qt::ConnectionType type, QGenericArgument val0,
-                       QGenericArgument val1 = QGenericArgument(),
-                       QGenericArgument val2 = QGenericArgument(),
-                       QGenericArgument val3 = QGenericArgument(),
-                       QGenericArgument val4 = QGenericArgument());
+    template <typename ReturnArg, typename... Args>
+    QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
+    invokeService(const QString &puid, const char *method,
+                  Args &&...arguments) const {
+        return invokeService(puid, method, Qt::DirectConnection, arguments...);
+    }
 
-    bool invokeService(const QString &puid, const char *member,
-                       QGenericArgument val0,
-                       QGenericArgument val1 = QGenericArgument(),
-                       QGenericArgument val2 = QGenericArgument(),
-                       QGenericArgument val3 = QGenericArgument(),
-                       QGenericArgument val4 = QGenericArgument());
+    template <typename ReturnArg, typename... Args>
+    QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
+    invokeService(const QString &puid, const char *method,
+                  QTemplatedMetaMethodReturnArgument<ReturnArg> r,
+                  Args &&...arguments) const {
+        return invokeService(puid, method, Qt::DirectConnection, r,
+                             arguments...);
+    }
 
 public:
     Q_REQUIRED_RESULT QString currentDocFilename();
@@ -231,17 +238,21 @@ public:
     Q_REQUIRED_RESULT bool modBookMark(qsizetype pos, const QString &comment);
     Q_REQUIRED_RESULT bool removeBookMark(qsizetype pos);
     Q_REQUIRED_RESULT bool clearBookMark();
+
+private slots:
+    bool invokeServiceImpl(const QString &puid,
+                           const MetaCallInfo &infos) const;
 };
 
 class WINGPLUGIN_EXPORT IWingEditorViewCalls : public IWingPluginCallsOp,
                                                public IWingPluginBaseCalls {
 public:
-    explicit IWingEditorViewCalls(QWidget *const caller);
+    explicit IWingEditorViewCalls();
 };
 
 class WINGPLUGIN_EXPORT IWingPluginCalls : public IWingPluginCallsOp {
 public:
-    explicit IWingPluginCalls(IWingPlugin *const caller);
+    explicit IWingPluginCalls();
 
 public:
     Q_REQUIRED_RESULT bool isCurrentDocEditing();
@@ -282,14 +293,12 @@ public:
 class WINGPLUGIN_EXPORT IWingPluginAPICalls : public IWingPluginCalls,
                                               public IWingPluginBaseCalls {
 public:
-    explicit IWingPluginAPICalls(IWingPlugin *const caller);
+    explicit IWingPluginAPICalls();
 };
 
 } // namespace WingHex
 
-Q_DECLARE_METATYPE(const char *)
-Q_DECLARE_METATYPE(QGenericArgument)
-Q_DECLARE_METATYPE(QGenericReturnArgument)
+Q_DECLARE_METATYPE(const char *);
 Q_DECLARE_METATYPE(QModelIndex)
 Q_DECLARE_METATYPE(WingHex::HexPosition)
 

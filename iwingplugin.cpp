@@ -22,7 +22,10 @@
 
 using namespace WingHex;
 
-IWingPlugin::IWingPlugin() : IWingPluginBase(), IWingPluginCalls(this) {}
+IWingPlugin::IWingPlugin()
+    : IWingPluginBase(), IWingPluginCalls(), _core(new WingPluginCallsCore) {
+    this->installEventFilter(_core);
+}
 
 QVariant IWingPlugin::getScriptCallError(int errCode, const QString &msg) {
     ScriptCallError err;
@@ -91,6 +94,12 @@ bool IWingPlugin::eventOnScriptPragma(const QString &script,
 }
 
 void IWingPlugin::eventOnScriptPragmaInit() {}
+
+const QObject *IWingPlugin::getSender() const { return this; }
+
+CallTable IWingPlugin::callTable() const { return _core->callTable(); }
+
+QObject *IWingPlugin::callReceiver() const { return _core->callReceiver(); }
 
 QHash<QString, IWingPlugin::UNSAFE_SCFNPTR>
 IWingPlugin::registeredScriptUnsafeFns() const {
