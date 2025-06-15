@@ -40,112 +40,118 @@ public:
     IWingPluginBaseCalls() = default;
 
 public:
-    void toast(const QPixmap &icon, const QString &message);
-    void logTrace(const QString &message);
-    void logDebug(const QString &message);
-    void logWarn(const QString &message);
-    void logError(const QString &message);
-    void logInfo(const QString &message);
+    void toast(const QPixmap &icon, const QString &message) const;
+    void logTrace(const QString &message) const;
+    void logDebug(const QString &message) const;
+    void logWarn(const QString &message) const;
+    void logError(const QString &message) const;
+    void logInfo(const QString &message) const;
 
     bool raiseDockWidget(QWidget *w);
 
     // theme
-    WingHex::AppTheme currentAppTheme();
+    WingHex::AppTheme currentAppTheme() const;
 
     // not available for AngelScript
     // only for plugin UI extenstion
 
-    QDialog *createDialog(QWidget *content);
+    QDialog *createDialog(QWidget *content) const;
 
 public:
     void msgAboutQt(QWidget *parent = nullptr,
-                    const QString &title = QString());
+                    const QString &title = QString()) const;
 
-    QMessageBox::StandardButton msgInformation(
-        QWidget *parent, const QString &title, const QString &text,
-        QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-        QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+    QMessageBox::StandardButton
+    msgInformation(QWidget *parent, const QString &title, const QString &text,
+                   QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+                   QMessageBox::StandardButton defaultButton =
+                       QMessageBox::NoButton) const;
 
     QMessageBox::StandardButton msgQuestion(
         QWidget *parent, const QString &title, const QString &text,
         QMessageBox::StandardButtons buttons =
             QMessageBox::StandardButtons(QMessageBox::Yes | QMessageBox::No),
-        QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+        QMessageBox::StandardButton defaultButton =
+            QMessageBox::NoButton) const;
 
-    QMessageBox::StandardButton msgWarning(
-        QWidget *parent, const QString &title, const QString &text,
-        QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-        QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+    QMessageBox::StandardButton
+    msgWarning(QWidget *parent, const QString &title, const QString &text,
+               QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+               QMessageBox::StandardButton defaultButton =
+                   QMessageBox::NoButton) const;
 
-    QMessageBox::StandardButton msgCritical(
-        QWidget *parent, const QString &title, const QString &text,
-        QMessageBox::StandardButtons buttons = QMessageBox::Ok,
-        QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+    QMessageBox::StandardButton
+    msgCritical(QWidget *parent, const QString &title, const QString &text,
+                QMessageBox::StandardButtons buttons = QMessageBox::Ok,
+                QMessageBox::StandardButton defaultButton =
+                    QMessageBox::NoButton) const;
 
-    void msgAbout(QWidget *parent, const QString &title, const QString &text);
+    void msgAbout(QWidget *parent, const QString &title,
+                  const QString &text) const;
 
     QMessageBox::StandardButton
     msgbox(QWidget *parent, QMessageBox::Icon icon, const QString &title,
            const QString &text,
            QMessageBox::StandardButtons buttons = QMessageBox::NoButton,
-           QMessageBox::StandardButton defaultButton = QMessageBox::NoButton);
+           QMessageBox::StandardButton defaultButton =
+               QMessageBox::NoButton) const;
 
 public:
     Q_REQUIRED_RESULT QString
     dlgGetText(QWidget *parent, const QString &title, const QString &label,
                QLineEdit::EchoMode echo = QLineEdit::Normal,
                const QString &text = QString(), bool *ok = nullptr,
-               Qt::InputMethodHints inputMethodHints = Qt::ImhNone);
+               Qt::InputMethodHints inputMethodHints = Qt::ImhNone) const;
     Q_REQUIRED_RESULT QString dlgGetMultiLineText(
         QWidget *parent, const QString &title, const QString &label,
         const QString &text = QString(), bool *ok = nullptr,
-        Qt::InputMethodHints inputMethodHints = Qt::ImhNone);
+        Qt::InputMethodHints inputMethodHints = Qt::ImhNone) const;
 
     Q_REQUIRED_RESULT QString
     dlgGetItem(QWidget *parent, const QString &title, const QString &label,
                const QStringList &items, int current = 0, bool editable = true,
                bool *ok = nullptr,
-               Qt::InputMethodHints inputMethodHints = Qt::ImhNone);
+               Qt::InputMethodHints inputMethodHints = Qt::ImhNone) const;
 
     Q_REQUIRED_RESULT int dlgGetInt(QWidget *parent, const QString &title,
                                     const QString &label, int value = 0,
                                     int minValue = -2147483647,
                                     int maxValue = 2147483647, int step = 1,
-                                    bool *ok = nullptr);
+                                    bool *ok = nullptr) const;
 
     Q_REQUIRED_RESULT double
     dlgGetDouble(QWidget *parent, const QString &title, const QString &label,
                  double value = 0, double minValue = -2147483647,
                  double maxValue = 2147483647, int decimals = 1,
-                 bool *ok = nullptr, double step = 1);
+                 bool *ok = nullptr, double step = 1) const;
 
 public:
     Q_REQUIRED_RESULT QString dlgGetExistingDirectory(
         QWidget *parent = nullptr, const QString &caption = QString(),
         const QString &dir = QString(),
-        QFileDialog::Options options = QFileDialog::ShowDirsOnly);
+        QFileDialog::Options options = QFileDialog::ShowDirsOnly) const;
 
     Q_REQUIRED_RESULT QString dlgGetOpenFileName(
         QWidget *parent = nullptr, const QString &caption = QString(),
         const QString &dir = QString(), const QString &filter = QString(),
         QString *selectedFilter = nullptr,
-        QFileDialog::Options options = QFileDialog::Options());
+        QFileDialog::Options options = QFileDialog::Options()) const;
 
     Q_REQUIRED_RESULT QStringList dlgGetOpenFileNames(
         QWidget *parent = nullptr, const QString &caption = QString(),
         const QString &dir = QString(), const QString &filter = QString(),
         QString *selectedFilter = nullptr,
-        QFileDialog::Options options = QFileDialog::Options());
+        QFileDialog::Options options = QFileDialog::Options()) const;
 
     Q_REQUIRED_RESULT QString dlgGetSaveFileName(
         QWidget *parent = nullptr, const QString &caption = QString(),
         const QString &dir = QString(), const QString &filter = QString(),
         QString *selectedFilter = nullptr,
-        QFileDialog::Options options = QFileDialog::Options());
+        QFileDialog::Options options = QFileDialog::Options()) const;
 
 public:
     Q_REQUIRED_RESULT QColor dlgGetColor(const QString &caption,
-                                         QWidget *parent = nullptr);
+                                         QWidget *parent = nullptr) const;
 };
 
 } // namespace WingHex

@@ -28,7 +28,7 @@
 
 namespace WingHex {
 
-Q_DECL_UNUSED constexpr auto SDKVERSION = 16;
+Q_DECL_UNUSED constexpr auto SDKVERSION = 17;
 
 WINGPLUGIN_EXPORT QString PLUGINDIR();
 

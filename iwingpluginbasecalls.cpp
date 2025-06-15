@@ -24,45 +24,46 @@
 
 using namespace WingHex;
 
-void IWingPluginBaseCalls::toast(const QPixmap &icon, const QString &message) {
+void IWingPluginBaseCalls::toast(const QPixmap &icon,
+                                 const QString &message) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::toast);
     m.invoke(callReceiver(), Qt::DirectConnection, getSender(), icon, message);
 }
 
-void IWingPluginBaseCalls::logTrace(const QString &message) {
+void IWingPluginBaseCalls::logTrace(const QString &message) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::logTrace);
     m.invoke(callReceiver(), Qt::DirectConnection, getSender(), message);
 }
 
-void IWingPluginBaseCalls::logDebug(const QString &message) {
+void IWingPluginBaseCalls::logDebug(const QString &message) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::logDebug);
     m.invoke(callReceiver(), Qt::DirectConnection, getSender(), message);
 }
 
-void IWingPluginBaseCalls::logWarn(const QString &message) {
+void IWingPluginBaseCalls::logWarn(const QString &message) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::logWarn);
     m.invoke(callReceiver(), Qt::DirectConnection, getSender(), message);
 }
 
-void IWingPluginBaseCalls::logError(const QString &message) {
+void IWingPluginBaseCalls::logError(const QString &message) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::logError);
     m.invoke(callReceiver(), Qt::DirectConnection, getSender(), message);
 }
 
-void IWingPluginBaseCalls::logInfo(const QString &message) {
+void IWingPluginBaseCalls::logInfo(const QString &message) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::logInfo);
     m.invoke(callReceiver(), Qt::DirectConnection, getSender(), message);
 }
 
 bool IWingPluginBaseCalls::raiseDockWidget(QWidget *w) {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::raiseDockWidget);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              w);
     return ret;
 }
 
-QDialog *IWingPluginBaseCalls::createDialog(QWidget *content) {
+QDialog *IWingPluginBaseCalls::createDialog(QWidget *content) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::createDialog);
     QDialog *ret = nullptr;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -70,7 +71,8 @@ QDialog *IWingPluginBaseCalls::createDialog(QWidget *content) {
     return ret;
 }
 
-void IWingPluginBaseCalls::msgAboutQt(QWidget *parent, const QString &title) {
+void IWingPluginBaseCalls::msgAboutQt(QWidget *parent,
+                                      const QString &title) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::msgAboutQt);
     m.invoke(callReceiver(), Qt::DirectConnection, getSender(), parent, title);
 }
@@ -78,52 +80,49 @@ void IWingPluginBaseCalls::msgAboutQt(QWidget *parent, const QString &title) {
 QMessageBox::StandardButton IWingPluginBaseCalls::msgInformation(
     QWidget *parent, const QString &title, const QString &text,
     QMessageBox::StandardButtons buttons,
-    QMessageBox::StandardButton defaultButton) {
+    QMessageBox::StandardButton defaultButton) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::msgInformation);
-    QMessageBox::StandardButton ret;
+    QMessageBox::StandardButton ret = QMessageBox::NoButton;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              parent, title, text, buttons, defaultButton);
     return ret;
 }
 
-QMessageBox::StandardButton
-IWingPluginBaseCalls::msgQuestion(QWidget *parent, const QString &title,
-                                  const QString &text,
-                                  QMessageBox::StandardButtons buttons,
-                                  QMessageBox::StandardButton defaultButton) {
+QMessageBox::StandardButton IWingPluginBaseCalls::msgQuestion(
+    QWidget *parent, const QString &title, const QString &text,
+    QMessageBox::StandardButtons buttons,
+    QMessageBox::StandardButton defaultButton) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::msgQuestion);
-    QMessageBox::StandardButton ret;
+    QMessageBox::StandardButton ret = QMessageBox::NoButton;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              parent, title, text, buttons, defaultButton);
     return ret;
 }
 
-QMessageBox::StandardButton
-IWingPluginBaseCalls::msgWarning(QWidget *parent, const QString &title,
-                                 const QString &text,
-                                 QMessageBox::StandardButtons buttons,
-                                 QMessageBox::StandardButton defaultButton) {
+QMessageBox::StandardButton IWingPluginBaseCalls::msgWarning(
+    QWidget *parent, const QString &title, const QString &text,
+    QMessageBox::StandardButtons buttons,
+    QMessageBox::StandardButton defaultButton) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::msgWarning);
-    QMessageBox::StandardButton ret;
+    QMessageBox::StandardButton ret = QMessageBox::NoButton;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              parent, title, text, buttons, defaultButton);
     return ret;
 }
 
-QMessageBox::StandardButton
-IWingPluginBaseCalls::msgCritical(QWidget *parent, const QString &title,
-                                  const QString &text,
-                                  QMessageBox::StandardButtons buttons,
-                                  QMessageBox::StandardButton defaultButton) {
+QMessageBox::StandardButton IWingPluginBaseCalls::msgCritical(
+    QWidget *parent, const QString &title, const QString &text,
+    QMessageBox::StandardButtons buttons,
+    QMessageBox::StandardButton defaultButton) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::msgCritical);
-    QMessageBox::StandardButton ret;
+    QMessageBox::StandardButton ret = QMessageBox::NoButton;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              parent, title, text, buttons, defaultButton);
     return ret;
 }
 
 void IWingPluginBaseCalls::msgAbout(QWidget *parent, const QString &title,
-                                    const QString &text) {
+                                    const QString &text) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::msgAbout);
     m.invoke(callReceiver(), Qt::DirectConnection, getSender(), parent, title,
              text);
@@ -133,9 +132,9 @@ QMessageBox::StandardButton
 IWingPluginBaseCalls::msgbox(QWidget *parent, QMessageBox::Icon icon,
                              const QString &title, const QString &text,
                              QMessageBox::StandardButtons buttons,
-                             QMessageBox::StandardButton defaultButton) {
+                             QMessageBox::StandardButton defaultButton) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::msgbox);
-    QMessageBox::StandardButton ret;
+    QMessageBox::StandardButton ret = QMessageBox::NoButton;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              parent, icon, title, text, buttons, defaultButton);
     return ret;
@@ -145,7 +144,7 @@ QString
 IWingPluginBaseCalls::dlgGetText(QWidget *parent, const QString &title,
                                  const QString &label, QLineEdit::EchoMode echo,
                                  const QString &text, bool *ok,
-                                 Qt::InputMethodHints inputMethodHints) {
+                                 Qt::InputMethodHints inputMethodHints) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::dlgGetText);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -155,7 +154,8 @@ IWingPluginBaseCalls::dlgGetText(QWidget *parent, const QString &title,
 
 QString IWingPluginBaseCalls::dlgGetMultiLineText(
     QWidget *parent, const QString &title, const QString &label,
-    const QString &text, bool *ok, Qt::InputMethodHints inputMethodHints) {
+    const QString &text, bool *ok,
+    Qt::InputMethodHints inputMethodHints) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::dlgGetMultiLineText);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -167,7 +167,7 @@ QString
 IWingPluginBaseCalls::dlgGetItem(QWidget *parent, const QString &title,
                                  const QString &label, const QStringList &items,
                                  int current, bool editable, bool *ok,
-                                 Qt::InputMethodHints inputMethodHints) {
+                                 Qt::InputMethodHints inputMethodHints) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::dlgGetItem);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -179,9 +179,9 @@ IWingPluginBaseCalls::dlgGetItem(QWidget *parent, const QString &title,
 int IWingPluginBaseCalls::dlgGetInt(QWidget *parent, const QString &title,
                                     const QString &label, int value,
                                     int minValue, int maxValue, int step,
-                                    bool *ok) {
+                                    bool *ok) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::dlgGetInt);
-    int ret;
+    int ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              parent, title, label, value, minValue, maxValue, step, ok);
     return ret;
@@ -190,9 +190,10 @@ int IWingPluginBaseCalls::dlgGetInt(QWidget *parent, const QString &title,
 double IWingPluginBaseCalls::dlgGetDouble(QWidget *parent, const QString &title,
                                           const QString &label, double value,
                                           double minValue, double maxValue,
-                                          int decimals, bool *ok, double step) {
+                                          int decimals, bool *ok,
+                                          double step) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::dlgGetDouble);
-    double ret;
+    double ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              parent, title, label, value, minValue, maxValue, decimals, ok,
              step);
@@ -201,7 +202,7 @@ double IWingPluginBaseCalls::dlgGetDouble(QWidget *parent, const QString &title,
 
 QString IWingPluginBaseCalls::dlgGetExistingDirectory(
     QWidget *parent, const QString &caption, const QString &dir,
-    QFileDialog::Options options) {
+    QFileDialog::Options options) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::dlgGetExistingDirectory);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -209,12 +210,10 @@ QString IWingPluginBaseCalls::dlgGetExistingDirectory(
     return ret;
 }
 
-QString IWingPluginBaseCalls::dlgGetOpenFileName(QWidget *parent,
-                                                 const QString &caption,
-                                                 const QString &dir,
-                                                 const QString &filter,
-                                                 QString *selectedFilter,
-                                                 QFileDialog::Options options) {
+QString IWingPluginBaseCalls::dlgGetOpenFileName(
+    QWidget *parent, const QString &caption, const QString &dir,
+    const QString &filter, QString *selectedFilter,
+    QFileDialog::Options options) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::dlgGetOpenFileName);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -225,7 +224,7 @@ QString IWingPluginBaseCalls::dlgGetOpenFileName(QWidget *parent,
 QStringList IWingPluginBaseCalls::dlgGetOpenFileNames(
     QWidget *parent, const QString &caption, const QString &dir,
     const QString &filter, QString *selectedFilter,
-    QFileDialog::Options options) {
+    QFileDialog::Options options) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::dlgGetOpenFileNames);
     QStringList ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -233,12 +232,10 @@ QStringList IWingPluginBaseCalls::dlgGetOpenFileNames(
     return ret;
 }
 
-QString IWingPluginBaseCalls::dlgGetSaveFileName(QWidget *parent,
-                                                 const QString &caption,
-                                                 const QString &dir,
-                                                 const QString &filter,
-                                                 QString *selectedFilter,
-                                                 QFileDialog::Options options) {
+QString IWingPluginBaseCalls::dlgGetSaveFileName(
+    QWidget *parent, const QString &caption, const QString &dir,
+    const QString &filter, QString *selectedFilter,
+    QFileDialog::Options options) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::dlgGetSaveFileName);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -247,7 +244,7 @@ QString IWingPluginBaseCalls::dlgGetSaveFileName(QWidget *parent,
 }
 
 QColor IWingPluginBaseCalls::dlgGetColor(const QString &caption,
-                                         QWidget *parent) {
+                                         QWidget *parent) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::dlgGetColor);
     QColor ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -255,9 +252,9 @@ QColor IWingPluginBaseCalls::dlgGetColor(const QString &caption,
     return ret;
 }
 
-AppTheme IWingPluginBaseCalls::currentAppTheme() {
+AppTheme IWingPluginBaseCalls::currentAppTheme() const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::currentAppTheme);
-    WingHex::AppTheme theme;
+    WingHex::AppTheme theme = AppTheme::Dark;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(theme),
              getSender());
     return theme;

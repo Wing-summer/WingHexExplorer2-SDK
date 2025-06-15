@@ -32,6 +32,8 @@
 
 #include <tuple>
 
+namespace WingHex {
+
 constexpr auto CALL_TABLE_PROPERTY = "__CALL_TABLE__";
 constexpr auto CALL_POINTER_PROPERTY = "__CALL_POINTER__";
 
@@ -39,22 +41,26 @@ using MetaCallInfo = std::tuple<const char *, Qt::ConnectionType, qsizetype,
                                 const void *const *, const char *const *,
                                 const QtPrivate::QMetaTypeInterface *const *>;
 
-Q_DECLARE_METATYPE(MetaCallInfo);
-
 template <class Func>
 inline WingHex::FunctionSig getFunctionSig(Func &&, const char *fn) {
     typedef QtPrivate::FunctionPointer<std::decay_t<Func>> FnPointerType;
     const int *types =
         QtPrivate::ConnectionTypes<typename FnPointerType::Arguments>::types();
 
+    Q_ASSERT(fn);
+
     WingHex::FunctionSig sig;
     sig.fnName = fn;
 
     if constexpr (FnPointerType::ArgumentCount > 0) {
         Q_ASSERT(types);
-        sig.types.resize(FnPointerType::ArgumentCount);
-        std::copy(types, types + FnPointerType::ArgumentCount,
-                  sig.types.begin());
+        if (types) {
+            sig.types.resize(FnPointerType::ArgumentCount);
+            std::copy(types, types + FnPointerType::ArgumentCount,
+                      sig.types.begin());
+        } else {
+            return {};
+        }
     }
 
     return sig;
@@ -81,15 +87,27 @@ inline QByteArray getFunctionSig(const WingHex::FunctionSig &fn) {
     QMetaMethod m;                                                             \
     do {                                                                       \
         static auto CALL = getFunctionSig(FN, __func__);                       \
-        auto fnMap = callTable();                                              \
-        if (fnMap.contains(CALL)) {                                            \
-            m = fnMap.value(CALL);                                             \
-            Q_ASSERT(m.isValid());                                             \
+        if (CALL.fnName.isEmpty()) {                                           \
+            qWarning(                                                          \
+                "[InvokeCall] The parameters of '%s' contains "                \
+                "unregistered type. Please use Q_DECLARE_INTERFACE and "       \
+                "qRegisterMetaType to make the type known to Qt meta system.", \
+                __func__);                                                     \
         } else {                                                               \
-            auto sig = getFunctionSig(CALL);                                   \
-            qDebug("[InvokeCall] '%s' is not found in call table.",            \
-                   sig.constData());                                           \
+            auto fnMap = callTable();                                          \
+            if (fnMap.contains(CALL)) {                                        \
+                m = fnMap.value(CALL);                                         \
+                Q_ASSERT(m.isValid());                                         \
+            } else {                                                           \
+                auto sig = getFunctionSig(CALL);                               \
+                qDebug("[InvokeCall] '%s' is not found in call table.",        \
+                       sig.constData());                                       \
+            }                                                                  \
         }                                                                      \
     } while (0)
+
+} // namespace WingHex
+
+Q_DECLARE_METATYPE(WingHex::MetaCallInfo);
 
 #endif // WINGCORE_H

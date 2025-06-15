@@ -118,7 +118,7 @@ public:
 
     struct ScriptFnInfo {
         uint ret; // MetaType
-        QVector<QPair<MetaType, QString>> params;
+        QVector<QPair<uint, QString>> params;
         ScriptFn fn;
     };
 

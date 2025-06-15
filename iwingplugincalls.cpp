@@ -49,23 +49,23 @@ IWingPluginCalls::IWingPluginCalls() : WingHex::IWingPluginCallsOp() {}
 
 IWingPluginCallsOp::IWingPluginCallsOp() : WingHex::WingPluginCalls() {}
 
-bool IWingPluginCallsOp::existsServiceHost(const QString &puid) {
+bool IWingPluginCallsOp::existsServiceHost(const QString &puid) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::existsServiceHost);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              puid);
     return ret;
 }
 
-bool IWingPluginCalls::isCurrentDocEditing() {
+bool IWingPluginCalls::isCurrentDocEditing() const {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::isCurrentDocEditing);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-QString IWingPluginCallsOp::currentDocFilename() {
+QString IWingPluginCallsOp::currentDocFilename() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentDocFilename);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
@@ -73,87 +73,87 @@ QString IWingPluginCallsOp::currentDocFilename() {
     return ret;
 }
 
-bool IWingPluginCallsOp::isReadOnly() {
+bool IWingPluginCallsOp::isReadOnly() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::isReadOnly);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-bool IWingPluginCallsOp::isInsertionMode() {
+bool IWingPluginCallsOp::isInsertionMode() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::isInsertionMode);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-bool IWingPluginCallsOp::isKeepSize() {
+bool IWingPluginCallsOp::isKeepSize() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::isKeepSize);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-bool IWingPluginCallsOp::isLocked() {
+bool IWingPluginCallsOp::isLocked() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::isLocked);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-qsizetype IWingPluginCallsOp::documentLines() {
+qsizetype IWingPluginCallsOp::documentLines() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::documentLines);
-    qsizetype ret;
+    qsizetype ret = -1;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-qsizetype IWingPluginCallsOp::documentBytes() {
+qsizetype IWingPluginCallsOp::documentBytes() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::documentBytes);
-    qsizetype ret;
+    qsizetype ret = -1;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-qsizetype IWingPluginCallsOp::currentRow() {
+qsizetype IWingPluginCallsOp::currentRow() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentRow);
-    qsizetype ret;
+    qsizetype ret = -1;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-qsizetype IWingPluginCallsOp::currentColumn() {
+qsizetype IWingPluginCallsOp::currentColumn() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentColumn);
-    qsizetype ret;
+    qsizetype ret = -1;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-qsizetype IWingPluginCallsOp::currentOffset() {
+qsizetype IWingPluginCallsOp::currentOffset() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentOffset);
-    qsizetype ret;
+    qsizetype ret = -1;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-qsizetype IWingPluginCallsOp::selectedLength() {
+qsizetype IWingPluginCallsOp::selectedLength() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::selectedLength);
-    qsizetype ret;
+    qsizetype ret = -1;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-QByteArray IWingPluginCallsOp::selectedBytes(qsizetype index) {
+QByteArray IWingPluginCallsOp::selectedBytes(qsizetype index) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::selectedBytes);
     QByteArray ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -161,7 +161,7 @@ QByteArray IWingPluginCallsOp::selectedBytes(qsizetype index) {
     return ret;
 }
 
-QByteArrayList IWingPluginCallsOp::selectionBytes() {
+QByteArrayList IWingPluginCallsOp::selectionBytes() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::selectionBytes);
     QByteArrayList ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
@@ -169,144 +169,144 @@ QByteArrayList IWingPluginCallsOp::selectionBytes() {
     return ret;
 }
 
-qsizetype IWingPluginCallsOp::selectionLength(qsizetype index) {
+qsizetype IWingPluginCallsOp::selectionLength(qsizetype index) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::selectionLength);
-    qsizetype ret;
+    qsizetype ret = -1;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              index);
     return ret;
 }
 
-qsizetype IWingPluginCallsOp::selectionCount() {
+qsizetype IWingPluginCallsOp::selectionCount() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::selectionCount);
-    qsizetype ret;
+    qsizetype ret = -1;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-bool IWingPluginCallsOp::stringVisible() {
+bool IWingPluginCallsOp::stringVisible() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::stringVisible);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-bool IWingPluginCallsOp::addressVisible() {
+bool IWingPluginCallsOp::addressVisible() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::addressVisible);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-bool IWingPluginCallsOp::headerVisible() {
+bool IWingPluginCallsOp::headerVisible() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::headerVisible);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-quintptr IWingPluginCallsOp::addressBase() {
+quintptr IWingPluginCallsOp::addressBase() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::addressBase);
-    quintptr ret;
+    quintptr ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-bool IWingPluginCallsOp::isModified() {
+bool IWingPluginCallsOp::isModified() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::isModified);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-qint8 IWingPluginCallsOp::readInt8(qsizetype offset) {
+qint8 IWingPluginCallsOp::readInt8(qsizetype offset) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readInt8);
-    qint8 ret;
+    qint8 ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
 }
 
-qint16 IWingPluginCallsOp::readInt16(qsizetype offset) {
+qint16 IWingPluginCallsOp::readInt16(qsizetype offset) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readInt16);
-    qint16 ret;
+    qint16 ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
 }
 
-qint32 IWingPluginCallsOp::readInt32(qsizetype offset) {
+qint32 IWingPluginCallsOp::readInt32(qsizetype offset) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readInt32);
-    qint32 ret;
+    qint32 ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
 }
 
-qint64 IWingPluginCallsOp::readInt64(qsizetype offset) {
+qint64 IWingPluginCallsOp::readInt64(qsizetype offset) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readInt64);
-    qint64 ret;
+    qint64 ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
 }
 
-quint8 IWingPluginCallsOp::readUInt8(qsizetype offset) {
+quint8 IWingPluginCallsOp::readUInt8(qsizetype offset) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readUInt8);
-    quint8 ret;
+    quint8 ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
 }
 
-quint16 IWingPluginCallsOp::readUInt16(qsizetype offset) {
+quint16 IWingPluginCallsOp::readUInt16(qsizetype offset) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readUInt16);
-    quint16 ret;
+    quint16 ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
 }
 
-quint32 IWingPluginCallsOp::readUInt32(qsizetype offset) {
+quint32 IWingPluginCallsOp::readUInt32(qsizetype offset) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readUInt32);
-    quint32 ret;
+    quint32 ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
 }
 
-quint64 IWingPluginCallsOp::readUInt64(qsizetype offset) {
+quint64 IWingPluginCallsOp::readUInt64(qsizetype offset) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readUInt64);
-    quint64 ret;
+    quint64 ret = 0;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
 }
 
-float IWingPluginCallsOp::readFloat(qsizetype offset) {
+float IWingPluginCallsOp::readFloat(qsizetype offset) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readFloat);
-    float ret;
+    float ret = qQNaN();
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
 }
 
-double IWingPluginCallsOp::readDouble(qsizetype offset) {
+double IWingPluginCallsOp::readDouble(qsizetype offset) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readDouble);
-    double ret;
+    double ret = qQNaN();
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
 }
 
 QString IWingPluginCallsOp::readString(qsizetype offset,
-                                       const QString &encoding) {
+                                       const QString &encoding) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readString);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -314,7 +314,8 @@ QString IWingPluginCallsOp::readString(qsizetype offset,
     return ret;
 }
 
-QByteArray IWingPluginCallsOp::readBytes(qsizetype offset, qsizetype count) {
+QByteArray IWingPluginCallsOp::readBytes(qsizetype offset,
+                                         qsizetype count) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::readBytes);
     QByteArray ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -322,24 +323,25 @@ QByteArray IWingPluginCallsOp::readBytes(qsizetype offset, qsizetype count) {
     return ret;
 }
 
-qsizetype IWingPluginCallsOp::findNext(qsizetype begin, const QByteArray &ba) {
+qsizetype IWingPluginCallsOp::findNext(qsizetype begin,
+                                       const QByteArray &ba) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::findNext);
-    qsizetype ret;
+    qsizetype ret = -1;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              begin, ba);
     return ret;
 }
 
 qsizetype IWingPluginCallsOp::findPrevious(qsizetype begin,
-                                           const QByteArray &ba) {
+                                           const QByteArray &ba) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::findPrevious);
-    qsizetype ret;
+    qsizetype ret = -1;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              begin, ba);
     return ret;
 }
 
-QString IWingPluginCallsOp::bookMarkComment(qsizetype pos) {
+QString IWingPluginCallsOp::bookMarkComment(qsizetype pos) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::bookMarkComment);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -347,9 +349,9 @@ QString IWingPluginCallsOp::bookMarkComment(qsizetype pos) {
     return ret;
 }
 
-bool IWingPluginCallsOp::existBookMark(qsizetype pos) {
+bool IWingPluginCallsOp::existBookMark(qsizetype pos) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::existBookMark);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              pos);
     return ret;
@@ -357,7 +359,7 @@ bool IWingPluginCallsOp::existBookMark(qsizetype pos) {
 
 bool IWingPluginCalls::switchDocument(int handle) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::switchDocument);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              handle);
     return ret;
@@ -365,7 +367,7 @@ bool IWingPluginCalls::switchDocument(int handle) {
 
 bool IWingPluginCalls::raiseDocument(int handle) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::raiseDocument);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              handle);
     return ret;
@@ -373,7 +375,7 @@ bool IWingPluginCalls::raiseDocument(int handle) {
 
 bool IWingPluginCallsOp::setLockedFile(bool b) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setLockedFile);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              b);
     return ret;
@@ -381,7 +383,7 @@ bool IWingPluginCallsOp::setLockedFile(bool b) {
 
 bool IWingPluginCallsOp::setKeepSize(bool b) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setKeepSize);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              b);
     return ret;
@@ -389,7 +391,7 @@ bool IWingPluginCallsOp::setKeepSize(bool b) {
 
 bool IWingPluginCallsOp::setStringVisible(bool b) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setStringVisible);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              b);
     return ret;
@@ -397,7 +399,7 @@ bool IWingPluginCallsOp::setStringVisible(bool b) {
 
 bool IWingPluginCallsOp::setAddressVisible(bool b) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setAddressVisible);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              b);
     return ret;
@@ -405,7 +407,7 @@ bool IWingPluginCallsOp::setAddressVisible(bool b) {
 
 bool IWingPluginCallsOp::setHeaderVisible(bool b) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setHeaderVisible);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              b);
     return ret;
@@ -413,7 +415,7 @@ bool IWingPluginCallsOp::setHeaderVisible(bool b) {
 
 bool IWingPluginCallsOp::setAddressBase(quintptr base) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setAddressBase);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              base);
     return ret;
@@ -421,7 +423,7 @@ bool IWingPluginCallsOp::setAddressBase(quintptr base) {
 
 bool IWingPluginCallsOp::beginMarco(const QString &txt) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::beginMarco);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              txt);
     return ret;
@@ -429,7 +431,7 @@ bool IWingPluginCallsOp::beginMarco(const QString &txt) {
 
 bool IWingPluginCallsOp::endMarco() {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::endMarco);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
@@ -437,7 +439,7 @@ bool IWingPluginCallsOp::endMarco() {
 
 bool IWingPluginCallsOp::writeInt8(qsizetype offset, qint8 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeInt8);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -445,7 +447,7 @@ bool IWingPluginCallsOp::writeInt8(qsizetype offset, qint8 value) {
 
 bool IWingPluginCallsOp::writeInt16(qsizetype offset, qint16 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeInt16);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -453,7 +455,7 @@ bool IWingPluginCallsOp::writeInt16(qsizetype offset, qint16 value) {
 
 bool IWingPluginCallsOp::writeInt32(qsizetype offset, qint32 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeInt32);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -461,7 +463,7 @@ bool IWingPluginCallsOp::writeInt32(qsizetype offset, qint32 value) {
 
 bool IWingPluginCallsOp::writeInt64(qsizetype offset, qint64 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeInt64);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -469,7 +471,7 @@ bool IWingPluginCallsOp::writeInt64(qsizetype offset, qint64 value) {
 
 bool IWingPluginCallsOp::writeUInt8(qsizetype offset, quint8 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeUInt8);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -477,7 +479,7 @@ bool IWingPluginCallsOp::writeUInt8(qsizetype offset, quint8 value) {
 
 bool IWingPluginCallsOp::writeUInt16(qsizetype offset, quint16 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeInt16);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -485,7 +487,7 @@ bool IWingPluginCallsOp::writeUInt16(qsizetype offset, quint16 value) {
 
 bool IWingPluginCallsOp::writeUInt32(qsizetype offset, quint32 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeUInt32);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -493,7 +495,7 @@ bool IWingPluginCallsOp::writeUInt32(qsizetype offset, quint32 value) {
 
 bool IWingPluginCallsOp::writeUInt64(qsizetype offset, quint64 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeUInt64);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -501,7 +503,7 @@ bool IWingPluginCallsOp::writeUInt64(qsizetype offset, quint64 value) {
 
 bool IWingPluginCallsOp::writeFloat(qsizetype offset, float value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeFloat);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -509,7 +511,7 @@ bool IWingPluginCallsOp::writeFloat(qsizetype offset, float value) {
 
 bool IWingPluginCallsOp::writeDouble(qsizetype offset, double value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeDouble);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -518,7 +520,7 @@ bool IWingPluginCallsOp::writeDouble(qsizetype offset, double value) {
 bool IWingPluginCallsOp::writeString(qsizetype offset, const QString &value,
                                      const QString &encoding) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeString);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value, encoding);
     return ret;
@@ -526,7 +528,7 @@ bool IWingPluginCallsOp::writeString(qsizetype offset, const QString &value,
 
 bool IWingPluginCallsOp::writeBytes(qsizetype offset, const QByteArray &data) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeBytes);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, data);
     return ret;
@@ -534,7 +536,7 @@ bool IWingPluginCallsOp::writeBytes(qsizetype offset, const QByteArray &data) {
 
 bool IWingPluginCallsOp::insertInt8(qsizetype offset, qint8 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertInt8);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -542,7 +544,7 @@ bool IWingPluginCallsOp::insertInt8(qsizetype offset, qint8 value) {
 
 bool IWingPluginCallsOp::insertInt16(qsizetype offset, qint16 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertInt16);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -550,7 +552,7 @@ bool IWingPluginCallsOp::insertInt16(qsizetype offset, qint16 value) {
 
 bool IWingPluginCallsOp::insertInt32(qsizetype offset, qint32 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertInt32);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -558,7 +560,7 @@ bool IWingPluginCallsOp::insertInt32(qsizetype offset, qint32 value) {
 
 bool IWingPluginCallsOp::insertInt64(qsizetype offset, qint64 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertInt64);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -566,7 +568,7 @@ bool IWingPluginCallsOp::insertInt64(qsizetype offset, qint64 value) {
 
 bool IWingPluginCallsOp::insertUInt8(qsizetype offset, quint8 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertUInt8);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -574,7 +576,7 @@ bool IWingPluginCallsOp::insertUInt8(qsizetype offset, quint8 value) {
 
 bool IWingPluginCallsOp::insertUInt16(qsizetype offset, quint16 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertUInt16);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -582,7 +584,7 @@ bool IWingPluginCallsOp::insertUInt16(qsizetype offset, quint16 value) {
 
 bool IWingPluginCallsOp::insertUInt32(qsizetype offset, quint32 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertUInt32);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -590,7 +592,7 @@ bool IWingPluginCallsOp::insertUInt32(qsizetype offset, quint32 value) {
 
 bool IWingPluginCallsOp::insertUInt64(qsizetype offset, quint64 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertUInt64);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -598,7 +600,7 @@ bool IWingPluginCallsOp::insertUInt64(qsizetype offset, quint64 value) {
 
 bool IWingPluginCallsOp::insertFloat(qsizetype offset, float value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertFloat);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -606,7 +608,7 @@ bool IWingPluginCallsOp::insertFloat(qsizetype offset, float value) {
 
 bool IWingPluginCallsOp::insertDouble(qsizetype offset, double value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertDouble);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
     return ret;
@@ -615,7 +617,7 @@ bool IWingPluginCallsOp::insertDouble(qsizetype offset, double value) {
 bool IWingPluginCallsOp::insertString(qsizetype offset, const QString &value,
                                       const QString &encoding) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertString);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value, encoding);
     return ret;
@@ -623,7 +625,7 @@ bool IWingPluginCallsOp::insertString(qsizetype offset, const QString &value,
 
 bool IWingPluginCallsOp::insertBytes(qsizetype offset, const QByteArray &data) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::insertBytes);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, data);
     return ret;
@@ -631,7 +633,7 @@ bool IWingPluginCallsOp::insertBytes(qsizetype offset, const QByteArray &data) {
 
 bool IWingPluginCallsOp::appendInt8(qint8 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendInt8);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value);
     return ret;
@@ -639,7 +641,7 @@ bool IWingPluginCallsOp::appendInt8(qint8 value) {
 
 bool IWingPluginCallsOp::appendInt16(qint16 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendInt16);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value);
     return ret;
@@ -647,7 +649,7 @@ bool IWingPluginCallsOp::appendInt16(qint16 value) {
 
 bool IWingPluginCallsOp::appendInt32(qint32 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendInt32);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value);
     return ret;
@@ -655,7 +657,7 @@ bool IWingPluginCallsOp::appendInt32(qint32 value) {
 
 bool IWingPluginCallsOp::appendInt64(qint64 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendInt64);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value);
     return ret;
@@ -663,7 +665,7 @@ bool IWingPluginCallsOp::appendInt64(qint64 value) {
 
 bool IWingPluginCallsOp::appendUInt8(quint8 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendUInt8);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value);
     return ret;
@@ -671,7 +673,7 @@ bool IWingPluginCallsOp::appendUInt8(quint8 value) {
 
 bool IWingPluginCallsOp::appendUInt16(quint16 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendUInt16);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value);
     return ret;
@@ -679,7 +681,7 @@ bool IWingPluginCallsOp::appendUInt16(quint16 value) {
 
 bool IWingPluginCallsOp::appendUInt32(quint32 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendUInt32);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value);
     return ret;
@@ -687,7 +689,7 @@ bool IWingPluginCallsOp::appendUInt32(quint32 value) {
 
 bool IWingPluginCallsOp::appendUInt64(quint64 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendUInt64);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value);
     return ret;
@@ -695,7 +697,7 @@ bool IWingPluginCallsOp::appendUInt64(quint64 value) {
 
 bool IWingPluginCallsOp::appendFloat(float value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendFloat);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value);
     return ret;
@@ -703,7 +705,7 @@ bool IWingPluginCallsOp::appendFloat(float value) {
 
 bool IWingPluginCallsOp::appendDouble(double value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendDouble);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value);
     return ret;
@@ -712,7 +714,7 @@ bool IWingPluginCallsOp::appendDouble(double value) {
 bool IWingPluginCallsOp::appendString(const QString &value,
                                       const QString &encoding) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendString);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              value, encoding);
     return ret;
@@ -720,7 +722,7 @@ bool IWingPluginCallsOp::appendString(const QString &value,
 
 bool IWingPluginCallsOp::appendBytes(const QByteArray &data) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::appendBytes);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              data);
     return ret;
@@ -728,7 +730,7 @@ bool IWingPluginCallsOp::appendBytes(const QByteArray &data) {
 
 bool IWingPluginCallsOp::removeBytes(qsizetype offset, qsizetype len) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::removeBytes);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, len);
     return ret;
@@ -738,7 +740,7 @@ bool IWingPluginCallsOp::moveTo(qsizetype line, qsizetype column,
                                 int nibbleindex, bool clearSelection) {
     SETUP_CALL_CONTEXT((QOverload<qsizetype, qsizetype, int, bool>::of(
         &IWingPluginCallsOp::moveTo)));
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              line, column, nibbleindex, clearSelection);
     return ret;
@@ -747,7 +749,7 @@ bool IWingPluginCallsOp::moveTo(qsizetype line, qsizetype column,
 bool IWingPluginCallsOp::moveTo(qsizetype offset, bool clearSelection) {
     SETUP_CALL_CONTEXT(
         (QOverload<qsizetype, bool>::of(&IWingPluginCallsOp::moveTo)));
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, clearSelection);
     return ret;
@@ -756,7 +758,7 @@ bool IWingPluginCallsOp::moveTo(qsizetype offset, bool clearSelection) {
 bool IWingPluginCallsOp::select(qsizetype offset, qsizetype length,
                                 SelectionMode mode) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::select);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, length, mode);
     return ret;
@@ -764,7 +766,7 @@ bool IWingPluginCallsOp::select(qsizetype offset, qsizetype length,
 
 bool IWingPluginCallsOp::setInsertionMode(bool isinsert) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setInsertionMode);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              isinsert);
     return ret;
@@ -789,7 +791,7 @@ bool IWingPluginCallsOp::metadata(qsizetype begin, qsizetype length,
                                   const QColor &fgcolor, const QColor &bgcolor,
                                   const QString &comment) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::metadata);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              begin, length, fgcolor, bgcolor, comment);
     return ret;
@@ -797,7 +799,7 @@ bool IWingPluginCallsOp::metadata(qsizetype begin, qsizetype length,
 
 bool IWingPluginCallsOp::removeMetadata(qsizetype offset) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::removeMetadata);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset);
     return ret;
@@ -805,7 +807,7 @@ bool IWingPluginCallsOp::removeMetadata(qsizetype offset) {
 
 bool IWingPluginCallsOp::clearMetadata() {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::clearMetadata);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
@@ -813,7 +815,7 @@ bool IWingPluginCallsOp::clearMetadata() {
 
 bool IWingPluginCallsOp::setMetaVisible(bool b) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setMetaVisible);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              b);
     return ret;
@@ -821,7 +823,7 @@ bool IWingPluginCallsOp::setMetaVisible(bool b) {
 
 bool IWingPluginCallsOp::setMetafgVisible(bool b) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setMetafgVisible);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              b);
     return ret;
@@ -829,7 +831,7 @@ bool IWingPluginCallsOp::setMetafgVisible(bool b) {
 
 bool IWingPluginCallsOp::setMetabgVisible(bool b) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setMetabgVisible);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              b);
     return ret;
@@ -837,7 +839,7 @@ bool IWingPluginCallsOp::setMetabgVisible(bool b) {
 
 bool IWingPluginCallsOp::setMetaCommentVisible(bool b) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::setMetaCommentVisible);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              b);
     return ret;
@@ -845,7 +847,7 @@ bool IWingPluginCallsOp::setMetaCommentVisible(bool b) {
 
 bool IWingPluginCallsOp::addBookMark(qsizetype pos, const QString &comment) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::addBookMark);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              pos, comment);
     return ret;
@@ -853,7 +855,7 @@ bool IWingPluginCallsOp::addBookMark(qsizetype pos, const QString &comment) {
 
 bool IWingPluginCallsOp::modBookMark(qsizetype pos, const QString &comment) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::modBookMark);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              pos, comment);
     return ret;
@@ -861,7 +863,7 @@ bool IWingPluginCallsOp::modBookMark(qsizetype pos, const QString &comment) {
 
 bool IWingPluginCallsOp::removeBookMark(qsizetype pos) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::removeBookMark);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              pos);
     return ret;
@@ -869,14 +871,14 @@ bool IWingPluginCallsOp::removeBookMark(qsizetype pos) {
 
 bool IWingPluginCallsOp::clearBookMark() {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::clearBookMark);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-bool IWingPluginCallsOp::invokeServiceImpl(const QString &puid,
-                                           const MetaCallInfo &infos) const {
+bool IWingPluginCallsOp::invokeServiceImpl(
+    const QString &puid, const WingHex::MetaCallInfo &infos) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::invokeServiceImpl);
     bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -886,7 +888,7 @@ bool IWingPluginCallsOp::invokeServiceImpl(const QString &puid,
 
 bool IWingPluginCalls::closeAllFiles() {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::closeAllFiles);
-    bool ret;
+    bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
@@ -894,7 +896,7 @@ bool IWingPluginCalls::closeAllFiles() {
 
 ErrFile IWingPluginCalls::openWorkSpace(const QString &filename) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::openWorkSpace);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              filename);
     return ret;
@@ -902,7 +904,7 @@ ErrFile IWingPluginCalls::openWorkSpace(const QString &filename) {
 
 ErrFile IWingPluginCalls::saveAsCurrent(const QString &savename) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::saveAsCurrent);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              savename);
     return ret;
@@ -910,7 +912,7 @@ ErrFile IWingPluginCalls::saveAsCurrent(const QString &savename) {
 
 ErrFile IWingPluginCalls::exportCurrent(const QString &savename) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::exportCurrent);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              savename);
     return ret;
@@ -918,7 +920,7 @@ ErrFile IWingPluginCalls::exportCurrent(const QString &savename) {
 
 ErrFile IWingPluginCalls::saveCurrent() {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::saveCurrent);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
@@ -926,7 +928,7 @@ ErrFile IWingPluginCalls::saveCurrent() {
 
 ErrFile IWingPluginCalls::closeCurrent(bool force) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::closeCurrent);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              force);
     return ret;
@@ -934,7 +936,7 @@ ErrFile IWingPluginCalls::closeCurrent(bool force) {
 
 ErrFile IWingPluginCalls::openCurrent() {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::openCurrent);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
@@ -942,7 +944,7 @@ ErrFile IWingPluginCalls::openCurrent() {
 
 ErrFile IWingPluginCalls::saveAsFile(int handle, const QString &savename) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::saveAsFile);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              handle, savename);
     return ret;
@@ -950,7 +952,7 @@ ErrFile IWingPluginCalls::saveAsFile(int handle, const QString &savename) {
 
 ErrFile IWingPluginCalls::exportFile(int handle, const QString &savename) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::exportFile);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              handle, savename);
     return ret;
@@ -958,7 +960,7 @@ ErrFile IWingPluginCalls::exportFile(int handle, const QString &savename) {
 
 ErrFile IWingPluginCalls::saveFile(int handle) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::saveFile);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              handle);
     return ret;
@@ -966,7 +968,7 @@ ErrFile IWingPluginCalls::saveFile(int handle) {
 
 ErrFile IWingPluginCalls::closeFile(int handle, bool force) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::closeFile);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              handle, force);
     return ret;
@@ -974,7 +976,7 @@ ErrFile IWingPluginCalls::closeFile(int handle, bool force) {
 
 ErrFile IWingPluginCalls::closeHandle(int handle) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::closeHandle);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              handle);
     return ret;
@@ -982,7 +984,7 @@ ErrFile IWingPluginCalls::closeHandle(int handle) {
 
 ErrFile IWingPluginCalls::openExtFile(const QString &ext, const QString &file) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::openExtFile);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              ext, file);
     return ret;
@@ -990,7 +992,7 @@ ErrFile IWingPluginCalls::openExtFile(const QString &ext, const QString &file) {
 
 ErrFile IWingPluginCalls::openFile(const QString &filename) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::openFile);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              filename);
     return ret;
@@ -998,13 +1000,13 @@ ErrFile IWingPluginCalls::openFile(const QString &filename) {
 
 ErrFile IWingPluginCalls::newFile() {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::newFile);
-    ErrFile ret;
+    ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
 }
 
-HexPosition IWingPluginCallsOp::selectionEnd(qsizetype index) {
+HexPosition IWingPluginCallsOp::selectionEnd(qsizetype index) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::selectionEnd);
     HexPosition ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -1012,7 +1014,7 @@ HexPosition IWingPluginCallsOp::selectionEnd(qsizetype index) {
     return ret;
 }
 
-HexPosition IWingPluginCallsOp::selectionStart(qsizetype index) {
+HexPosition IWingPluginCallsOp::selectionStart(qsizetype index) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::selectionStart);
     HexPosition ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
@@ -1020,7 +1022,7 @@ HexPosition IWingPluginCallsOp::selectionStart(qsizetype index) {
     return ret;
 }
 
-HexPosition IWingPluginCallsOp::currentPos() {
+HexPosition IWingPluginCallsOp::currentPos() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentPos);
     HexPosition ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),

@@ -50,8 +50,10 @@ public:
     explicit IWingPluginCallsOp();
 
 public:
-    bool existsServiceHost(const QString &puid);
+    bool existsServiceHost(const QString &puid) const;
 
+public:
+#if QT_VERSION <= QT_VERSION_CHECK(6, 7, 0)
     template <typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
@@ -64,18 +66,12 @@ public:
                             h.typeNames.data(), h.metaTypes.data()));
     }
 
-    template <typename... Args>
+    template <typename Arg0, typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
                   Args &&...arguments) const {
-        return invokeService(puid, method, c, arguments...);
-    }
-
-    template <typename... Args>
-    QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
-    invokeService(const QString &puid, const char *method,
-                  Args &&...arguments) const {
-        return invokeService(puid, method, Qt::DirectConnection, arguments...);
+        return invokeService(puid, method, c, QMetaMethodReturnArgument{},
+                             std::forward<Args>(arguments)...);
     }
 
     template <typename... Args>
@@ -83,63 +79,108 @@ public:
     invokeService(const QString &puid, const char *method,
                   QMetaMethodReturnArgument r, Args &&...arguments) const {
         return invokeService(puid, method, Qt::DirectConnection, r,
-                             arguments...);
+                             std::forward<Args>(arguments)...);
     }
 
+    template <typename Arg0, typename... Args>
+    QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
+    invokeService(const QString &puid, const char *method,
+                  Args &&...arguments) const {
+        return invokeService(puid, method, Qt::DirectConnection,
+                             std::forward<Args>(arguments)...);
+    }
+#else
+    template <typename... Args>
+    QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
+    invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
+                  QMetaMethodReturnArgument r, Args &&...arguments) const {
+        auto h =
+            QtPrivate::invokeMethodHelper(r, std::forward<Args>(arguments)...);
+        return invokeServiceImpl(
+            puid,
+            std::make_tuple(method, c, h.parameterCount(), h.parameters.data(),
+                            h.typeNames.data(), h.metaTypes.data()));
+    }
+
+    template <typename Arg0, typename... Args>
+    QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
+    invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
+                  Args &&...arguments) const {
+        return invokeService(puid, method, c, QMetaMethodReturnArgument{},
+                             std::forward<Args>(arguments)...);
+    }
+
+    template <typename... Args>
+    QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
+    invokeService(const QString &puid, const char *method,
+                  QMetaMethodReturnArgument r, Args &&...arguments) const {
+        return invokeService(puid, method, Qt::DirectConnection, r,
+                             std::forward<Args>(arguments)...);
+    }
+
+    template <typename Arg0, typename... Args>
+    QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
+    invokeService(const QString &puid, const char *method,
+                  Args &&...arguments) const {
+        return invokeService(puid, method, Qt::DirectConnection,
+                             std::forward<Args>(arguments)...);
+    }
+#endif
+
 public:
-    Q_REQUIRED_RESULT QString currentDocFilename();
+    Q_REQUIRED_RESULT QString currentDocFilename() const;
 
     // document
-    Q_REQUIRED_RESULT virtual bool isReadOnly();
-    Q_REQUIRED_RESULT virtual bool isInsertionMode();
-    Q_REQUIRED_RESULT virtual bool isKeepSize();
-    Q_REQUIRED_RESULT virtual bool isLocked();
-    Q_REQUIRED_RESULT virtual qsizetype documentLines();
-    Q_REQUIRED_RESULT virtual qsizetype documentBytes();
-    Q_REQUIRED_RESULT virtual WingHex::HexPosition currentPos();
-    Q_REQUIRED_RESULT virtual qsizetype currentRow();
-    Q_REQUIRED_RESULT virtual qsizetype currentColumn();
-    Q_REQUIRED_RESULT virtual qsizetype currentOffset();
-    Q_REQUIRED_RESULT virtual qsizetype selectedLength();
+    Q_REQUIRED_RESULT virtual bool isReadOnly() const;
+    Q_REQUIRED_RESULT virtual bool isInsertionMode() const;
+    Q_REQUIRED_RESULT virtual bool isKeepSize() const;
+    Q_REQUIRED_RESULT virtual bool isLocked() const;
+    Q_REQUIRED_RESULT virtual qsizetype documentLines() const;
+    Q_REQUIRED_RESULT virtual qsizetype documentBytes() const;
+    Q_REQUIRED_RESULT virtual WingHex::HexPosition currentPos() const;
+    Q_REQUIRED_RESULT virtual qsizetype currentRow() const;
+    Q_REQUIRED_RESULT virtual qsizetype currentColumn() const;
+    Q_REQUIRED_RESULT virtual qsizetype currentOffset() const;
+    Q_REQUIRED_RESULT virtual qsizetype selectedLength() const;
 
-    Q_REQUIRED_RESULT virtual QByteArray selectedBytes(qsizetype index);
-    Q_REQUIRED_RESULT virtual QByteArrayList selectionBytes();
+    Q_REQUIRED_RESULT virtual QByteArray selectedBytes(qsizetype index) const;
+    Q_REQUIRED_RESULT virtual QByteArrayList selectionBytes() const;
 
     Q_REQUIRED_RESULT virtual WingHex::HexPosition
-    selectionStart(qsizetype index);
+    selectionStart(qsizetype index) const;
     Q_REQUIRED_RESULT virtual WingHex::HexPosition
-    selectionEnd(qsizetype index);
-    Q_REQUIRED_RESULT virtual qsizetype selectionLength(qsizetype index);
-    Q_REQUIRED_RESULT virtual qsizetype selectionCount();
+    selectionEnd(qsizetype index) const;
+    Q_REQUIRED_RESULT virtual qsizetype selectionLength(qsizetype index) const;
+    Q_REQUIRED_RESULT virtual qsizetype selectionCount() const;
 
-    Q_REQUIRED_RESULT virtual bool stringVisible();
-    Q_REQUIRED_RESULT virtual bool addressVisible();
-    Q_REQUIRED_RESULT virtual bool headerVisible();
-    Q_REQUIRED_RESULT virtual quintptr addressBase();
-    Q_REQUIRED_RESULT virtual bool isModified();
+    Q_REQUIRED_RESULT virtual bool stringVisible() const;
+    Q_REQUIRED_RESULT virtual bool addressVisible() const;
+    Q_REQUIRED_RESULT virtual bool headerVisible() const;
+    Q_REQUIRED_RESULT virtual quintptr addressBase() const;
+    Q_REQUIRED_RESULT virtual bool isModified() const;
 
-    Q_REQUIRED_RESULT virtual qint8 readInt8(qsizetype offset);
-    Q_REQUIRED_RESULT virtual qint16 readInt16(qsizetype offset);
-    Q_REQUIRED_RESULT virtual qint32 readInt32(qsizetype offset);
-    Q_REQUIRED_RESULT virtual qint64 readInt64(qsizetype offset);
-    Q_REQUIRED_RESULT virtual quint8 readUInt8(qsizetype offset);
-    Q_REQUIRED_RESULT virtual quint16 readUInt16(qsizetype offset);
-    Q_REQUIRED_RESULT virtual quint32 readUInt32(qsizetype offset);
-    Q_REQUIRED_RESULT virtual quint64 readUInt64(qsizetype offset);
-    Q_REQUIRED_RESULT virtual float readFloat(qsizetype offset);
-    Q_REQUIRED_RESULT virtual double readDouble(qsizetype offset);
-    Q_REQUIRED_RESULT virtual QString readString(qsizetype offset,
-                                                 const QString &encoding = {});
+    Q_REQUIRED_RESULT virtual qint8 readInt8(qsizetype offset) const;
+    Q_REQUIRED_RESULT virtual qint16 readInt16(qsizetype offset) const;
+    Q_REQUIRED_RESULT virtual qint32 readInt32(qsizetype offset) const;
+    Q_REQUIRED_RESULT virtual qint64 readInt64(qsizetype offset) const;
+    Q_REQUIRED_RESULT virtual quint8 readUInt8(qsizetype offset) const;
+    Q_REQUIRED_RESULT virtual quint16 readUInt16(qsizetype offset) const;
+    Q_REQUIRED_RESULT virtual quint32 readUInt32(qsizetype offset) const;
+    Q_REQUIRED_RESULT virtual quint64 readUInt64(qsizetype offset) const;
+    Q_REQUIRED_RESULT virtual float readFloat(qsizetype offset) const;
+    Q_REQUIRED_RESULT virtual double readDouble(qsizetype offset) const;
+    Q_REQUIRED_RESULT virtual QString
+    readString(qsizetype offset, const QString &encoding = {}) const;
     Q_REQUIRED_RESULT virtual QByteArray readBytes(qsizetype offset,
-                                                   qsizetype count);
+                                                   qsizetype count) const;
 
     Q_REQUIRED_RESULT virtual qsizetype findNext(qsizetype begin,
-                                                 const QByteArray &ba);
-    Q_REQUIRED_RESULT virtual qsizetype findPrevious(qsizetype begin,
-                                                     const QByteArray &ba);
+                                                 const QByteArray &ba) const;
+    Q_REQUIRED_RESULT virtual qsizetype
+    findPrevious(qsizetype begin, const QByteArray &ba) const;
 
-    Q_REQUIRED_RESULT virtual QString bookMarkComment(qsizetype pos);
-    Q_REQUIRED_RESULT virtual bool existBookMark(qsizetype pos);
+    Q_REQUIRED_RESULT virtual QString bookMarkComment(qsizetype pos) const;
+    Q_REQUIRED_RESULT virtual bool existBookMark(qsizetype pos) const;
 
     Q_REQUIRED_RESULT virtual bool setLockedFile(bool b);
     Q_REQUIRED_RESULT virtual bool setKeepSize(bool b);
@@ -241,7 +282,7 @@ public:
 
 private slots:
     bool invokeServiceImpl(const QString &puid,
-                           const MetaCallInfo &infos) const;
+                           const WingHex::MetaCallInfo &infos) const;
 };
 
 class WINGPLUGIN_EXPORT IWingEditorViewCalls : public IWingPluginCallsOp,
@@ -255,7 +296,7 @@ public:
     explicit IWingPluginCalls();
 
 public:
-    Q_REQUIRED_RESULT bool isCurrentDocEditing();
+    Q_REQUIRED_RESULT bool isCurrentDocEditing() const;
 
 public:
     // document
