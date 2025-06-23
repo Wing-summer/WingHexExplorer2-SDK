@@ -61,7 +61,7 @@ struct WingDependency {
     QVersionNumber version;
 };
 
-enum class AppTheme { Dark, Light };
+enum class AppTheme { Invalid, Dark, Light };
 
 struct FunctionSig {
     QByteArray fnName;

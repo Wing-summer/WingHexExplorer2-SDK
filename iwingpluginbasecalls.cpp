@@ -254,7 +254,7 @@ QColor IWingPluginBaseCalls::dlgGetColor(const QString &caption,
 
 AppTheme IWingPluginBaseCalls::currentAppTheme() const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::currentAppTheme);
-    WingHex::AppTheme theme = AppTheme::Dark;
+    WingHex::AppTheme theme = AppTheme::Invalid;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(theme),
              getSender());
     return theme;
