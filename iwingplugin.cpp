@@ -46,9 +46,7 @@ QList<WingRibbonToolBoxInfo> IWingPlugin::registeredRibbonTools() const {
     return {};
 }
 
-QHash<SettingPage *, bool> IWingPlugin::registeredSettingPages() const {
-    return {};
-}
+QList<SettingPage *> IWingPlugin::registeredSettingPages() const { return {}; }
 
 QList<QSharedPointer<WingEditorViewWidget::Creator>>
 IWingPlugin::registeredEditorViewWidgets() const {

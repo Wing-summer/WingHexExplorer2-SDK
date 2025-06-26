@@ -36,23 +36,34 @@ public:
     virtual QString id() const = 0;
 };
 
-class WINGPLUGIN_EXPORT SettingPage : public PageBase {
-    Q_OBJECT
-public:
-    explicit SettingPage(QWidget *parent = nullptr);
-
-signals:
-    void optionNeedRestartChanged();
-
+class WINGPLUGIN_EXPORT SettingInterface {
 public:
     virtual void apply() = 0;
     virtual void reset() = 0;
     virtual void cancel() = 0;
 };
 
+class WINGPLUGIN_EXPORT SettingPage : public PageBase, public SettingInterface {
+    Q_OBJECT
+public:
+    explicit SettingPage(QWidget *parent = nullptr);
+
+public:
+    virtual bool showInRibbon() const;
+
+signals:
+    void optionNeedRestartChanged();
+};
+
 class WINGPLUGIN_EXPORT PluginPage : public PageBase {
 public:
     explicit PluginPage(QWidget *parent = nullptr);
+};
+
+class WINGPLUGIN_EXPORT PluginLightPage : public QWidget,
+                                          public SettingInterface {
+public:
+    explicit PluginLightPage(QWidget *parent = nullptr);
 };
 
 } // namespace WingHex

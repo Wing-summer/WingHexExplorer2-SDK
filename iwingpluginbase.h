@@ -28,8 +28,6 @@
 
 namespace WingHex {
 
-Q_DECL_UNUSED constexpr auto SDKVERSION = 17;
-
 WINGPLUGIN_EXPORT QString PLUGINDIR();
 
 WINGPLUGIN_EXPORT QString HOSTRESPIMG(
@@ -37,8 +35,19 @@ WINGPLUGIN_EXPORT QString HOSTRESPIMG(
 
 class PluginPage;
 
-class WINGPLUGIN_EXPORT IWingPluginBase : public QObject,
-                                          public IWingPluginBaseCalls {
+class WINGPLUGIN_EXPORT IWingPluginCoreBase : public QObject,
+                                              public IWingPluginBaseCalls {
+public:
+    IWingPluginCoreBase();
+
+public:
+    virtual bool init(const std::unique_ptr<QSettings> &set) = 0;
+    virtual void unload(std::unique_ptr<QSettings> &set) = 0;
+
+    virtual QString retranslate(const QString &str);
+};
+
+class WINGPLUGIN_EXPORT IWingPluginBase : public IWingPluginCoreBase {
     Q_OBJECT
 
 public:
@@ -46,21 +55,12 @@ public:
     virtual ~IWingPluginBase() = default;
 
 public:
-    virtual int sdkVersion() const = 0;
-
-    virtual bool init(const std::unique_ptr<QSettings> &set) = 0;
-    virtual void unload(std::unique_ptr<QSettings> &set) = 0;
-
     virtual const QString pluginName() const = 0;
     virtual QIcon pluginIcon() const;
     virtual const QString pluginComment() const = 0;
 
-    virtual QString retranslate(const QString &str);
-
 public:
     virtual QList<WingDockWidgetInfo> registeredDockWidgets() const;
-
-    virtual QList<PluginPage *> registeredPages() const;
 };
 
 } // namespace WingHex

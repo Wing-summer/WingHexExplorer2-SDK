@@ -166,8 +166,7 @@ public:
 public:
     virtual QMenu *registeredHexContextMenu() const;
     virtual QList<WingRibbonToolBoxInfo> registeredRibbonTools() const;
-    // QMap<page, whether is visible in setting tab>
-    virtual QHash<SettingPage *, bool> registeredSettingPages() const;
+    virtual QList<SettingPage *> registeredSettingPages() const;
 
     virtual QList<QSharedPointer<WingEditorViewWidget::Creator>>
     registeredEditorViewWidgets() const;

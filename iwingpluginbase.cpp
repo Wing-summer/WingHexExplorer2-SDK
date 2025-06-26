@@ -26,17 +26,13 @@
 
 using namespace WingHex;
 
-IWingPluginBase::IWingPluginBase() : IWingPluginBaseCalls() {}
+IWingPluginBase::IWingPluginBase() : IWingPluginCoreBase() {}
 
 QIcon IWingPluginBase::pluginIcon() const { return {}; }
-
-QString IWingPluginBase::retranslate(const QString &str) { return str; }
 
 QList<WingDockWidgetInfo> IWingPluginBase::registeredDockWidgets() const {
     return {};
 }
-
-QList<PluginPage *> IWingPluginBase::registeredPages() const { return {}; }
 
 QString WingHex::PLUGINDIR() {
     return QCoreApplication::applicationDirPath() + QStringLiteral("/plugin");
@@ -45,3 +41,7 @@ QString WingHex::PLUGINDIR() {
 QString WingHex::HOSTRESPIMG(const QString &name, const QString &suffix) {
     return QStringLiteral(":/com.wingsummer.winghex/images/") + name + suffix;
 }
+
+IWingPluginCoreBase::IWingPluginCoreBase() : IWingPluginBaseCalls() {}
+
+QString IWingPluginCoreBase::retranslate(const QString &str) { return str; }

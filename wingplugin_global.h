@@ -49,6 +49,8 @@
 
 namespace WingHex {
 
+Q_DECL_UNUSED constexpr auto SDKVERSION = 18;
+
 struct WingDockWidgetInfo {
     QString widgetName;
     QString displayName;
@@ -59,6 +61,17 @@ struct WingDockWidgetInfo {
 struct WingDependency {
     QString puid;
     QVersionNumber version;
+};
+
+struct PluginInfo {
+    QString id;
+    int SDKVersion;
+    QVersionNumber version;
+    QString vendor;
+    QList<WingDependency> dependencies;
+    QString author;
+    QString license;
+    QString url;
 };
 
 enum class AppTheme { Invalid, Dark, Light };

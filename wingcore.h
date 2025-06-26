@@ -90,7 +90,7 @@ inline QByteArray getFunctionSig(const WingHex::FunctionSig &fn) {
         if (CALL.fnName.isEmpty()) {                                           \
             qWarning(                                                          \
                 "[InvokeCall] The parameters of '%s' contains "                \
-                "unregistered type. Please use Q_DECLARE_INTERFACE and "       \
+                "unregistered type. Please use Q_DECLARE_METATYPE and "        \
                 "qRegisterMetaType to make the type known to Qt meta system.", \
                 __func__);                                                     \
         } else {                                                               \

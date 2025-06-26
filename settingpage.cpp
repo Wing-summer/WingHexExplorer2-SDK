@@ -26,4 +26,8 @@ PageBase::PageBase(QWidget *parent) : QWidget(parent) {}
 
 SettingPage::SettingPage(QWidget *parent) : PageBase(parent) {}
 
+bool SettingPage::showInRibbon() const { return false; }
+
 PluginPage::PluginPage(QWidget *parent) : PageBase(parent) {}
+
+PluginLightPage::PluginLightPage(QWidget *parent) {}
