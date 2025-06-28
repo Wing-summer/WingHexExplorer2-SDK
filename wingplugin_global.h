@@ -51,19 +51,19 @@ namespace WingHex {
 
 Q_DECL_UNUSED constexpr auto SDKVERSION = 18;
 
-struct WingDockWidgetInfo {
+struct WINGPLUGIN_EXPORT WingDockWidgetInfo {
     QString widgetName;
     QString displayName;
     QWidget *widget = nullptr;
     Qt::DockWidgetArea area = Qt::DockWidgetArea::NoDockWidgetArea;
 };
 
-struct WingDependency {
+struct WINGPLUGIN_EXPORT WingDependency {
     QString puid;
     QVersionNumber version;
 };
 
-struct PluginInfo {
+struct WINGPLUGIN_EXPORT PluginInfo {
     QString id;
     int SDKVersion;
     QVersionNumber version;
@@ -76,7 +76,7 @@ struct PluginInfo {
 
 enum class AppTheme { Invalid, Dark, Light };
 
-struct FunctionSig {
+struct WINGPLUGIN_EXPORT FunctionSig {
     QByteArray fnName;
     QVarLengthArray<int, 8> types;
 
@@ -114,6 +114,11 @@ enum class SelectionMode : int { Add, Remove, Single };
 Q_ENUM_NS(SelectionMode)
 
 } // namespace WingHex
+
+struct WINGPLUGIN_EXPORT ScriptCallError {
+    int errorCode;
+    QString errmsg;
+};
 
 Q_DECLARE_METATYPE(WingHex::AppTheme)
 Q_DECLARE_METATYPE(WingHex::CallTable)

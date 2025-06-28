@@ -45,3 +45,8 @@ QString WingHex::HOSTRESPIMG(const QString &name, const QString &suffix) {
 IWingPluginCoreBase::IWingPluginCoreBase() : IWingPluginBaseCalls() {}
 
 QString IWingPluginCoreBase::retranslate(const QString &str) { return str; }
+
+void IWingPluginCoreBase::onRegisterScriptObj(
+    const std::unique_ptr<IWingAngel> &o) {
+    Q_UNUSED(o);
+}

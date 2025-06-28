@@ -1,6 +1,7 @@
 #ifndef IWINGANGEL_H
 #define IWINGANGEL_H
 
+#include "WingPlugin/wingcore.h"
 #include "WingPlugin/wingplugin_global.h"
 
 namespace WingHex {
@@ -177,6 +178,26 @@ public:
     IWingAngel();
 
 public:
+    using ScriptFn = std::function<QVariant(const QVariantList &)>;
+
+public:
+    virtual void registerGlobalFunction(
+        uint retMetaType, const ScriptFn &fn, const QString &fnName,
+        const QVector<QPair<uint /*metaType*/, QString /*paramName*/>> &params =
+            {}) = 0;
+
+    // A hacking way to register script function (Generic_Call)
+    // This registering way is not safe. There is no
+    // other checking except function's signature.
+    // You should handle your all the types and pay yourself.
+    virtual void registerGlobalFunction(const QString &decl,
+                                        const UNSAFE_SCFNPTR &fn) = 0;
+
+    virtual void registerScriptMarco(const QString &marcos) = 0;
+
+    virtual void registerScriptMarcos(const QStringList &marcos) = 0;
+
+public:
     // copy from angelscript.h
     enum asBehaviours {
         // Value object memory management
@@ -239,6 +260,18 @@ public:
         asMODULE_IS_IN_USE = -28
     };
 
+    // Calling conventions
+    enum class asCallConvTypes {
+        asCALL_CDECL = 0,
+        asCALL_STDCALL = 1,
+        asCALL_THISCALL_ASGLOBAL = 2,
+        asCALL_THISCALL = 3,
+        asCALL_CDECL_OBJLAST = 4,
+        asCALL_CDECL_OBJFIRST = 5,
+        asCALL_THISCALL_OBJLAST = 7,
+        asCALL_THISCALL_OBJFIRST = 8
+    };
+
     // ============= low level functions begin =============
 public:
     virtual asRetCodes setDefaultNamespace(const char *nameSpace) = 0;
@@ -269,14 +302,15 @@ public:
                            bool isCompositeIndirect = false) = 0;
     virtual asRetCodes
     registerObjectMethod(const char *obj, const char *declaration,
-                         const asFuncPtr &funcPointer, void *auxiliary = 0,
-                         int compositeOffset = 0,
+                         const asFuncPtr &funcPointer, asCallConvTypes callConv,
+                         void *auxiliary = 0, int compositeOffset = 0,
                          bool isCompositeIndirect = false) = 0;
 
     virtual asRetCodes registerObjectBehaviour(
         const char *obj, asBehaviours behaviour, const char *declaration,
-        const asFuncPtr &funcPointer, void *auxiliary = 0,
-        int compositeOffset = 0, bool isCompositeIndirect = false) = 0;
+        const asFuncPtr &funcPointer, asCallConvTypes callConv,
+        void *auxiliary = 0, int compositeOffset = 0,
+        bool isCompositeIndirect = false) = 0;
 
 public:
     virtual asRetCodes registerInterface(const char *name) = 0;
@@ -285,13 +319,15 @@ public:
                                                const char *declaration) = 0;
 
 public:
+    // very low-level to register global function
     virtual asRetCodes registerGlobalFunction(const char *declaration,
                                               const asFuncPtr &funcPointer,
+                                              asCallConvTypes callConv,
                                               void *auxiliary = 0) = 0;
 
 public:
-    asRetCodes registerEnums(const char *type,
-                             const QHash<const char *, int> value);
+    asRetCodes registerEnums(const QString &type,
+                             const QHash<QString, int> value);
 };
 
 } // namespace WingHex

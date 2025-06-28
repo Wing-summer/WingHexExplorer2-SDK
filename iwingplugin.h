@@ -61,11 +61,6 @@ struct WINGPLUGIN_EXPORT WingRibbonToolBoxInfo {
     QList<Toolbox> toolboxs;
 };
 
-struct WINGPLUGIN_EXPORT ScriptCallError {
-    int errorCode;
-    QString errmsg;
-};
-
 class SettingPage;
 
 class WINGPLUGIN_EXPORT IWingPlugin : public IWingPluginBase,
@@ -75,53 +70,6 @@ public:
     IWingPlugin();
 
 public:
-    using ScriptFn = std::function<QVariant(const QVariantList &)>;
-
-    using UNSAFE_RET =
-        std::variant<std::monostate, bool, quint8, quint16, quint32, quint64,
-                     float, double, void *, ScriptCallError>;
-    using UNSAFE_SCFNPTR = std::function<UNSAFE_RET(const QList<void *> &)>;
-
-    enum MetaType : uint {
-        Void,
-
-        Bool,
-        Int,
-        Int32 = Int,
-        UInt,
-        UInt32 = UInt,
-        Int8,
-        UInt8,
-        Int16,
-        UInt16,
-        Int64,
-        UInt64,
-
-        Float,
-        Double,
-
-        String,
-        Char,
-        Byte,
-        Color,
-
-        Map,  // QVariantMap -> dictionary
-        Hash, // QVariantHash -> dictionary
-
-        MetaMax, // reserved
-        MetaTypeMask = 0xFFFFF,
-        Array = 0x100000, // QVector<?> -> array<?>
-        List = 0x200000,  // QList<?> -> array<?>
-    };
-
-    static_assert(MetaType::MetaMax < MetaType::Array);
-
-    struct ScriptFnInfo {
-        uint ret; // MetaType
-        QVector<QPair<uint, QString>> params;
-        ScriptFn fn;
-    };
-
     enum class RegisteredEvent : uint {
         None,
         AppReady = 1u,
@@ -135,7 +83,7 @@ public:
         ScriptPragma = 1u << 8,
         PluginFileOpened = 1u << 9,
         PluginFileClosed = 1u << 10,
-        ScriptUnSafeFnRegistering = 1u << 11,
+        ScriptObjRegister = 1u << 11,
         ScriptPragmaInit = 1u << 12
     };
     Q_DECLARE_FLAGS(RegisteredEvents, RegisteredEvent)
@@ -170,27 +118,6 @@ public:
 
     virtual QList<QSharedPointer<WingEditorViewWidget::Creator>>
     registeredEditorViewWidgets() const;
-
-public:
-    // QHash< function-name, fn >
-    virtual QHash<QString, ScriptFnInfo> registeredScriptFns() const;
-
-    // A hacking way to register script function (Generic_Call)
-    // This registering way is not safe. There is no
-    // other checking except function's signature.
-    // You should handle your all the types and pay yourself.
-
-    // You should set RegisteredEvent::ScriptFnRegistering ON to enable it.
-
-    // QHash< function-name, fn >
-    virtual QHash<QString, UNSAFE_SCFNPTR> registeredScriptUnsafeFns() const;
-
-    // QHash< enum , members >
-    virtual QHash<QString, QList<QPair<QString, int>>>
-    registeredScriptEnums() const;
-
-    // Note: must be valid identifier
-    virtual QStringList registerScriptMarcos() const;
 
 public:
     virtual void eventSelectionChanged(const QByteArrayList &selections,
@@ -228,7 +155,6 @@ private:
 } // namespace WingHex
 
 Q_DECLARE_METATYPE(WingHex::SenderInfo)
-Q_DECLARE_METATYPE(WingHex::ScriptCallError)
 Q_DECLARE_INTERFACE(WingHex::IWingPlugin, "com.wingsummer.iwingplugin")
 
 #endif // IWINGPLUGIN_H

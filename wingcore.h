@@ -41,6 +41,45 @@ using MetaCallInfo = std::tuple<const char *, Qt::ConnectionType, qsizetype,
                                 const void *const *, const char *const *,
                                 const QtPrivate::QMetaTypeInterface *const *>;
 
+using UNSAFE_RET =
+    std::variant<std::monostate, bool, quint8, quint16, quint32, quint64, float,
+                 double, void *, ScriptCallError>;
+using UNSAFE_SCFNPTR = std::function<UNSAFE_RET(const QList<void *> &)>;
+
+enum MetaType : uint {
+    Void,
+
+    Bool,
+    Int,
+    Int32 = Int,
+    UInt,
+    UInt32 = UInt,
+    Int8,
+    UInt8,
+    Int16,
+    UInt16,
+    Int64,
+    UInt64,
+
+    Float,
+    Double,
+
+    String,
+    Char,
+    Byte,
+    Color,
+
+    Map,  // QVariantMap -> dictionary
+    Hash, // QVariantHash -> dictionary
+
+    MetaMax, // reserved
+    MetaTypeMask = 0xFFFFF,
+    Array = 0x100000, // QVector<?> -> array<?>
+    List = 0x200000,  // QList<?> -> array<?>
+};
+
+static_assert(MetaType::MetaMax < MetaType::Array);
+
 template <class Func>
 inline WingHex::FunctionSig getFunctionSig(Func &&, const char *fn) {
     typedef QtPrivate::FunctionPointer<std::decay_t<Func>> FnPointerType;

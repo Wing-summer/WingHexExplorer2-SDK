@@ -34,6 +34,7 @@ WINGPLUGIN_EXPORT QString HOSTRESPIMG(
     const QString &name, const QString &suffix = QStringLiteral(".png"));
 
 class PluginPage;
+class IWingAngel;
 
 class WINGPLUGIN_EXPORT IWingPluginCoreBase : public QObject,
                                               public IWingPluginBaseCalls {
@@ -45,6 +46,9 @@ public:
     virtual void unload(std::unique_ptr<QSettings> &set) = 0;
 
     virtual QString retranslate(const QString &str);
+
+public:
+    virtual void onRegisterScriptObj(const std::unique_ptr<IWingAngel> &o);
 };
 
 class WINGPLUGIN_EXPORT IWingPluginBase : public IWingPluginCoreBase {

@@ -53,13 +53,6 @@ IWingPlugin::registeredEditorViewWidgets() const {
     return {};
 }
 
-QHash<QString, QList<QPair<QString, int>>>
-IWingPlugin::registeredScriptEnums() const {
-    return {};
-}
-
-QStringList IWingPlugin::registerScriptMarcos() const { return {}; }
-
 void IWingPlugin::eventSelectionChanged(const QByteArrayList &selections,
                                         bool isPreview) {
     Q_UNUSED(selections);
@@ -98,16 +91,6 @@ const QObject *IWingPlugin::getSender() const { return this; }
 CallTable IWingPlugin::callTable() const { return _core->callTable(); }
 
 QObject *IWingPlugin::callReceiver() const { return _core->callReceiver(); }
-
-QHash<QString, IWingPlugin::UNSAFE_SCFNPTR>
-IWingPlugin::registeredScriptUnsafeFns() const {
-    return {};
-}
-
-QHash<QString, IWingPlugin::ScriptFnInfo>
-IWingPlugin::registeredScriptFns() const {
-    return {};
-}
 
 ScriptCallError IWingPlugin::generateScriptCallError(int errCode,
                                                      const QString &msg) {
