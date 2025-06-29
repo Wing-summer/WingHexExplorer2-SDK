@@ -113,13 +113,14 @@ Q_ENUM_NS(ErrFile)
 enum class SelectionMode : int { Add, Remove, Single };
 Q_ENUM_NS(SelectionMode)
 
-} // namespace WingHex
-
 struct WINGPLUGIN_EXPORT ScriptCallError {
     int errorCode;
     QString errmsg;
 };
 
+} // namespace WingHex
+
+Q_DECLARE_METATYPE(WingHex::ScriptCallError)
 Q_DECLARE_METATYPE(WingHex::AppTheme)
 Q_DECLARE_METATYPE(WingHex::CallTable)
 

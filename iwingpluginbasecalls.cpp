@@ -24,6 +24,8 @@
 
 using namespace WingHex;
 
+IWingPluginBaseCalls::IWingPluginBaseCalls() {}
+
 void IWingPluginBaseCalls::toast(const QPixmap &icon,
                                  const QString &message) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::toast);
@@ -250,6 +252,21 @@ QColor IWingPluginBaseCalls::dlgGetColor(const QString &caption,
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              caption, parent);
     return ret;
+}
+
+IWingGeneric *IWingPluginBaseCalls::__createParamContext(void *ctx) const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::__createParamContext);
+    IWingGeneric *ret = nullptr;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
+             ctx);
+    return ret;
+}
+
+void IWingPluginBaseCalls::__raiseContextException(const QString &exception,
+                                                   bool allowCatch) const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::__raiseContextException);
+    m.invoke(callReceiver(), Qt::DirectConnection, getSender(), exception,
+             allowCatch);
 }
 
 AppTheme IWingPluginBaseCalls::currentAppTheme() const {

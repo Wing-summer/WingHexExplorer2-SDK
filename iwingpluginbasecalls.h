@@ -21,6 +21,7 @@
 #ifndef IWINGPLUGINBASECALLS_H
 #define IWINGPLUGINBASECALLS_H
 
+#include "WingPlugin/iwingangel.h"
 #include "WingPlugin/wingplugin_global.h"
 #include "WingPlugin/wingplugincalls.h"
 
@@ -37,7 +38,7 @@ class IWingPluginBase;
 
 class WINGPLUGIN_EXPORT IWingPluginBaseCalls : public WingPluginCalls {
 public:
-    IWingPluginBaseCalls() = default;
+    IWingPluginBaseCalls();
 
 public:
     void toast(const QPixmap &icon, const QString &message) const;
@@ -152,6 +153,12 @@ public:
 public:
     Q_REQUIRED_RESULT QColor dlgGetColor(const QString &caption,
                                          QWidget *parent = nullptr) const;
+
+public:
+    Q_REQUIRED_RESULT IWingGeneric *__createParamContext(void *ctx) const;
+
+    void __raiseContextException(const QString &exception,
+                                 bool allowCatch) const;
 };
 
 } // namespace WingHex
@@ -160,5 +167,19 @@ Q_DECLARE_METATYPE(QMessageBox::StandardButtons)
 Q_DECLARE_METATYPE(QMessageBox::StandardButton)
 Q_DECLARE_METATYPE(bool *)
 Q_DECLARE_METATYPE(QString *)
+
+#define WING_DECLARE_STATIC_API                                                \
+    static std::function<WingHex::IWingGeneric *(void *)> createParamContext;  \
+    static std::function<void(const QString &, bool)> raiseContextException;
+
+#define WING_INIT_STATIC_API                                                   \
+    do {                                                                       \
+        createParamContext =                                                   \
+            std::bind(&IWingPluginBaseCalls::__createParamContext, this,       \
+                      std::placeholders::_1);                                  \
+        raiseContextException =                                                \
+            std::bind(&IWingPluginBaseCalls::__raiseContextException, this,    \
+                      std::placeholders::_1, std::placeholders::_2);           \
+    } while (0)
 
 #endif // IWINGPLUGINBASECALLS_H

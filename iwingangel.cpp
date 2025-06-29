@@ -4,9 +4,8 @@ using namespace WingHex;
 
 IWingAngel::IWingAngel() {}
 
-WingHex::IWingAngel::asRetCodes
-IWingAngel::registerEnums(const QString &type,
-                          const QHash<QString, int> value) {
+WingHex::asRetCodes IWingAngel::registerEnums(const QString &type,
+                                              const QHash<QString, int> value) {
     auto t = type.toUtf8();
     auto r = registerEnum(t);
     if (r != asRetCodes::asSUCCESS) {
@@ -20,3 +19,5 @@ IWingAngel::registerEnums(const QString &type,
     }
     return asRetCodes::asSUCCESS;
 }
+
+IWingGeneric::IWingGeneric() {}

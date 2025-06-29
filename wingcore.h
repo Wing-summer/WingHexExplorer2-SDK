@@ -47,38 +47,38 @@ using UNSAFE_RET =
 using UNSAFE_SCFNPTR = std::function<UNSAFE_RET(const QList<void *> &)>;
 
 enum MetaType : uint {
-    Void,
+    Meta_Void,
 
-    Bool,
-    Int,
-    Int32 = Int,
-    UInt,
-    UInt32 = UInt,
-    Int8,
-    UInt8,
-    Int16,
-    UInt16,
-    Int64,
-    UInt64,
+    Meta_Bool,
+    Meta_Int,
+    Meta_Int32 = Meta_Int,
+    Meta_UInt,
+    Meta_UInt32 = Meta_UInt,
+    Meta_Int8,
+    Meta_UInt8,
+    Meta_Int16,
+    Meta_UInt16,
+    Meta_Int64,
+    Meta_UInt64,
 
-    Float,
-    Double,
+    Meta_Float,
+    Meta_Double,
 
-    String,
-    Char,
-    Byte,
-    Color,
+    Meta_String,
+    Meta_Char,
+    Meta_Byte,
+    Meta_Color,
 
-    Map,  // QVariantMap -> dictionary
-    Hash, // QVariantHash -> dictionary
+    Meta_Map,  // QVariantMap -> dictionary
+    Meta_Hash, // QVariantHash -> dictionary
 
     MetaMax, // reserved
     MetaTypeMask = 0xFFFFF,
-    Array = 0x100000, // QVector<?> -> array<?>
-    List = 0x200000,  // QList<?> -> array<?>
+    Meta_Array = 0x100000, // QVector<?> -> array<?>
+    Meta_List = 0x200000,  // QList<?> -> array<?>
 };
 
-static_assert(MetaType::MetaMax < MetaType::Array);
+static_assert(MetaType::MetaMax < MetaType::Meta_Array);
 
 template <class Func>
 inline WingHex::FunctionSig getFunctionSig(Func &&, const char *fn) {

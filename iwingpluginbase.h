@@ -48,7 +48,7 @@ public:
     virtual QString retranslate(const QString &str);
 
 public:
-    virtual void onRegisterScriptObj(const std::unique_ptr<IWingAngel> &o);
+    virtual void onRegisterScriptObj(WingHex::IWingAngel *o);
 };
 
 class WINGPLUGIN_EXPORT IWingPluginBase : public IWingPluginCoreBase {

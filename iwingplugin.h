@@ -26,8 +26,6 @@
 #include "wingeditorviewwidget.h"
 #include "wingplugin_global.h"
 
-#include <variant>
-
 #include <QToolButton>
 
 namespace WingHex {
@@ -83,8 +81,7 @@ public:
         ScriptPragma = 1u << 8,
         PluginFileOpened = 1u << 9,
         PluginFileClosed = 1u << 10,
-        ScriptObjRegister = 1u << 11,
-        ScriptPragmaInit = 1u << 12
+        ScriptPragmaInit = 1u << 11
     };
     Q_DECLARE_FLAGS(RegisteredEvents, RegisteredEvent)
 
