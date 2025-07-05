@@ -437,6 +437,22 @@ bool IWingPluginCallsOp::endMarco() {
     return ret;
 }
 
+bool IWingPluginCallsOp::isMacroEmpty() {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::isMacroEmpty);
+    bool ret = false;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
+    return ret;
+}
+
+bool IWingPluginCallsOp::resetMarco() {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::resetMarco);
+    bool ret = false;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
+    return ret;
+}
+
 bool IWingPluginCallsOp::writeInt8(qsizetype offset, qint8 value) {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeInt8);
     bool ret = false;
@@ -894,9 +910,9 @@ bool IWingPluginCalls::closeAllFiles() {
     return ret;
 }
 
-ErrFile IWingPluginCalls::openWorkSpace(const QString &filename) {
+int IWingPluginCalls::openWorkSpace(const QString &filename) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::openWorkSpace);
-    ErrFile ret = ErrFile::Error;
+    int ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              filename);
     return ret;
@@ -934,9 +950,9 @@ ErrFile IWingPluginCalls::closeCurrent(bool force) {
     return ret;
 }
 
-ErrFile IWingPluginCalls::openCurrent() {
+int IWingPluginCalls::openCurrent() {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::openCurrent);
-    ErrFile ret = ErrFile::Error;
+    int ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
@@ -982,25 +998,25 @@ ErrFile IWingPluginCalls::closeHandle(int handle) {
     return ret;
 }
 
-ErrFile IWingPluginCalls::openExtFile(const QString &ext, const QString &file) {
+int IWingPluginCalls::openExtFile(const QString &ext, const QString &file) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::openExtFile);
-    ErrFile ret = ErrFile::Error;
+    int ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              ext, file);
     return ret;
 }
 
-ErrFile IWingPluginCalls::openFile(const QString &filename) {
+int IWingPluginCalls::openFile(const QString &filename) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::openFile);
-    ErrFile ret = ErrFile::Error;
+    int ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              filename);
     return ret;
 }
 
-ErrFile IWingPluginCalls::newFile() {
+int IWingPluginCalls::newFile() {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::newFile);
-    ErrFile ret = ErrFile::Error;
+    int ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;

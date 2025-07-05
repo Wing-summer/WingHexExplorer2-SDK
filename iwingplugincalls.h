@@ -131,148 +131,141 @@ public:
     Q_REQUIRED_RESULT QString currentDocFilename() const;
 
     // document
-    Q_REQUIRED_RESULT virtual bool isReadOnly() const;
-    Q_REQUIRED_RESULT virtual bool isInsertionMode() const;
-    Q_REQUIRED_RESULT virtual bool isKeepSize() const;
-    Q_REQUIRED_RESULT virtual bool isLocked() const;
-    Q_REQUIRED_RESULT virtual qsizetype documentLines() const;
-    Q_REQUIRED_RESULT virtual qsizetype documentBytes() const;
-    Q_REQUIRED_RESULT virtual WingHex::HexPosition currentPos() const;
-    Q_REQUIRED_RESULT virtual qsizetype currentRow() const;
-    Q_REQUIRED_RESULT virtual qsizetype currentColumn() const;
-    Q_REQUIRED_RESULT virtual qsizetype currentOffset() const;
-    Q_REQUIRED_RESULT virtual qsizetype selectedLength() const;
+    Q_REQUIRED_RESULT bool isReadOnly() const;
+    Q_REQUIRED_RESULT bool isInsertionMode() const;
+    Q_REQUIRED_RESULT bool isKeepSize() const;
+    Q_REQUIRED_RESULT bool isLocked() const;
+    Q_REQUIRED_RESULT qsizetype documentLines() const;
+    Q_REQUIRED_RESULT qsizetype documentBytes() const;
+    Q_REQUIRED_RESULT WingHex::HexPosition currentPos() const;
+    Q_REQUIRED_RESULT qsizetype currentRow() const;
+    Q_REQUIRED_RESULT qsizetype currentColumn() const;
+    Q_REQUIRED_RESULT qsizetype currentOffset() const;
+    Q_REQUIRED_RESULT qsizetype selectedLength() const;
 
-    Q_REQUIRED_RESULT virtual QByteArray selectedBytes(qsizetype index) const;
-    Q_REQUIRED_RESULT virtual QByteArrayList selectionBytes() const;
+    Q_REQUIRED_RESULT QByteArray selectedBytes(qsizetype index) const;
+    Q_REQUIRED_RESULT QByteArrayList selectionBytes() const;
 
-    Q_REQUIRED_RESULT virtual WingHex::HexPosition
+    Q_REQUIRED_RESULT WingHex::HexPosition
     selectionStart(qsizetype index) const;
-    Q_REQUIRED_RESULT virtual WingHex::HexPosition
-    selectionEnd(qsizetype index) const;
-    Q_REQUIRED_RESULT virtual qsizetype selectionLength(qsizetype index) const;
-    Q_REQUIRED_RESULT virtual qsizetype selectionCount() const;
+    Q_REQUIRED_RESULT WingHex::HexPosition selectionEnd(qsizetype index) const;
+    Q_REQUIRED_RESULT qsizetype selectionLength(qsizetype index) const;
+    Q_REQUIRED_RESULT qsizetype selectionCount() const;
 
-    Q_REQUIRED_RESULT virtual bool stringVisible() const;
-    Q_REQUIRED_RESULT virtual bool addressVisible() const;
-    Q_REQUIRED_RESULT virtual bool headerVisible() const;
-    Q_REQUIRED_RESULT virtual quintptr addressBase() const;
-    Q_REQUIRED_RESULT virtual bool isModified() const;
+    Q_REQUIRED_RESULT bool stringVisible() const;
+    Q_REQUIRED_RESULT bool addressVisible() const;
+    Q_REQUIRED_RESULT bool headerVisible() const;
+    Q_REQUIRED_RESULT quintptr addressBase() const;
+    Q_REQUIRED_RESULT bool isModified() const;
 
-    Q_REQUIRED_RESULT virtual qint8 readInt8(qsizetype offset) const;
-    Q_REQUIRED_RESULT virtual qint16 readInt16(qsizetype offset) const;
-    Q_REQUIRED_RESULT virtual qint32 readInt32(qsizetype offset) const;
-    Q_REQUIRED_RESULT virtual qint64 readInt64(qsizetype offset) const;
-    Q_REQUIRED_RESULT virtual quint8 readUInt8(qsizetype offset) const;
-    Q_REQUIRED_RESULT virtual quint16 readUInt16(qsizetype offset) const;
-    Q_REQUIRED_RESULT virtual quint32 readUInt32(qsizetype offset) const;
-    Q_REQUIRED_RESULT virtual quint64 readUInt64(qsizetype offset) const;
-    Q_REQUIRED_RESULT virtual float readFloat(qsizetype offset) const;
-    Q_REQUIRED_RESULT virtual double readDouble(qsizetype offset) const;
-    Q_REQUIRED_RESULT virtual QString
-    readString(qsizetype offset, const QString &encoding = {}) const;
-    Q_REQUIRED_RESULT virtual QByteArray readBytes(qsizetype offset,
-                                                   qsizetype count) const;
+    Q_REQUIRED_RESULT qint8 readInt8(qsizetype offset) const;
+    Q_REQUIRED_RESULT qint16 readInt16(qsizetype offset) const;
+    Q_REQUIRED_RESULT qint32 readInt32(qsizetype offset) const;
+    Q_REQUIRED_RESULT qint64 readInt64(qsizetype offset) const;
+    Q_REQUIRED_RESULT quint8 readUInt8(qsizetype offset) const;
+    Q_REQUIRED_RESULT quint16 readUInt16(qsizetype offset) const;
+    Q_REQUIRED_RESULT quint32 readUInt32(qsizetype offset) const;
+    Q_REQUIRED_RESULT quint64 readUInt64(qsizetype offset) const;
+    Q_REQUIRED_RESULT float readFloat(qsizetype offset) const;
+    Q_REQUIRED_RESULT double readDouble(qsizetype offset) const;
+    Q_REQUIRED_RESULT QString readString(qsizetype offset,
+                                         const QString &encoding = {}) const;
+    Q_REQUIRED_RESULT QByteArray readBytes(qsizetype offset,
+                                           qsizetype count) const;
 
-    Q_REQUIRED_RESULT virtual qsizetype findNext(qsizetype begin,
-                                                 const QByteArray &ba) const;
-    Q_REQUIRED_RESULT virtual qsizetype
-    findPrevious(qsizetype begin, const QByteArray &ba) const;
+    Q_REQUIRED_RESULT qsizetype findNext(qsizetype begin,
+                                         const QByteArray &ba) const;
+    Q_REQUIRED_RESULT qsizetype findPrevious(qsizetype begin,
+                                             const QByteArray &ba) const;
 
-    Q_REQUIRED_RESULT virtual QString bookMarkComment(qsizetype pos) const;
-    Q_REQUIRED_RESULT virtual bool existBookMark(qsizetype pos) const;
+    Q_REQUIRED_RESULT QString bookMarkComment(qsizetype pos) const;
+    Q_REQUIRED_RESULT bool existBookMark(qsizetype pos) const;
 
-    Q_REQUIRED_RESULT virtual bool setLockedFile(bool b);
-    Q_REQUIRED_RESULT virtual bool setKeepSize(bool b);
-    Q_REQUIRED_RESULT virtual bool setStringVisible(bool b);
-    Q_REQUIRED_RESULT virtual bool setAddressVisible(bool b);
-    Q_REQUIRED_RESULT virtual bool setHeaderVisible(bool b);
-    Q_REQUIRED_RESULT virtual bool setAddressBase(quintptr base);
+    Q_REQUIRED_RESULT bool setLockedFile(bool b);
+    Q_REQUIRED_RESULT bool setKeepSize(bool b);
+    Q_REQUIRED_RESULT bool setStringVisible(bool b);
+    Q_REQUIRED_RESULT bool setAddressVisible(bool b);
+    Q_REQUIRED_RESULT bool setHeaderVisible(bool b);
+    Q_REQUIRED_RESULT bool setAddressBase(quintptr base);
 
-    Q_REQUIRED_RESULT virtual bool beginMarco(const QString &txt = {});
-    virtual bool endMarco();
+    Q_REQUIRED_RESULT bool beginMarco(const QString &txt = {});
+    Q_REQUIRED_RESULT bool endMarco();
+    Q_REQUIRED_RESULT bool isMacroEmpty();
+    Q_REQUIRED_RESULT bool resetMarco();
 
-    Q_REQUIRED_RESULT virtual bool writeInt8(qsizetype offset, qint8 value);
-    Q_REQUIRED_RESULT virtual bool writeInt16(qsizetype offset, qint16 value);
-    Q_REQUIRED_RESULT virtual bool writeInt32(qsizetype offset, qint32 value);
-    Q_REQUIRED_RESULT virtual bool writeInt64(qsizetype offset, qint64 value);
-    Q_REQUIRED_RESULT virtual bool writeUInt8(qsizetype offset, quint8 value);
-    Q_REQUIRED_RESULT virtual bool writeUInt16(qsizetype offset, quint16 value);
-    Q_REQUIRED_RESULT virtual bool writeUInt32(qsizetype offset, quint32 value);
-    Q_REQUIRED_RESULT virtual bool writeUInt64(qsizetype offset, quint64 value);
-    Q_REQUIRED_RESULT virtual bool writeFloat(qsizetype offset, float value);
-    Q_REQUIRED_RESULT virtual bool writeDouble(qsizetype offset, double value);
-    Q_REQUIRED_RESULT virtual bool
-    writeString(qsizetype offset, const QString &value,
-                const QString &encoding = QString());
-    Q_REQUIRED_RESULT virtual bool writeBytes(qsizetype offset,
-                                              const QByteArray &data);
+    Q_REQUIRED_RESULT bool writeInt8(qsizetype offset, qint8 value);
+    Q_REQUIRED_RESULT bool writeInt16(qsizetype offset, qint16 value);
+    Q_REQUIRED_RESULT bool writeInt32(qsizetype offset, qint32 value);
+    Q_REQUIRED_RESULT bool writeInt64(qsizetype offset, qint64 value);
+    Q_REQUIRED_RESULT bool writeUInt8(qsizetype offset, quint8 value);
+    Q_REQUIRED_RESULT bool writeUInt16(qsizetype offset, quint16 value);
+    Q_REQUIRED_RESULT bool writeUInt32(qsizetype offset, quint32 value);
+    Q_REQUIRED_RESULT bool writeUInt64(qsizetype offset, quint64 value);
+    Q_REQUIRED_RESULT bool writeFloat(qsizetype offset, float value);
+    Q_REQUIRED_RESULT bool writeDouble(qsizetype offset, double value);
+    Q_REQUIRED_RESULT bool writeString(qsizetype offset, const QString &value,
+                                       const QString &encoding = QString());
+    Q_REQUIRED_RESULT bool writeBytes(qsizetype offset, const QByteArray &data);
 
-    Q_REQUIRED_RESULT virtual bool insertInt8(qsizetype offset, qint8 value);
-    Q_REQUIRED_RESULT virtual bool insertInt16(qsizetype offset, qint16 value);
-    Q_REQUIRED_RESULT virtual bool insertInt32(qsizetype offset, qint32 value);
-    Q_REQUIRED_RESULT virtual bool insertInt64(qsizetype offset, qint64 value);
-    Q_REQUIRED_RESULT virtual bool insertUInt8(qsizetype offset, quint8 value);
-    Q_REQUIRED_RESULT virtual bool insertUInt16(qsizetype offset,
-                                                quint16 value);
-    Q_REQUIRED_RESULT virtual bool insertUInt32(qsizetype offset,
-                                                quint32 value);
-    Q_REQUIRED_RESULT virtual bool insertUInt64(qsizetype offset,
-                                                quint64 value);
-    Q_REQUIRED_RESULT virtual bool insertFloat(qsizetype offset, float value);
-    Q_REQUIRED_RESULT virtual bool insertDouble(qsizetype offset, double value);
-    Q_REQUIRED_RESULT virtual bool
-    insertString(qsizetype offset, const QString &value,
-                 const QString &encoding = QString());
-    Q_REQUIRED_RESULT virtual bool insertBytes(qsizetype offset,
-                                               const QByteArray &data);
+    Q_REQUIRED_RESULT bool insertInt8(qsizetype offset, qint8 value);
+    Q_REQUIRED_RESULT bool insertInt16(qsizetype offset, qint16 value);
+    Q_REQUIRED_RESULT bool insertInt32(qsizetype offset, qint32 value);
+    Q_REQUIRED_RESULT bool insertInt64(qsizetype offset, qint64 value);
+    Q_REQUIRED_RESULT bool insertUInt8(qsizetype offset, quint8 value);
+    Q_REQUIRED_RESULT bool insertUInt16(qsizetype offset, quint16 value);
+    Q_REQUIRED_RESULT bool insertUInt32(qsizetype offset, quint32 value);
+    Q_REQUIRED_RESULT bool insertUInt64(qsizetype offset, quint64 value);
+    Q_REQUIRED_RESULT bool insertFloat(qsizetype offset, float value);
+    Q_REQUIRED_RESULT bool insertDouble(qsizetype offset, double value);
+    Q_REQUIRED_RESULT bool insertString(qsizetype offset, const QString &value,
+                                        const QString &encoding = QString());
+    Q_REQUIRED_RESULT bool insertBytes(qsizetype offset,
+                                       const QByteArray &data);
 
-    Q_REQUIRED_RESULT virtual bool appendInt8(qint8 value);
-    Q_REQUIRED_RESULT virtual bool appendInt16(qint16 value);
-    Q_REQUIRED_RESULT virtual bool appendInt32(qint32 value);
-    Q_REQUIRED_RESULT virtual bool appendInt64(qint64 value);
-    Q_REQUIRED_RESULT virtual bool appendUInt8(quint8 value);
-    Q_REQUIRED_RESULT virtual bool appendUInt16(quint16 value);
-    Q_REQUIRED_RESULT virtual bool appendUInt32(quint32 value);
-    Q_REQUIRED_RESULT virtual bool appendUInt64(quint64 value);
-    Q_REQUIRED_RESULT virtual bool appendFloat(float value);
-    Q_REQUIRED_RESULT virtual bool appendDouble(double value);
-    Q_REQUIRED_RESULT virtual bool
-    appendString(const QString &value, const QString &encoding = QString());
-    Q_REQUIRED_RESULT virtual bool appendBytes(const QByteArray &data);
+    Q_REQUIRED_RESULT bool appendInt8(qint8 value);
+    Q_REQUIRED_RESULT bool appendInt16(qint16 value);
+    Q_REQUIRED_RESULT bool appendInt32(qint32 value);
+    Q_REQUIRED_RESULT bool appendInt64(qint64 value);
+    Q_REQUIRED_RESULT bool appendUInt8(quint8 value);
+    Q_REQUIRED_RESULT bool appendUInt16(quint16 value);
+    Q_REQUIRED_RESULT bool appendUInt32(quint32 value);
+    Q_REQUIRED_RESULT bool appendUInt64(quint64 value);
+    Q_REQUIRED_RESULT bool appendFloat(float value);
+    Q_REQUIRED_RESULT bool appendDouble(double value);
+    Q_REQUIRED_RESULT bool appendString(const QString &value,
+                                        const QString &encoding = QString());
+    Q_REQUIRED_RESULT bool appendBytes(const QByteArray &data);
 
-    Q_REQUIRED_RESULT virtual bool removeBytes(qsizetype offset, qsizetype len);
+    Q_REQUIRED_RESULT bool removeBytes(qsizetype offset, qsizetype len);
 
     // cursor
-    Q_REQUIRED_RESULT virtual bool moveTo(qsizetype line, qsizetype column,
-                                          int nibbleindex = 1,
-                                          bool clearSelection = true);
-    Q_REQUIRED_RESULT virtual bool moveTo(qsizetype offset,
-                                          bool clearSelection = true);
-    Q_REQUIRED_RESULT virtual bool
-    select(qsizetype offset, qsizetype length,
-           SelectionMode mode = SelectionMode::Add);
-    Q_REQUIRED_RESULT virtual bool setInsertionMode(bool isinsert);
+    Q_REQUIRED_RESULT bool moveTo(qsizetype line, qsizetype column,
+                                  int nibbleindex = 1,
+                                  bool clearSelection = true);
+    Q_REQUIRED_RESULT bool moveTo(qsizetype offset, bool clearSelection = true);
+    Q_REQUIRED_RESULT bool select(qsizetype offset, qsizetype length,
+                                  SelectionMode mode = SelectionMode::Add);
+    Q_REQUIRED_RESULT bool setInsertionMode(bool isinsert);
 
     // metadata
-    Q_REQUIRED_RESULT virtual bool foreground(qsizetype begin, qsizetype length,
-                                              const QColor &fgcolor);
-    Q_REQUIRED_RESULT virtual bool background(qsizetype begin, qsizetype length,
-                                              const QColor &bgcolor);
-    Q_REQUIRED_RESULT virtual bool comment(qsizetype begin, qsizetype length,
-                                           const QString &comment);
+    Q_REQUIRED_RESULT bool foreground(qsizetype begin, qsizetype length,
+                                      const QColor &fgcolor);
+    Q_REQUIRED_RESULT bool background(qsizetype begin, qsizetype length,
+                                      const QColor &bgcolor);
+    Q_REQUIRED_RESULT bool comment(qsizetype begin, qsizetype length,
+                                   const QString &comment);
 
-    Q_REQUIRED_RESULT virtual bool metadata(qsizetype begin, qsizetype length,
-                                            const QColor &fgcolor,
-                                            const QColor &bgcolor,
-                                            const QString &comment);
+    Q_REQUIRED_RESULT bool metadata(qsizetype begin, qsizetype length,
+                                    const QColor &fgcolor,
+                                    const QColor &bgcolor,
+                                    const QString &comment);
 
-    Q_REQUIRED_RESULT virtual bool removeMetadata(qsizetype offset);
-    Q_REQUIRED_RESULT virtual bool clearMetadata();
-    Q_REQUIRED_RESULT virtual bool setMetaVisible(bool b);
-    Q_REQUIRED_RESULT virtual bool setMetafgVisible(bool b);
-    Q_REQUIRED_RESULT virtual bool setMetabgVisible(bool b);
-    Q_REQUIRED_RESULT virtual bool setMetaCommentVisible(bool b);
+    Q_REQUIRED_RESULT bool removeMetadata(qsizetype offset);
+    Q_REQUIRED_RESULT bool clearMetadata();
+    Q_REQUIRED_RESULT bool setMetaVisible(bool b);
+    Q_REQUIRED_RESULT bool setMetafgVisible(bool b);
+    Q_REQUIRED_RESULT bool setMetabgVisible(bool b);
+    Q_REQUIRED_RESULT bool setMetaCommentVisible(bool b);
 
     // bookmark
     Q_REQUIRED_RESULT bool addBookMark(qsizetype pos, const QString &comment);
@@ -304,10 +297,9 @@ public:
     Q_REQUIRED_RESULT bool raiseDocument(int handle);
 
     // mainwindow
-    Q_REQUIRED_RESULT WingHex::ErrFile newFile();
-    Q_REQUIRED_RESULT WingHex::ErrFile openFile(const QString &filename);
-    Q_REQUIRED_RESULT WingHex::ErrFile openExtFile(const QString &ext,
-                                                   const QString &file);
+    Q_REQUIRED_RESULT int newFile();
+    Q_REQUIRED_RESULT int openFile(const QString &filename);
+    Q_REQUIRED_RESULT int openExtFile(const QString &ext, const QString &file);
 
     WingHex::ErrFile closeHandle(int handle);
     WingHex::ErrFile closeFile(int handle, bool force = false);
@@ -318,14 +310,14 @@ public:
     Q_REQUIRED_RESULT WingHex::ErrFile saveAsFile(int handle,
                                                   const QString &savename);
 
-    Q_REQUIRED_RESULT WingHex::ErrFile openCurrent();
+    Q_REQUIRED_RESULT int openCurrent();
     Q_REQUIRED_RESULT WingHex::ErrFile saveCurrent();
     Q_REQUIRED_RESULT WingHex::ErrFile exportCurrent(const QString &savename);
     Q_REQUIRED_RESULT WingHex::ErrFile saveAsCurrent(const QString &savename);
     Q_REQUIRED_RESULT WingHex::ErrFile closeCurrent(bool force = false);
 
     // workspace
-    Q_REQUIRED_RESULT WingHex::ErrFile openWorkSpace(const QString &filename);
+    Q_REQUIRED_RESULT int openWorkSpace(const QString &filename);
 
     // extension
     bool closeAllFiles();
