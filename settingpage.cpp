@@ -28,6 +28,10 @@ SettingPage::SettingPage(QWidget *parent) : PageBase(parent) {}
 
 bool SettingPage::showInRibbon() const { return false; }
 
+bool SettingInterface::containUnsavedChanges() const { return false; }
+
+void SettingInterface::discard() {}
+
 PluginPage::PluginPage(QWidget *parent) : PageBase(parent) {}
 
 PluginLightPage::PluginLightPage(QWidget *parent) {}

@@ -38,9 +38,11 @@ public:
 
 class WINGPLUGIN_EXPORT SettingInterface {
 public:
-    virtual void apply() = 0;
-    virtual void reset() = 0;
-    virtual void cancel() = 0;
+    virtual bool containUnsavedChanges() const;
+    virtual void discard();
+
+public:
+    virtual void restore() = 0;
 };
 
 class WINGPLUGIN_EXPORT SettingPage : public PageBase, public SettingInterface {
