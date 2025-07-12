@@ -122,6 +122,7 @@ struct WINGPLUGIN_EXPORT ScriptCallError {
 
 Q_DECLARE_METATYPE(WingHex::ScriptCallError)
 Q_DECLARE_METATYPE(WingHex::AppTheme)
+Q_DECLARE_METATYPE(WingHex::PluginInfo)
 Q_DECLARE_METATYPE(WingHex::CallTable)
 
 #endif // WINGPLUGIN_GLOBAL_H

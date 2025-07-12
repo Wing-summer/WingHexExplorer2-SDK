@@ -30,6 +30,8 @@ bool SettingPage::showInRibbon() const { return false; }
 
 bool SettingInterface::containUnsavedChanges() const { return false; }
 
+void SettingInterface::highlightUnsavedChange() {}
+
 void SettingInterface::discard() {}
 
 PluginPage::PluginPage(QWidget *parent) : PageBase(parent) {}

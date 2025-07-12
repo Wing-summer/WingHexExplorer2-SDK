@@ -39,6 +39,7 @@ public:
 class WINGPLUGIN_EXPORT SettingInterface {
 public:
     virtual bool containUnsavedChanges() const;
+    virtual void highlightUnsavedChange();
     virtual void discard();
 
 public:
