@@ -58,6 +58,18 @@ struct WINGPLUGIN_EXPORT WingDockWidgetInfo {
     Qt::DockWidgetArea area = Qt::DockWidgetArea::NoDockWidgetArea;
 };
 
+inline static WingDockWidgetInfo createWingDockWidget(
+    QString widgetName, QString displayName, QWidget *widget,
+    Qt::DockWidgetArea area = Qt::DockWidgetArea::NoDockWidgetArea) {
+    return WingDockWidgetInfo{widgetName, displayName, widget, area};
+}
+
+inline static WingDockWidgetInfo createWingDockWidget(
+    QString widgetName, QWidget *widget,
+    Qt::DockWidgetArea area = Qt::DockWidgetArea::NoDockWidgetArea) {
+    return WingDockWidgetInfo{widgetName, {}, widget, area};
+}
+
 struct WINGPLUGIN_EXPORT WingDependency {
     QString puid;
     QVersionNumber version;

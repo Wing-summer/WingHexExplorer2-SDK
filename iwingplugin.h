@@ -22,10 +22,12 @@
 #define IWINGPLUGIN_H
 
 #include "WingPlugin/iwingplugincalls.h"
+#include "hexeditorpalette.h"
 #include "iwingpluginbase.h"
 #include "wingeditorviewwidget.h"
 #include "wingplugin_global.h"
 
+#include <QShortcut>
 #include <QToolButton>
 
 namespace WingHex {
@@ -38,17 +40,17 @@ struct WINGPLUGIN_EXPORT SenderInfo {
     QVariant meta;
 };
 
-struct WINGPLUGIN_EXPORT WingRibbonToolBoxInfo {
-    struct WINGPLUGIN_EXPORT RibbonCatagories {
-        const QString FILE = QStringLiteral("File");
-        const QString EDIT = QStringLiteral("Edit");
-        const QString VIEW = QStringLiteral("View");
-        const QString SCRIPT = QStringLiteral("Script");
-        const QString PLUGIN = QStringLiteral("Plugin");
-        const QString SETTING = QStringLiteral("Setting");
-        const QString ABOUT = QStringLiteral("About");
-    };
+struct WINGPLUGIN_EXPORT WingRibbonCatagories {
+    inline static QString FILE = QStringLiteral("File");
+    inline static QString EDIT = QStringLiteral("Edit");
+    inline static QString VIEW = QStringLiteral("View");
+    inline static QString SCRIPT = QStringLiteral("Script");
+    inline static QString PLUGIN = QStringLiteral("Plugin");
+    inline static QString SETTING = QStringLiteral("Setting");
+    inline static QString ABOUT = QStringLiteral("About");
+};
 
+struct WINGPLUGIN_EXPORT WingRibbonToolBoxInfo {
     QString catagory;
     QString displayName;
 
@@ -81,7 +83,8 @@ public:
         ScriptPragma = 1u << 8,
         PluginFileOpened = 1u << 9,
         PluginFileClosed = 1u << 10,
-        ScriptPragmaInit = 1u << 11
+        ScriptPragmaInit = 1u << 11,
+        HexEditorViewPaint = 1u << 12
     };
     Q_DECLARE_FLAGS(RegisteredEvents, RegisteredEvent)
 
@@ -109,6 +112,83 @@ public:
     virtual RegisteredEvents registeredEvents() const;
 
 public:
+    // some helper class to make it more C++
+    inline static RegisteredEvents packupEvent(RegisteredEvent evs...) {
+        return WingHex::packup<QFlags, RegisteredEvent>(evs);
+    }
+
+    inline static WingRibbonToolBoxInfo
+    createRibbonToolBox(QString catagory, QString displayName) {
+        WingRibbonToolBoxInfo info;
+        info.catagory = catagory;
+        info.displayName = displayName;
+        return info;
+    }
+
+    inline static WingRibbonToolBoxInfo
+    createRibbonToolBox(QString catagory, QString displayName,
+                        const WingRibbonToolBoxInfo::Toolbox &toolbox...) {
+        WingRibbonToolBoxInfo info;
+        info.catagory = catagory;
+        info.displayName = displayName;
+        info.toolboxs =
+            WingHex::packup<QList, WingRibbonToolBoxInfo::Toolbox>(toolbox);
+        return info;
+    }
+
+    inline static WingRibbonToolBoxInfo
+    createRibbonToolBox(QString catagory,
+                        const WingRibbonToolBoxInfo::Toolbox &toolbox...) {
+        WingRibbonToolBoxInfo info;
+        info.catagory = catagory;
+        info.toolboxs =
+            WingHex::packup<QList, WingRibbonToolBoxInfo::Toolbox>(toolbox);
+        return info;
+    }
+
+    inline static WingRibbonToolBoxInfo::Toolbox
+    createToolBox(const QString &name, QToolButton *tools...) {
+        WingRibbonToolBoxInfo::Toolbox tb;
+        tb.name = name;
+        tb.tools = WingHex::packup<QList, QToolButton *>(tools);
+        return tb;
+    }
+
+    template <typename... Args>
+    using CompatibleToolButtonSlotArgs = std::enable_if_t<std::conjunction_v<
+        std::disjunction<
+            std::is_same<Args, Qt::ConnectionType>,
+            std::negation<std::is_convertible<Args, QKeySequence>>>...,
+        std::negation<std::is_convertible<Args, QIcon>>...,
+        std::negation<std::is_convertible<Args, const char *>>...,
+        std::negation<std::is_convertible<Args, QString>>...>>;
+
+    template <typename... Args,
+              typename = CompatibleToolButtonSlotArgs<Args...>>
+    inline static QToolButton *
+    createToolButton(const QIcon &icon, const QString &text,
+                     const QKeySequence &shortcut, Args &&...args) {
+        auto tb = createToolButton(icon, text, std::forward<Args>(args)...);
+        if (!shortcut.isEmpty()) {
+            auto shortCut = new QShortcut(shortcut, tb);
+            shortCut->setContext(Qt::WindowShortcut);
+            connect(shortCut, &QShortcut::activated, tb, &QToolButton::click);
+        }
+        return tb;
+    }
+
+    template <typename... Args,
+              typename = CompatibleToolButtonSlotArgs<Args...>>
+    inline static QToolButton *
+    createToolButton(const QIcon &icon, const QString &text, Args &&...args) {
+        auto tb = new QToolButton;
+        tb->setIcon(icon);
+        tb->setText(text);
+        connect(tb, &QToolButton::clicked, std::forward<Args>(args)...);
+        return tb;
+    }
+
+public:
     virtual QMenu *registeredHexContextMenu() const;
     virtual QList<WingRibbonToolBoxInfo> registeredRibbonTools() const;
     virtual QList<SettingPage *> registeredSettingPages() const;
@@ -129,6 +209,9 @@ public:
     virtual void eventReady();
 
     virtual bool eventClosing();
+
+    virtual void onPaintHexEditorView(QPainter *painter,
+                                      HexEditorPalette *palette);
 
 public:
     virtual bool eventOnScriptPragma(const QString &script,

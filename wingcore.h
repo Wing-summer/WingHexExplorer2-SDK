@@ -24,6 +24,7 @@
 #include "wingplugin_global.h"
 
 #include <QDebug>
+#include <QList>
 #include <QMetaType>
 #include <QMutex>
 #include <QMutexLocker>
@@ -31,6 +32,8 @@
 #include <QString>
 
 #include <tuple>
+#include <type_traits>
+#include <utility>
 
 namespace WingHex {
 
@@ -144,6 +147,24 @@ inline QByteArray getFunctionSig(const WingHex::FunctionSig &fn) {
             }                                                                  \
         }                                                                      \
     } while (0)
+
+template <template <typename> class Container, typename T, typename... Args>
+Container<T> packup(Args &&...args) {
+    // ensure every Arg is convertible to T
+    static_assert((std::is_convertible_v<Args, T> && ...),
+                  "All arguments must be convertible to T!");
+
+    Container<T> c;
+    if constexpr (std::is_same_v<Container<T>, QFlags<T>>) {
+        (c.setFlag(std::forward<Args>(args)), ...);
+    } else {
+        static_assert(std::is_same_v<Container<T>, QList<T>> ||
+                          std::is_same_v<Container<T>, QVector<T>>,
+                      "only QList and QVector are supported!");
+        (c.append(std::forward<Args>(args)), ...);
+    }
+    return c;
+}
 
 } // namespace WingHex
 

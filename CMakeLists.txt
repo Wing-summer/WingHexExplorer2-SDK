@@ -38,7 +38,9 @@ add_library(
     iwingmanager.h
     iwingmanager.cpp
     iwingangel.h
-    iwingangel.cpp)
+    iwingangel.cpp
+    hexeditorpalette.h
+    hexeditorpalette.cpp)
 
 target_link_libraries(WingPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
