@@ -11,6 +11,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 
+find_package(Qt6 REQUIRED COMPONENTS Core)
+
 add_library(
     WingPlugin SHARED
     iwingplugin.cpp
@@ -39,10 +41,13 @@ add_library(
     iwingmanager.cpp
     iwingangel.h
     iwingangel.cpp
-    hexeditorpalette.h
-    hexeditorpalette.cpp)
+    hexeditorcontext.h
+    hexeditorcontext.cpp
+    iwinghexeditorplugin.h
+    iwinghexeditorplugin.cpp)
 
 target_link_libraries(WingPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(WingPlugin PRIVATE Qt6::Core)
 
 target_compile_options(
     WingPlugin

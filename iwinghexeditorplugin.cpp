@@ -18,20 +18,44 @@
 ** =============================================================================
 */
 
-#ifndef HEXEDITORPALETTE_H
-#define HEXEDITORPALETTE_H
+#include "iwinghexeditorplugin.h"
 
-#include "WingPlugin/wingplugin_global.h"
+using namespace WingHex;
 
-namespace WingHex {
+IWingHexEditorPlugin::IWingHexEditorPlugin()
+    : IWingPluginCoreBase(), _core(new WingPluginCallsCore) {
+    this->installEventFilter(_core);
+}
 
-class WINGPLUGIN_EXPORT HexEditorPalette {
-public:
-    explicit HexEditorPalette();
+QMenu *IWingHexEditorPlugin::registeredHexContextMenu() const {
+    return nullptr;
+}
 
-public:
-};
+QList<WingRibbonToolBoxInfo>
+IWingHexEditorPlugin::registeredRibbonTools() const {
+    return {};
+}
 
-} // namespace WingHex
+QList<SettingPage *> IWingHexEditorPlugin::registeredSettingPages() const {
+    return {};
+}
 
-#endif // HEXEDITORPALETTE_H
+QMargins IWingHexEditorPlugin::contentMargins(HexEditorContext *context) const {
+    Q_UNUSED(context);
+    return {};
+}
+
+void IWingHexEditorPlugin::onPaintEvent(QPainter *painter, const QWidget *w,
+                                        HexEditorContext *context) {
+    Q_UNUSED(painter);
+    Q_UNUSED(w);
+    Q_UNUSED(context);
+}
+
+const QObject *IWingHexEditorPlugin::getSender() const { return this; }
+
+CallTable IWingHexEditorPlugin::callTable() const { return _core->callTable(); }
+
+QObject *IWingHexEditorPlugin::callReceiver() const {
+    return _core->callReceiver();
+}

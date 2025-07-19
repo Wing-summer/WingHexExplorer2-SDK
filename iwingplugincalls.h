@@ -30,19 +30,6 @@
 
 namespace WingHex {
 
-struct WINGPLUGIN_EXPORT HexPosition {
-    qsizetype line;
-    int column;
-    quint8 lineWidth;
-    int nibbleindex;
-
-    HexPosition();
-    Q_REQUIRED_RESULT qsizetype offset() const;
-    qsizetype operator-(const HexPosition &rhs) const;
-    bool operator==(const HexPosition &rhs) const;
-    bool operator!=(const HexPosition &rhs) const;
-};
-
 class IWingPlugin;
 
 class WINGPLUGIN_EXPORT IWingPluginCallsOp : public WingPluginCalls {

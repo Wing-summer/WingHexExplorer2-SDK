@@ -77,9 +77,11 @@ void IWingPlugin::eventReady() {}
 
 bool IWingPlugin::eventClosing() { return true; }
 
-void IWingPlugin::onPaintHexEditorView(QPainter *painter,
-                                       HexEditorPalette *palette) {
+void IWingPlugin::onPaintHexEditorView(QPainter *painter, QWidget *w,
+                                       HexEditorContext *context) {
     Q_UNUSED(painter);
+    Q_UNUSED(w);
+    Q_UNUSED(context);
 }
 
 bool IWingPlugin::eventOnScriptPragma(const QString &script,

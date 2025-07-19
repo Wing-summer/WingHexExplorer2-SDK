@@ -29,7 +29,9 @@
 #include <QMutex>
 #include <QMutexLocker>
 #include <QObject>
+#include <QShortcut>
 #include <QString>
+#include <QToolButton>
 
 #include <tuple>
 #include <type_traits>
@@ -82,6 +84,40 @@ enum MetaType : uint {
 };
 
 static_assert(MetaType::MetaMax < MetaType::Meta_Array);
+
+struct WINGPLUGIN_EXPORT HexPosition {
+    qsizetype line;
+    int column;
+    quint8 lineWidth;
+    int nibbleindex;
+
+    HexPosition();
+    Q_REQUIRED_RESULT qsizetype offset() const;
+    qsizetype operator-(const HexPosition &rhs) const;
+    bool operator==(const HexPosition &rhs) const;
+    bool operator!=(const HexPosition &rhs) const;
+};
+
+struct WINGPLUGIN_EXPORT WingRibbonCatagories {
+    inline static QString FILE = QStringLiteral("File");
+    inline static QString EDIT = QStringLiteral("Edit");
+    inline static QString VIEW = QStringLiteral("View");
+    inline static QString SCRIPT = QStringLiteral("Script");
+    inline static QString PLUGIN = QStringLiteral("Plugin");
+    inline static QString SETTING = QStringLiteral("Setting");
+    inline static QString ABOUT = QStringLiteral("About");
+};
+
+struct WINGPLUGIN_EXPORT WingRibbonToolBoxInfo {
+    QString catagory;
+    QString displayName;
+
+    struct WINGPLUGIN_EXPORT Toolbox {
+        QString name;
+        QList<QToolButton *> tools;
+    };
+    QList<Toolbox> toolboxs;
+};
 
 template <class Func>
 inline WingHex::FunctionSig getFunctionSig(Func &&, const char *fn) {
@@ -164,6 +200,75 @@ Container<T> packup(Args &&...args) {
         (c.append(std::forward<Args>(args)), ...);
     }
     return c;
+}
+
+inline static WingRibbonToolBoxInfo createRibbonToolBox(QString catagory,
+                                                        QString displayName) {
+    WingRibbonToolBoxInfo info;
+    info.catagory = catagory;
+    info.displayName = displayName;
+    return info;
+}
+
+inline static WingRibbonToolBoxInfo
+createRibbonToolBox(QString catagory, QString displayName,
+                    const WingRibbonToolBoxInfo::Toolbox &toolbox...) {
+    WingRibbonToolBoxInfo info;
+    info.catagory = catagory;
+    info.displayName = displayName;
+    info.toolboxs =
+        WingHex::packup<QList, WingRibbonToolBoxInfo::Toolbox>(toolbox);
+    return info;
+}
+
+inline static WingRibbonToolBoxInfo
+createRibbonToolBox(QString catagory,
+                    const WingRibbonToolBoxInfo::Toolbox &toolbox...) {
+    WingRibbonToolBoxInfo info;
+    info.catagory = catagory;
+    info.toolboxs =
+        WingHex::packup<QList, WingRibbonToolBoxInfo::Toolbox>(toolbox);
+    return info;
+}
+
+inline static WingRibbonToolBoxInfo::Toolbox
+createToolBox(const QString &name, QToolButton *tools...) {
+    WingRibbonToolBoxInfo::Toolbox tb;
+    tb.name = name;
+    tb.tools = WingHex::packup<QList, QToolButton *>(tools);
+    return tb;
+}
+
+template <typename... Args>
+using CompatibleToolButtonSlotArgs = std::enable_if_t<std::conjunction_v<
+    std::disjunction<std::is_same<Args, Qt::ConnectionType>,
+                     std::negation<std::is_convertible<Args, QKeySequence>>>...,
+    std::negation<std::is_convertible<Args, QIcon>>...,
+    std::negation<std::is_convertible<Args, const char *>>...,
+    std::negation<std::is_convertible<Args, QString>>...>>;
+
+template <typename... Args, typename = CompatibleToolButtonSlotArgs<Args...>>
+inline static QToolButton *
+createToolButton(const QIcon &icon, const QString &text,
+                 const QKeySequence &shortcut, Args &&...args) {
+    auto tb = createToolButton(icon, text, std::forward<Args>(args)...);
+    if (!shortcut.isEmpty()) {
+        auto shortCut = new QShortcut(shortcut, tb);
+        shortCut->setContext(Qt::WindowShortcut);
+        QObject::connect(shortCut, &QShortcut::activated, tb,
+                         &QToolButton::click);
+    }
+    return tb;
+}
+
+template <typename... Args, typename = CompatibleToolButtonSlotArgs<Args...>>
+inline static QToolButton *
+createToolButton(const QIcon &icon, const QString &text, Args &&...args) {
+    auto tb = new QToolButton;
+    tb->setIcon(icon);
+    tb->setText(text);
+    QObject::connect(tb, &QToolButton::clicked, std::forward<Args>(args)...);
+    return tb;
 }
 
 } // namespace WingHex
