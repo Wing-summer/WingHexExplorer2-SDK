@@ -45,6 +45,8 @@ QMargins IWingHexEditorPlugin::contentMargins(HexEditorContext *context) const {
     return {};
 }
 
+bool IWingHexEditorPlugin::disableOriginPainting() const { return false; }
+
 void IWingHexEditorPlugin::onPaintEvent(QPainter *painter, const QWidget *w,
                                         HexEditorContext *context) {
     Q_UNUSED(painter);

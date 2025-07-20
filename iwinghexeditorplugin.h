@@ -46,6 +46,8 @@ public:
     // additional offset that applies HexEditor
     virtual QMargins contentMargins(WingHex::HexEditorContext *context) const;
 
+    virtual bool disableOriginPainting() const;
+
 public:
     virtual void onPaintEvent(QPainter *painter, const QWidget *w,
                               WingHex::HexEditorContext *context);
