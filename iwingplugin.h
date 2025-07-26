@@ -40,7 +40,8 @@ struct WINGPLUGIN_EXPORT SenderInfo {
 class SettingPage;
 
 class WINGPLUGIN_EXPORT IWingPlugin : public IWingPluginBase,
-                                      public IWingPluginCalls {
+                                      public IWingPluginCalls,
+                                      public IWingHexEditorInterface {
     Q_OBJECT
 public:
     IWingPlugin();
@@ -97,7 +98,6 @@ public:
     }
 
 public:
-    virtual QMenu *registeredHexContextMenu() const;
     virtual QList<WingRibbonToolBoxInfo> registeredRibbonTools() const;
     virtual QList<SettingPage *> registeredSettingPages() const;
 

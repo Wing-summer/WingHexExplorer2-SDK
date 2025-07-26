@@ -27,10 +27,6 @@ IWingHexEditorPlugin::IWingHexEditorPlugin()
     this->installEventFilter(_core);
 }
 
-QMenu *IWingHexEditorPlugin::registeredHexContextMenu() const {
-    return nullptr;
-}
-
 QList<WingRibbonToolBoxInfo>
 IWingHexEditorPlugin::registeredRibbonTools() const {
     return {};

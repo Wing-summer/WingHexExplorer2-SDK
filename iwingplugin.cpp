@@ -40,8 +40,6 @@ IWingPlugin::RegisteredEvents IWingPlugin::registeredEvents() const {
     return RegisteredEvent::None;
 }
 
-QMenu *IWingPlugin::registeredHexContextMenu() const { return nullptr; }
-
 QList<WingRibbonToolBoxInfo> IWingPlugin::registeredRibbonTools() const {
     return {};
 }

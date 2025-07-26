@@ -21,6 +21,7 @@
 #ifndef IWINGPLUGINBASE_H
 #define IWINGPLUGINBASE_H
 
+#include "WingPlugin/hexeditorcontext.h"
 #include "WingPlugin/iwingpluginbasecalls.h"
 #include "wingplugin_global.h"
 
@@ -49,6 +50,18 @@ public:
 
 public:
     virtual void onRegisterScriptObj(WingHex::IWingAngel *o);
+};
+
+class WINGPLUGIN_EXPORT IWingHexEditorInterface {
+public:
+    IWingHexEditorInterface();
+
+public:
+    virtual QMenu *registeredHexContextMenu() const;
+
+public:
+    virtual void prepareCallEditorContext(HexEditorContext *context);
+    virtual void finishCallEditorContext(HexEditorContext *context);
 };
 
 class WINGPLUGIN_EXPORT IWingPluginBase : public IWingPluginCoreBase {

@@ -30,7 +30,8 @@ namespace WingHex {
 
 class SettingPage;
 
-class WINGPLUGIN_EXPORT IWingHexEditorPlugin : public IWingPluginCoreBase {
+class WINGPLUGIN_EXPORT IWingHexEditorPlugin : public IWingPluginCoreBase,
+                                               public IWingHexEditorInterface {
     Q_OBJECT
 
 public:
@@ -39,7 +40,6 @@ public:
 public:
     virtual const QString comment() const = 0;
 
-    virtual QMenu *registeredHexContextMenu() const;
     virtual QList<WingRibbonToolBoxInfo> registeredRibbonTools() const;
     virtual QList<SettingPage *> registeredSettingPages() const;
 

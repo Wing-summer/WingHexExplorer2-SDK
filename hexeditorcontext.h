@@ -26,11 +26,14 @@
 
 namespace WingHex {
 
-class WINGPLUGIN_EXPORT HexEditorContext {
-public:
-    explicit HexEditorContext();
+class WINGPLUGIN_EXPORT HexEditorContext : public QObject {
+    Q_OBJECT
 
 public:
+    explicit HexEditorContext(QObject *parent = nullptr);
+
+public:
+    virtual QString docFileName() const = 0;
     virtual QFontMetricsF fontMetrics() const = 0;
 
 public:

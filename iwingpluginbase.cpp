@@ -47,3 +47,19 @@ IWingPluginCoreBase::IWingPluginCoreBase() : IWingPluginBaseCalls() {}
 QString IWingPluginCoreBase::retranslate(const QString &str) { return str; }
 
 void IWingPluginCoreBase::onRegisterScriptObj(IWingAngel *o) { Q_UNUSED(o); }
+
+IWingHexEditorInterface::IWingHexEditorInterface() {}
+
+QMenu *IWingHexEditorInterface::registeredHexContextMenu() const {
+    return nullptr;
+}
+
+void IWingHexEditorInterface::prepareCallEditorContext(
+    HexEditorContext *context) {
+    Q_UNUSED(context);
+}
+
+void IWingHexEditorInterface::finishCallEditorContext(
+    HexEditorContext *context) {
+    Q_UNUSED(context);
+}

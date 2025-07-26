@@ -24,7 +24,7 @@
 
 using namespace WingHex;
 
-HexEditorContext::HexEditorContext() {}
+HexEditorContext::HexEditorContext(QObject *parent) : QObject(parent) {}
 
 void HexEditorContext::renderHexBackground(QPainter *painter,
                                            const QPoint &topLeft,
