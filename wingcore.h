@@ -51,6 +51,30 @@ using UNSAFE_RET =
                  double, void *, ScriptCallError>;
 using UNSAFE_SCFNPTR = std::function<UNSAFE_RET(const QList<void *> &)>;
 
+template <typename T>
+static inline QVector<void *> normalizePackedVector(QVector<T> &buffer) {
+    QVector<void *> ret;
+    if constexpr (std::is_arithmetic_v<T>) {
+        auto len = buffer.size();
+        ret.resize(len);
+        for (int i = 0; i < len; ++i) {
+            auto &ptr = ret[i];
+            reinterpret_cast<T &>(ptr) = buffer.at(i);
+        }
+    } else {
+        for (auto &item : buffer) {
+            ret.append(&item);
+        }
+    }
+    return ret;
+}
+
+template <typename T>
+static inline QList<void *> normalizePackedList(QList<T> &buffer) {
+    static_assert(std::is_same_v<QList<void *>, QVector<void *>>);
+    return normalizePackedVector(buffer);
+}
+
 enum MetaType : uint {
     Meta_Void,
 
