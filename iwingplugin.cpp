@@ -82,11 +82,12 @@ void IWingPlugin::onPaintHexEditorView(QPainter *painter, QWidget *w,
     Q_UNUSED(context);
 }
 
-bool IWingPlugin::eventOnScriptPragma(const QString &script,
-                                      const QStringList &comments) {
+std::optional<PragmaResult>
+IWingPlugin::eventOnScriptPragma(const QString &script,
+                                 const QStringList &comments) {
     Q_UNUSED(script);
     Q_UNUSED(comments);
-    return false;
+    return {};
 }
 
 void IWingPlugin::eventOnScriptPragmaInit() {}

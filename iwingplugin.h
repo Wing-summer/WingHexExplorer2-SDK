@@ -122,8 +122,8 @@ public:
                                       HexEditorContext *context);
 
 public:
-    virtual bool eventOnScriptPragma(const QString &script,
-                                     const QStringList &comments);
+    virtual std::optional<PragmaResult>
+    eventOnScriptPragma(const QString &script, const QStringList &comments);
 
     virtual void eventOnScriptPragmaInit();
 

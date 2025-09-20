@@ -164,6 +164,12 @@ struct WINGPLUGIN_EXPORT ScriptCallError {
     QString errmsg;
 };
 
+struct WINGPLUGIN_EXPORT PragmaResult {
+    QString warn;
+    QString info;
+    QString error;
+};
+
 } // namespace WingHex
 
 Q_DECLARE_METATYPE(WingHex::ScriptCallError)
