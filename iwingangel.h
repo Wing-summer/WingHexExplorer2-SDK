@@ -24,6 +24,9 @@
 #include "WingPlugin/wingcore.h"
 #include "WingPlugin/wingplugin_global.h"
 
+#include <QHash>
+#include <type_traits>
+
 namespace WingHex {
 
 // some classes and helper copied from angelscript.h
@@ -292,6 +295,79 @@ public:
 
 public:
     // copy from angelscript.h
+
+    // Object type flags
+    enum asEObjTypeFlags : quint64 {
+        asOBJ_REF = (1 << 0),
+        asOBJ_VALUE = (1 << 1),
+        asOBJ_GC = (1 << 2),
+        asOBJ_POD = (1 << 3),
+        asOBJ_NOHANDLE = (1 << 4),
+        asOBJ_SCOPED = (1 << 5),
+        asOBJ_TEMPLATE = (1 << 6),
+        asOBJ_ASHANDLE = (1 << 7),
+        asOBJ_APP_CLASS = (1 << 8),
+        asOBJ_APP_CLASS_CONSTRUCTOR = (1 << 9),
+        asOBJ_APP_CLASS_DESTRUCTOR = (1 << 10),
+        asOBJ_APP_CLASS_ASSIGNMENT = (1 << 11),
+        asOBJ_APP_CLASS_COPY_CONSTRUCTOR = (1 << 12),
+        asOBJ_APP_CLASS_C = (asOBJ_APP_CLASS + asOBJ_APP_CLASS_CONSTRUCTOR),
+        asOBJ_APP_CLASS_CD = (asOBJ_APP_CLASS + asOBJ_APP_CLASS_CONSTRUCTOR +
+                              asOBJ_APP_CLASS_DESTRUCTOR),
+        asOBJ_APP_CLASS_CA = (asOBJ_APP_CLASS + asOBJ_APP_CLASS_CONSTRUCTOR +
+                              asOBJ_APP_CLASS_ASSIGNMENT),
+        asOBJ_APP_CLASS_CK = (asOBJ_APP_CLASS + asOBJ_APP_CLASS_CONSTRUCTOR +
+                              asOBJ_APP_CLASS_COPY_CONSTRUCTOR),
+        asOBJ_APP_CLASS_CDA =
+            (asOBJ_APP_CLASS + asOBJ_APP_CLASS_CONSTRUCTOR +
+             asOBJ_APP_CLASS_DESTRUCTOR + asOBJ_APP_CLASS_ASSIGNMENT),
+        asOBJ_APP_CLASS_CDK =
+            (asOBJ_APP_CLASS + asOBJ_APP_CLASS_CONSTRUCTOR +
+             asOBJ_APP_CLASS_DESTRUCTOR + asOBJ_APP_CLASS_COPY_CONSTRUCTOR),
+        asOBJ_APP_CLASS_CAK =
+            (asOBJ_APP_CLASS + asOBJ_APP_CLASS_CONSTRUCTOR +
+             asOBJ_APP_CLASS_ASSIGNMENT + asOBJ_APP_CLASS_COPY_CONSTRUCTOR),
+        asOBJ_APP_CLASS_CDAK =
+            (asOBJ_APP_CLASS + asOBJ_APP_CLASS_CONSTRUCTOR +
+             asOBJ_APP_CLASS_DESTRUCTOR + asOBJ_APP_CLASS_ASSIGNMENT +
+             asOBJ_APP_CLASS_COPY_CONSTRUCTOR),
+        asOBJ_APP_CLASS_D = (asOBJ_APP_CLASS + asOBJ_APP_CLASS_DESTRUCTOR),
+        asOBJ_APP_CLASS_DA = (asOBJ_APP_CLASS + asOBJ_APP_CLASS_DESTRUCTOR +
+                              asOBJ_APP_CLASS_ASSIGNMENT),
+        asOBJ_APP_CLASS_DK = (asOBJ_APP_CLASS + asOBJ_APP_CLASS_DESTRUCTOR +
+                              asOBJ_APP_CLASS_COPY_CONSTRUCTOR),
+        asOBJ_APP_CLASS_DAK =
+            (asOBJ_APP_CLASS + asOBJ_APP_CLASS_DESTRUCTOR +
+             asOBJ_APP_CLASS_ASSIGNMENT + asOBJ_APP_CLASS_COPY_CONSTRUCTOR),
+        asOBJ_APP_CLASS_A = (asOBJ_APP_CLASS + asOBJ_APP_CLASS_ASSIGNMENT),
+        asOBJ_APP_CLASS_AK = (asOBJ_APP_CLASS + asOBJ_APP_CLASS_ASSIGNMENT +
+                              asOBJ_APP_CLASS_COPY_CONSTRUCTOR),
+        asOBJ_APP_CLASS_K =
+            (asOBJ_APP_CLASS + asOBJ_APP_CLASS_COPY_CONSTRUCTOR),
+        asOBJ_APP_CLASS_MORE_CONSTRUCTORS = (quint64(1) << 31),
+        asOBJ_APP_PRIMITIVE = (1 << 13),
+        asOBJ_APP_FLOAT = (1 << 14),
+        asOBJ_APP_ARRAY = (1 << 15),
+        asOBJ_APP_CLASS_ALLINTS = (1 << 16),
+        asOBJ_APP_CLASS_ALLFLOATS = (1 << 17),
+        asOBJ_NOCOUNT = (1 << 18),
+        asOBJ_APP_CLASS_ALIGN8 = (1 << 19),
+        asOBJ_IMPLICIT_HANDLE = (1 << 20),
+        asOBJ_APP_CLASS_UNION = (quint64(1) << 32),
+        asOBJ_MASK_VALID_FLAGS = 0x1801FFFFFul,
+        // Internal flags
+        asOBJ_SCRIPT_OBJECT = (1 << 21),
+        asOBJ_SHARED = (1 << 22),
+        asOBJ_NOINHERIT = (1 << 23),
+        asOBJ_FUNCDEF = (1 << 24),
+        asOBJ_LIST_PATTERN = (1 << 25),
+        asOBJ_ENUM = (1 << 26),
+        asOBJ_TEMPLATE_SUBTYPE = (1 << 27),
+        asOBJ_TYPEDEF = (1 << 28),
+        asOBJ_ABSTRACT = (1 << 29),
+        asOBJ_APP_ALIGN16 = (1 << 30)
+    };
+
     enum asBehaviours {
         // Value object memory management
         asBEHAVE_CONSTRUCT,
@@ -391,6 +467,29 @@ public:
         bool isCompositeIndirect = false) = 0;
 
 public:
+    struct EvalResult {
+        QString value;   // for display
+        bool expandable; // indicate whether is expandable
+    };
+
+    struct ExpandResult {
+        QString type;
+        void *buffer;
+    };
+
+    using EvaluateResult =
+        std::variant<std::monostate, EvalResult, QVector<ExpandResult>,
+                     QHash<QString, ExpandResult>>;
+
+    enum class EvalMode { Eval, Expand };
+
+    using Evaluator =
+        std::function<EvaluateResult(void *result, EvalMode mode)>;
+
+    virtual asRetCodes registerObjectEvaluator(const char *obj,
+                                               const Evaluator &ev) = 0;
+
+public:
     virtual asRetCodes registerInterface(const char *name) = 0;
 
     virtual asRetCodes registerInterfaceMethod(const char *intf,
@@ -407,6 +506,80 @@ public:
     asRetCodes registerEnums(const QString &type,
                              const QHash<QString, int> value);
 };
+
+template <typename T>
+quint32 asGetTypeTraits() {
+#if defined(_MSC_VER) || defined(_LIBCPP_TYPE_TRAITS) || (__GNUC__ >= 5) ||    \
+    (defined(__clang__) && !defined(CLANG_PRE_STANDARD))
+    // MSVC, XCode/Clang, and gnuc 5+
+    // C++11 compliant code
+    bool hasConstructor = std::is_default_constructible<T>::value &&
+                          !std::is_trivially_default_constructible<T>::value;
+    bool hasDestructor = std::is_destructible<T>::value &&
+                         !std::is_trivially_destructible<T>::value;
+    bool hasAssignmentOperator = std::is_copy_assignable<T>::value &&
+                                 !std::is_trivially_copy_assignable<T>::value;
+    bool hasCopyConstructor = std::is_copy_constructible<T>::value &&
+                              !std::is_trivially_copy_constructible<T>::value;
+#elif (defined(__GNUC__) &&                                                    \
+       (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 8))) ||            \
+    (defined(__clang__) && defined(CLANG_PRE_STANDARD))
+    // gnuc 4.8 is using a mix of C++11 standard and pre-standard templates
+    bool hasConstructor = std::is_default_constructible<T>::value &&
+                          !std::has_trivial_default_constructor<T>::value;
+    bool hasDestructor = std::is_destructible<T>::value &&
+                         !std::is_trivially_destructible<T>::value;
+    bool hasAssignmentOperator = std::is_copy_assignable<T>::value &&
+                                 !std::has_trivial_copy_assign<T>::value;
+    bool hasCopyConstructor = std::is_copy_constructible<T>::value &&
+                              !std::has_trivial_copy_constructor<T>::value;
+#else
+    // All other compilers and versions are assumed to use non C++11
+    // compliant code until proven otherwise Not fully C++11 compliant. The
+    // has_trivial checks were used while the standard was still being
+    // elaborated, but were then removed in favor of the above is_trivially
+    // checks
+    // http://stackoverflow.com/questions/12702103/writing-code-that-works-when-has-trivial-destructor-is-defined-instead-of-is
+    // https://github.com/mozart/mozart2/issues/51
+    bool hasConstructor = std::is_default_constructible<T>::value &&
+                          !std::has_trivial_default_constructor<T>::value;
+    bool hasDestructor = std::is_destructible<T>::value &&
+                         !std::has_trivial_destructor<T>::value;
+    bool hasAssignmentOperator = std::is_copy_assignable<T>::value &&
+                                 !std::has_trivial_copy_assign<T>::value;
+    bool hasCopyConstructor = std::is_copy_constructible<T>::value &&
+                              !std::has_trivial_copy_constructor<T>::value;
+#endif
+    bool isFloat = std::is_floating_point<T>::value;
+    bool isPrimitive = std::is_integral<T>::value ||
+                       std::is_pointer<T>::value || std::is_enum<T>::value;
+    bool isClass = std::is_class<T>::value;
+    bool isArray = std::is_array<T>::value;
+
+    if (isFloat)
+        return IWingAngel::asOBJ_APP_FLOAT;
+    if (isPrimitive)
+        return IWingAngel::asOBJ_APP_PRIMITIVE;
+
+    if (isClass) {
+        quint64 flags = IWingAngel::asOBJ_APP_CLASS;
+        if (hasConstructor)
+            flags |= IWingAngel::asOBJ_APP_CLASS_CONSTRUCTOR;
+        if (hasDestructor)
+            flags |= IWingAngel::asOBJ_APP_CLASS_DESTRUCTOR;
+        if (hasAssignmentOperator)
+            flags |= IWingAngel::asOBJ_APP_CLASS_ASSIGNMENT;
+        if (hasCopyConstructor)
+            flags |= IWingAngel::asOBJ_APP_CLASS_COPY_CONSTRUCTOR;
+        return flags;
+    }
+
+    if (isArray)
+        return IWingAngel::asOBJ_APP_ARRAY;
+
+    // Unknown type traits
+    return 0;
+}
 
 } // namespace WingHex
 

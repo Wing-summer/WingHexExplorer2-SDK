@@ -115,6 +115,8 @@ public:
 
 public slots:
     virtual void update() = 0;
+    virtual void update(const QRect &r) = 0;
+    virtual void update(const QRegion &r) = 0;
 
 public:
     // helper
