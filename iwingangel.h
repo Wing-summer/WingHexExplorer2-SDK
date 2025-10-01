@@ -581,6 +581,39 @@ quint32 asGetTypeTraits() {
     return 0;
 }
 
+template <typename T>
+inline void registerMetaEnum(IWingAngel *o) {
+    Q_ASSERT(o);
+    auto e = QMetaEnum::fromType<T>();
+    auto len = e.keyCount();
+    auto ename = e.enumName();
+    auto r = o->registerEnum(ename);
+    Q_ASSERT(r != asRetCodes::asSUCCESS);
+    Q_UNUSED(r);
+    for (int i = 0; i < len; ++i) {
+        auto key = e.key(i);
+        auto value = e.value(i);
+        r = o->registerEnumValue(ename, key, value);
+        Q_ASSERT(r != asRetCodes::asSUCCESS);
+        Q_UNUSED(r);
+    }
+}
+
+template <typename T>
+inline T resolveUnsafeParamAs(void *param) {
+    return *reinterpret_cast<T *>(param);
+}
+
+template <typename T, typename = std::enable_if<!std::is_pointer_v<T>>>
+inline T resolveUnsafeParamAsIn(void *param) {
+    return **reinterpret_cast<T **>(param);
+}
+
+template <typename T, typename = std::enable_if<!std::is_pointer_v<T>>>
+inline T *resolveUnsafeParamAsOut(void *param) {
+    return *reinterpret_cast<T **>(param);
+}
+
 } // namespace WingHex
 
 Q_DECLARE_METATYPE(WingHex::IWingGeneric)
