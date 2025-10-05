@@ -43,10 +43,6 @@
 
 #define WING_SERVICE Q_INVOKABLE
 
-#ifndef Q_MOC_RUN
-#define WING_API
-#endif
-
 namespace WingHex {
 
 Q_DECL_UNUSED constexpr auto SDKVERSION = 18;
