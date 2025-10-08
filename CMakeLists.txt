@@ -51,11 +51,33 @@ target_link_libraries(WingPlugin PRIVATE Qt6::Core)
 
 target_compile_options(
     WingPlugin
-    PRIVATE $<$<AND:$<NOT:$<CXX_COMPILER_ID:MSVC>>,$<CONFIG:Release>>:-g>
-            $<$<CXX_COMPILER_ID:MSVC>:$<$<CONFIG:Release>:/Zi>>)
+    PRIVATE
+        $<$<AND:$<CONFIG:Release>,$<OR:$<CXX_COMPILER_ID:GNU>,$<CXX_COMPILER_ID:Clang>>>:-g1>
+        $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:MSVC>>:/Z7>
+        $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:GNU>>:
+        -ffunction-sections
+        -fdata-sections
+        -fvisibility=hidden
+        -fvisibility-inlines-hidden
+        -fno-var-tracking
+        -fno-var-tracking-assignments
+        >
+        $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:Clang>>:
+        -ffunction-sections
+        -fdata-sections
+        -fvisibility=hidden
+        -fvisibility-inlines-hidden
+        -fno-var-tracking
+        >)
 
-target_link_options(WingPlugin PRIVATE
-                    $<$<CXX_COMPILER_ID:MSVC>:$<$<CONFIG:Release>:/DEBUG>>)
+target_link_options(
+    WingPlugin
+    PRIVATE
+    $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:MSVC>>:/DEBUG
+    /OPT:REF
+    /OPT:ICF>
+    $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:GNU>>:-Wl,--gc-sections>
+    $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:Clang>>:-Wl,--gc-sections>)
 
 target_include_directories(WingPlugin PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
