@@ -46,10 +46,100 @@ using MetaCallInfo = std::tuple<const char *, Qt::ConnectionType, qsizetype,
                                 const void *const *, const char *const *,
                                 const QtPrivate::QMetaTypeInterface *const *>;
 
+class WINGPLUGIN_EXPORT ValueObjValue {
+public:
+    ValueObjValue(void *ptr, std::function<void(void *)> deleter) noexcept
+        : _ptr(ptr), _deleter(deleter) {}
+    ~ValueObjValue() noexcept {
+        if (_deleter) {
+            _deleter(_ptr);
+        }
+    }
+
+    inline void *data() const { return _ptr; }
+
+private:
+    void *_ptr;
+    std::function<void(void *)> _deleter;
+
+    Q_DISABLE_COPY(ValueObjValue)
+};
+
+using ValueObjPtr = std::shared_ptr<ValueObjValue>;
+
+template <typename T, typename = std::enable_if<!std::is_same_v<T, void>>>
+inline ValueObjPtr makeValueObjPtr(T *ptr) {
+    return makeValueObjPtr(
+        ptr, [](void *memory) { delete static_cast<T *>(memory); });
+}
+
+template <typename T, typename... _Args>
+inline ValueObjPtr makeValueObject(_Args &&...__args) {
+    return std::make_shared<ValueObjValue>(
+        new T(std::forward<_Args>(__args)...),
+        [](void *memory) { delete static_cast<T *>(memory); });
+}
+
+inline ValueObjPtr makeValueObjPtr(void *ptr,
+                                   std::function<void(void *)> deleter = {}) {
+    return std::make_shared<ValueObjValue>(ptr, deleter);
+}
+
+using RefObjPtr = void *;
+
+template <typename T>
+inline RefObjPtr makeRefObjPtr(T *value) {
+    return static_cast<void *>(value);
+}
+
+template <typename T, typename... _Args>
+inline RefObjPtr makeRefObject(_Args &&...__args) {
+    return static_cast<void *>(new T(std::forward<_Args>(__args)...));
+}
+
 using UNSAFE_RET =
     std::variant<std::monostate, bool, quint8, quint16, quint32, quint64, float,
-                 double, void *, ScriptCallError>;
+                 double, RefObjPtr, ValueObjPtr, ScriptCallError>;
 using UNSAFE_SCFNPTR = std::function<UNSAFE_RET(const QList<void *> &)>;
+
+template <typename T>
+inline UNSAFE_RET makeUnsafeRet(const T &v) {
+    using rT = std::remove_cv_t<T>;
+
+    if constexpr (std::is_integral_v<rT>) {
+        if constexpr (std::is_same_v<rT, bool>) {
+            return v;
+        }
+
+        constexpr auto op = [](const T &v) -> UNSAFE_RET {
+            switch (sizeof(T)) {
+            case sizeof(quint8):
+                return quint8(v);
+            case sizeof(quint16):
+                return quint16(v);
+            case sizeof(quint32):
+                return quint32(v);
+            case sizeof(quint64):
+                return quint64(v);
+            }
+        };
+
+        return op(v);
+    } else if constexpr (std::is_floating_point_v<rT>) {
+        if constexpr (std::is_same_v<rT, float>) {
+            return float(v);
+        } else {
+            return double(v); // long double -> double
+        }
+    } else if constexpr (std::is_same_v<RefObjPtr, rT> ||
+                         std::is_same_v<ValueObjPtr, rT> ||
+                         std::is_same_v<ScriptCallError, T>) {
+        return v;
+    } else {
+        static_assert(false, "Unacceptable type with UNSAFE_RET");
+        return {};
+    }
+}
 
 template <typename T>
 static inline QVector<void *> normalizePackedVector(QVector<T> &buffer) {
