@@ -122,6 +122,7 @@ inline UNSAFE_RET makeUnsafeRet(const T &v) {
             case sizeof(quint64):
                 return quint64(v);
             }
+            return {};
         };
 
         return op(v);
