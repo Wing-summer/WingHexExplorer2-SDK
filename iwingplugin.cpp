@@ -62,8 +62,8 @@ void IWingPlugin::eventCursorPositionChanged(const HexPosition &pos) {
 }
 
 void IWingPlugin::eventPluginFile(PluginFileEvent e, FileType type,
-                                  const QString &newfileName, int handle,
-                                  const QString &oldfileName) {
+                                  const QUrl &newfileName, int handle,
+                                  const QUrl &oldfileName) {
     Q_UNUSED(e);
     Q_UNUSED(newfileName);
     Q_UNUSED(oldfileName);

@@ -65,8 +65,8 @@ bool IWingPluginCalls::isCurrentDocEditing() const {
     return ret;
 }
 
-QString IWingPluginCallsOp::currentDocFilename() const {
-    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentDocFilename);
+QString IWingPluginCallsOp::currentDocFile() const {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentDocFile);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());

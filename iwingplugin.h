@@ -111,8 +111,8 @@ public:
     virtual void eventCursorPositionChanged(const WingHex::HexPosition &pos);
 
     virtual void eventPluginFile(PluginFileEvent e, FileType type,
-                                 const QString &newfileName, int handle,
-                                 const QString &oldfileName);
+                                 const QUrl &newfileName, int handle,
+                                 const QUrl &oldfileName);
 
     virtual void eventReady();
 
