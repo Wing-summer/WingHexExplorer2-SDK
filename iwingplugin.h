@@ -29,14 +29,6 @@
 
 namespace WingHex {
 
-class IWingPlugin;
-
-struct WINGPLUGIN_EXPORT SenderInfo {
-    QString plgcls;
-    QString puid;
-    QVariant meta;
-};
-
 class SettingPage;
 
 class WINGPLUGIN_EXPORT IWingPlugin : public IWingPluginBase,

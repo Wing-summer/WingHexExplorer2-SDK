@@ -54,6 +54,12 @@ struct WINGPLUGIN_EXPORT WingDockWidgetInfo {
     Qt::DockWidgetArea area = Qt::DockWidgetArea::NoDockWidgetArea;
 };
 
+struct WINGPLUGIN_EXPORT SenderInfo {
+    QString plgcls;
+    QString puid;
+    QVariant meta;
+};
+
 inline static WingDockWidgetInfo createWingDockWidget(
     QString widgetName, QString displayName, QWidget *widget,
     Qt::DockWidgetArea area = Qt::DockWidgetArea::NoDockWidgetArea) {
