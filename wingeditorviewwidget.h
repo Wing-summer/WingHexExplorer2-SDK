@@ -56,12 +56,25 @@ public:
     virtual WingEditorViewWidget *clone() = 0;
 
 signals:
-    void savedStateChanged(bool b);
+    void savedStateChanged();
+
+public:
+    bool isWorkSpace() const;
+
+    bool isNewFile() const;
+
+    bool isCloneFile() const;
+
+    bool isExtensionFile() const;
+
+    bool isCommonFile() const;
+
+    bool hasCloneChildren() const;
 
 public slots:
     void raiseView();
 
-    virtual void toggled(bool isVisible) = 0;
+    virtual void toggled(bool isVisible);
 
     virtual void loadState(const QByteArray &state);
 
@@ -69,12 +82,16 @@ public slots:
 
     virtual QByteArray saveState();
 
+    virtual void setSaved();
+
     // return false then stop closing and swith the view
     // but you cannot prevent closing the cloned view
     virtual bool onClosing();
 
-    // cloned view will never call it
     virtual void onWorkSpaceNotify(bool isWorkSpace);
+
+protected:
+    QVariant viewProperty(const char *property) const;
 
     // WingPluginCallConvertor interface
 protected:

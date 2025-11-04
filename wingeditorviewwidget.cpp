@@ -26,6 +26,30 @@ WingHex::WingEditorViewWidget::WingEditorViewWidget(QWidget *parent)
     this->installEventFilter(_core);
 }
 
+bool WingHex::WingEditorViewWidget::isWorkSpace() const {
+    return viewProperty("isWorkSpace").toBool();
+}
+
+bool WingHex::WingEditorViewWidget::isNewFile() const {
+    return viewProperty("isNewFile").toBool();
+}
+
+bool WingHex::WingEditorViewWidget::isCloneFile() const {
+    return viewProperty("isCloneFile").toBool();
+}
+
+bool WingHex::WingEditorViewWidget::isExtensionFile() const {
+    return viewProperty("isExtensionFile").toBool();
+}
+
+bool WingHex::WingEditorViewWidget::isCommonFile() const {
+    return viewProperty("isCommonFile").toBool();
+}
+
+bool WingHex::WingEditorViewWidget::hasCloneChildren() const {
+    return viewProperty("hasCloneChildren").toBool();
+}
+
 void WingHex::WingEditorViewWidget::raiseView() {
     constexpr auto VIEW_PROPERTY = "__VIEW__";
     constexpr auto VIEW_ID_PROPERTY = "__ID__";
@@ -40,6 +64,10 @@ void WingHex::WingEditorViewWidget::raiseView() {
     }
 }
 
+void WingHex::WingEditorViewWidget::toggled(bool isVisible) {
+    Q_UNUSED(isVisible);
+}
+
 void WingHex::WingEditorViewWidget::loadState(const QByteArray &state) {
     Q_UNUSED(state);
 }
@@ -48,10 +76,21 @@ bool WingHex::WingEditorViewWidget::hasUnsavedState() { return false; }
 
 QByteArray WingHex::WingEditorViewWidget::saveState() { return {}; }
 
+void WingHex::WingEditorViewWidget::setSaved() {}
+
 bool WingHex::WingEditorViewWidget::onClosing() { return true; }
 
 void WingHex::WingEditorViewWidget::onWorkSpaceNotify(bool isWorkSpace) {
     Q_UNUSED(isWorkSpace);
+}
+
+QVariant
+WingHex::WingEditorViewWidget::viewProperty(const char *property) const {
+    constexpr auto VIEW_PROPERTY = "__VIEW__";
+    auto rawptr = reinterpret_cast<QObject *>(
+        this->property(VIEW_PROPERTY).value<quintptr>());
+    auto ptr = qobject_cast<QWidget *>(rawptr);
+    return ptr->property(property);
 }
 
 const QObject *WingHex::WingEditorViewWidget::getSender() const { return this; }
