@@ -37,8 +37,6 @@ add_library(
     wingplugincallconvertor.h
     wingpluginwidget.h
     wingpluginwidget.cpp
-    iwingmanager.h
-    iwingmanager.cpp
     iwingangel.h
     iwingangel.cpp
     hexeditorcontext.h
