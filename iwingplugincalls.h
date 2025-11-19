@@ -115,7 +115,10 @@ public:
 #endif
 
 public:
-    Q_REQUIRED_RESULT QString currentDocFile() const;
+    Q_REQUIRED_RESULT QUrl currentDocFile() const;
+    Q_REQUIRED_RESULT QString currentDocFileName() const;
+    Q_REQUIRED_RESULT QUrl currentDocWorkSpace() const;
+    Q_REQUIRED_RESULT QString currentDocWorkSpaceName() const;
 
     // document
     Q_REQUIRED_RESULT bool isReadOnly() const;

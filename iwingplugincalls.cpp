@@ -65,8 +65,32 @@ bool IWingPluginCalls::isCurrentDocEditing() const {
     return ret;
 }
 
-QString IWingPluginCallsOp::currentDocFile() const {
+QUrl IWingPluginCallsOp::currentDocFile() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentDocFile);
+    QUrl ret;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
+    return ret;
+}
+
+QString IWingPluginCallsOp::currentDocFileName() const {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentDocFileName);
+    QString ret;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
+    return ret;
+}
+
+QUrl IWingPluginCallsOp::currentDocWorkSpace() const {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentDocWorkSpace);
+    QUrl ret;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
+    return ret;
+}
+
+QString IWingPluginCallsOp::currentDocWorkSpaceName() const {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::currentDocWorkSpaceName);
     QString ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
