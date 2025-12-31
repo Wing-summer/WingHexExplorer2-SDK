@@ -926,51 +926,11 @@ bool IWingPluginCallsOp::invokeServiceImpl(
     return ret;
 }
 
-bool IWingPluginCalls::closeAllFiles() {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::closeAllFiles);
-    bool ret = false;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
-             getSender());
-    return ret;
-}
-
-int IWingPluginCalls::openWorkSpace(const QString &filename) {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::openWorkSpace);
-    int ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             filename);
-    return ret;
-}
-
-ErrFile IWingPluginCalls::saveAsCurrent(const QString &savename) {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::saveAsCurrent);
-    ErrFile ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             savename);
-    return ret;
-}
-
-ErrFile IWingPluginCalls::exportCurrent(const QString &savename) {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::exportCurrent);
-    ErrFile ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             savename);
-    return ret;
-}
-
-ErrFile IWingPluginCalls::saveCurrent() {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::saveCurrent);
-    ErrFile ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
-             getSender());
-    return ret;
-}
-
-ErrFile IWingPluginCalls::closeCurrent(bool force) {
+ErrFile IWingPluginCalls::closeCurrent() {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::closeCurrent);
     ErrFile ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             force);
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
     return ret;
 }
 
@@ -982,67 +942,19 @@ int IWingPluginCalls::openCurrent() {
     return ret;
 }
 
-ErrFile IWingPluginCalls::saveAsFile(int handle, const QString &savename) {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::saveAsFile);
-    ErrFile ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             handle, savename);
-    return ret;
-}
-
-ErrFile IWingPluginCalls::exportFile(int handle, const QString &savename) {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::exportFile);
-    ErrFile ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             handle, savename);
-    return ret;
-}
-
-ErrFile IWingPluginCalls::saveFile(int handle) {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::saveFile);
-    ErrFile ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             handle);
-    return ret;
-}
-
-ErrFile IWingPluginCalls::closeFile(int handle, bool force) {
+ErrFile IWingPluginCalls::closeFile(int handle) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::closeFile);
     ErrFile ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             handle, force);
-    return ret;
-}
-
-ErrFile IWingPluginCalls::closeHandle(int handle) {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::closeHandle);
-    ErrFile ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              handle);
     return ret;
 }
 
-int IWingPluginCalls::openExtFile(const QString &ext, const QString &file) {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::openExtFile);
-    int ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             ext, file);
-    return ret;
-}
-
-int IWingPluginCalls::openFile(const QString &filename) {
+int IWingPluginCalls::openFile(const QUrl &file) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::openFile);
     int ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             filename);
-    return ret;
-}
-
-int IWingPluginCalls::newFile() {
-    SETUP_CALL_CONTEXT(&IWingPluginCalls::newFile);
-    int ret = ErrFile::Error;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
-             getSender());
+             file);
     return ret;
 }
 

@@ -287,30 +287,11 @@ public:
     Q_REQUIRED_RESULT bool raiseDocument(int handle);
 
     // mainwindow
-    Q_REQUIRED_RESULT int newFile();
-    Q_REQUIRED_RESULT int openFile(const QString &filename);
-    Q_REQUIRED_RESULT int openExtFile(const QString &ext, const QString &file);
-
-    WingHex::ErrFile closeHandle(int handle);
-    WingHex::ErrFile closeFile(int handle, bool force = false);
-
-    Q_REQUIRED_RESULT WingHex::ErrFile saveFile(int handle);
-    Q_REQUIRED_RESULT WingHex::ErrFile exportFile(int handle,
-                                                  const QString &savename);
-    Q_REQUIRED_RESULT WingHex::ErrFile saveAsFile(int handle,
-                                                  const QString &savename);
+    Q_REQUIRED_RESULT int openFile(const QUrl &file);
+    WingHex::ErrFile closeFile(int handle);
 
     Q_REQUIRED_RESULT int openCurrent();
-    Q_REQUIRED_RESULT WingHex::ErrFile saveCurrent();
-    Q_REQUIRED_RESULT WingHex::ErrFile exportCurrent(const QString &savename);
-    Q_REQUIRED_RESULT WingHex::ErrFile saveAsCurrent(const QString &savename);
-    Q_REQUIRED_RESULT WingHex::ErrFile closeCurrent(bool force = false);
-
-    // workspace
-    Q_REQUIRED_RESULT int openWorkSpace(const QString &filename);
-
-    // extension
-    bool closeAllFiles();
+    Q_REQUIRED_RESULT WingHex::ErrFile closeCurrent();
 };
 
 class WINGPLUGIN_EXPORT IWingPluginAPICalls : public IWingPluginCalls,
