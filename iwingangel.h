@@ -78,17 +78,9 @@ template <class T>
 inline asFuncPtr asWingFunctionPtr(T func) {
     // Mark this as a global function
     asFuncPtr p(2);
-
-#ifdef AS_64BIT_PTR
     // The size_t cast is to avoid a compiler warning with asFUNCTION(0)
     // on 64bit, as 0 is interpreted as a 32bit int value
     p.ptr.f.func = reinterpret_cast<asWINGFUNCTION_t>(size_t(func));
-#else
-    // MSVC6 doesn't like the size_t cast above so I
-    // solved this with a separate code for 32bit.
-    p.ptr.f.func = reinterpret_cast<asWINGFUNCTION_t>(func);
-#endif
-
     return p;
 }
 
@@ -161,33 +153,6 @@ struct asWingMethodPtr<AS_SINGLE_PTR_SIZE + 2 * sizeof(int)> {
         // Mark this as a class method
         asFuncPtr p(3);
         p.CopyMethodPtr(&Mthd, AS_SINGLE_PTR_SIZE + 2 * sizeof(int));
-
-        // Microsoft has a terrible optimization on class methods with
-        // virtual inheritance. They are hardcoding an important offset,
-        // which is not coming in the method pointer.
-
-#if defined(_MSC_VER) && !defined(AS_64BIT_PTR)
-        // Method pointers for virtual inheritance is not supported,
-        // as it requires the location of the vbase table, which is
-        // only available to the C++ compiler, but not in the method
-        // pointer.
-
-        // You can get around this by forward declaring the class and
-        // storing the sizeof its method pointer in a constant. Example:
-
-        // class ClassWithVirtualInheritance;
-        // const int ClassWithVirtualInheritance_workaround = sizeof(void
-        // ClassWithVirtualInheritance::*());
-
-        // This will force the compiler to use the unknown type
-        // for the class, which falls under the next case
-
-        // Copy the virtual table index to the 4th dword so that AngelScript
-        // can properly detect and deny the use of methods with virtual
-        // inheritance.
-        *(reinterpret_cast<quint32 *>(&p) + 3) =
-            *(reinterpret_cast<quint32 *>(&p) + 2);
-#endif
 
         return p;
     }
