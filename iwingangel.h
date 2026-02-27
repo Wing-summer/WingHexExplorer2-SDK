@@ -220,6 +220,10 @@ public:
     ~IWingGeneric() = default;
 
 public:
+    virtual void *auxiliary() const = 0;
+    virtual void *object() const = 0;
+    virtual int objectTypeId() const = 0;
+
     // Arguments
     virtual int argCount() const = 0;
     virtual int argTypeId(uint arg, quint32 *flags = nullptr) const = 0;
