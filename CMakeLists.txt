@@ -42,7 +42,9 @@ add_library(
     hexeditorcontext.h
     hexeditorcontext.cpp
     iwinghexeditorplugin.h
-    iwinghexeditorplugin.cpp)
+    iwinghexeditorplugin.cpp
+    scriptobjects.h
+    scriptobjects.cpp)
 
 target_link_libraries(WingPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(WingPlugin PRIVATE Qt6::Core)

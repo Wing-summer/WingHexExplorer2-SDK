@@ -269,6 +269,40 @@ void IWingPluginBaseCalls::__raiseContextException(const QString &exception,
              allowCatch);
 }
 
+ASScriptArray *
+IWingPluginBaseCalls::__createScriptArray(const QString &type) const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::__createScriptArray);
+    ASScriptArray *ret = nullptr;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
+             type);
+    return ret;
+}
+
+ASScriptDictionary *IWingPluginBaseCalls::__createScriptDictionary() const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::__createScriptDictionary);
+    ASScriptDictionary *ret = nullptr;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
+    return ret;
+}
+
+ASScriptAny *IWingPluginBaseCalls::__createScriptAny() const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::__createScriptAny);
+    ASScriptAny *ret = nullptr;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
+    return ret;
+}
+
+ASScript2DArray *
+IWingPluginBaseCalls::__createScript2DArray(const QString &type) const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::__createScript2DArray);
+    ASScript2DArray *ret = nullptr;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
+             type);
+    return ret;
+}
+
 AppTheme IWingPluginBaseCalls::currentAppTheme() const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::currentAppTheme);
     WingHex::AppTheme theme = AppTheme::Invalid;

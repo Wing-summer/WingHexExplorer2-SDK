@@ -22,6 +22,7 @@
 #define IWINGPLUGINBASECALLS_H
 
 #include "WingPlugin/iwingangel.h"
+#include "WingPlugin/scriptobjects.h"
 #include "WingPlugin/wingplugin_global.h"
 #include "WingPlugin/wingplugincalls.h"
 
@@ -159,7 +160,67 @@ public:
 
     void __raiseContextException(const QString &exception,
                                  bool allowCatch) const;
+
+    Q_REQUIRED_RESULT ASScriptArray *
+    __createScriptArray(const QString &type) const;
+    Q_REQUIRED_RESULT ASScriptDictionary *__createScriptDictionary() const;
+    Q_REQUIRED_RESULT ASScriptAny *__createScriptAny() const;
+    Q_REQUIRED_RESULT ASScript2DArray *
+    __createScript2DArray(const QString &type) const;
 };
+
+template <typename Accessor, typename... CallArgs>
+auto runGlobalAPI(Accessor accessor, CallArgs &&...args)
+    -> decltype((*accessor())(std::forward<CallArgs>(args)...)) {
+    auto p = accessor(); // call accessor to obtain pointer-to-callable
+    if (!p)
+        throw std::runtime_error("global-static accessor returned null");
+    auto &fn = *p;
+    if (!fn)
+        throw std::runtime_error(
+            "std::function inside global static is not initialized");
+    return fn(std::forward<CallArgs>(args)...);
+}
+
+using CREATE_PARAM_CONTEXT_FN = std::function<WingHex::IWingGeneric *(void *)>;
+using RAISE_CONTEXT_EXCEPTION_FN = std::function<void(const QString &, bool)>;
+using CREATE_SCRIPTARRAY_FN =
+    std::function<WingHex::ASScriptArray *(const QString &)>;
+using CREATE_SCRIPTDICTIONARY_FN =
+    std::function<WingHex::ASScriptDictionary *()>;
+using CREATE_SCRIPTANY_FN = std::function<WingHex::ASScriptAny *()>;
+using CREATE_SCRIPT2DARRAY_FN =
+    std::function<WingHex::ASScript2DArray *(const QString &)>;
+
+#define WING_DECLARE_STATIC_API                                                \
+    Q_GLOBAL_STATIC(WingHex::CREATE_PARAM_CONTEXT_FN, CreateParamContext)      \
+    Q_GLOBAL_STATIC(WingHex::RAISE_CONTEXT_EXCEPTION_FN,                       \
+                    RaiseContextException)                                     \
+    Q_GLOBAL_STATIC(WingHex::CREATE_SCRIPTARRAY_FN, CreateScriptArray)         \
+    Q_GLOBAL_STATIC(WingHex::CREATE_SCRIPTDICTIONARY_FN,                       \
+                    CreateScriptDictionary)                                    \
+    Q_GLOBAL_STATIC(WingHex::CREATE_SCRIPTANY_FN, CreateScriptAny)             \
+    Q_GLOBAL_STATIC(WingHex::CREATE_SCRIPT2DARRAY_FN, CreateScript2DArray)
+
+#define WING_INIT_STATIC_API                                                   \
+    do {                                                                       \
+        *CreateParamContext =                                                  \
+            std::bind(&IWingPluginBaseCalls::__createParamContext, this,       \
+                      std::placeholders::_1);                                  \
+        *RaiseContextException =                                               \
+            std::bind(&IWingPluginBaseCalls::__raiseContextException, this,    \
+                      std::placeholders::_1, std::placeholders::_2);           \
+        *CreateScriptArray =                                                   \
+            std::bind(&IWingPluginBaseCalls::__createScriptArray, this,        \
+                      std::placeholders::_1);                                  \
+        *CreateScriptDictionary =                                              \
+            std::bind(&IWingPluginBaseCalls::__createScriptDictionary, this);  \
+        *CreateScriptAny =                                                     \
+            std::bind(&IWingPluginBaseCalls::__createScriptAny, this);         \
+        *CreateScript2DArray =                                                 \
+            std::bind(&IWingPluginBaseCalls::__createScript2DArray, this,      \
+                      std::placeholders::_1);                                  \
+    } while (0)
 
 } // namespace WingHex
 
@@ -167,19 +228,5 @@ Q_DECLARE_METATYPE(QMessageBox::StandardButtons)
 Q_DECLARE_METATYPE(QMessageBox::StandardButton)
 Q_DECLARE_METATYPE(bool *)
 Q_DECLARE_METATYPE(QString *)
-
-#define WING_DECLARE_STATIC_API                                                \
-    static std::function<WingHex::IWingGeneric *(void *)> createParamContext;  \
-    static std::function<void(const QString &, bool)> raiseContextException;
-
-#define WING_INIT_STATIC_API                                                   \
-    do {                                                                       \
-        createParamContext =                                                   \
-            std::bind(&IWingPluginBaseCalls::__createParamContext, this,       \
-                      std::placeholders::_1);                                  \
-        raiseContextException =                                                \
-            std::bind(&IWingPluginBaseCalls::__raiseContextException, this,    \
-                      std::placeholders::_1, std::placeholders::_2);           \
-    } while (0)
 
 #endif // IWINGPLUGINBASECALLS_H
