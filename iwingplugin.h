@@ -22,7 +22,6 @@
 #define IWINGPLUGIN_H
 
 #include "WingPlugin/iwingplugincalls.h"
-#include "hexeditorcontext.h"
 #include "iwingpluginbase.h"
 #include "wingeditorviewwidget.h"
 #include "wingplugin_global.h"

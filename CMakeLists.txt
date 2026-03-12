@@ -41,8 +41,6 @@ add_library(
     iwingangel.cpp
     hexeditorcontext.h
     hexeditorcontext.cpp
-    iwinghexeditorplugin.h
-    iwinghexeditorplugin.cpp
     scriptobjects.h
     scriptobjects.cpp)
 
