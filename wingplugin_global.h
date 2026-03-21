@@ -37,6 +37,10 @@
 #include <QVersionNumber>
 #include <QWidget>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+#include <QByteArrayView>
+#endif
+
 #ifdef WING_SERVICE
 #undef WING_SERVICE
 #endif
@@ -61,13 +65,13 @@ struct WINGPLUGIN_EXPORT SenderInfo {
 };
 
 inline static WingDockWidgetInfo createWingDockWidget(
-    QString widgetName, QString displayName, QWidget *widget,
+    const QString &widgetName, const QString &displayName, QWidget *widget,
     Qt::DockWidgetArea area = Qt::DockWidgetArea::NoDockWidgetArea) {
     return WingDockWidgetInfo{widgetName, displayName, widget, area};
 }
 
 inline static WingDockWidgetInfo createWingDockWidget(
-    QString widgetName, QWidget *widget,
+    const QString &widgetName, QWidget *widget,
     Qt::DockWidgetArea area = Qt::DockWidgetArea::NoDockWidgetArea) {
     return WingDockWidgetInfo{widgetName, {}, widget, area};
 }
@@ -90,6 +94,37 @@ struct WINGPLUGIN_EXPORT PluginInfo {
 
 enum class AppTheme { Invalid, Dark, Light };
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+constexpr int FNTYPES_SIZE = 9;
+using FNTYPES = std::array<int, FNTYPES_SIZE>;
+
+struct WINGPLUGIN_EXPORT FunctionSig {
+    QByteArrayView fnName;
+    FNTYPES types;
+    int typesCount;
+
+    constexpr FunctionSig() : fnName(), types(), typesCount(0) {}
+
+    bool operator==(const FunctionSig &other) const {
+        return fnName == other.fnName && types == other.types &&
+               typesCount == other.typesCount;
+    }
+};
+
+template <std::size_t... I>
+inline size_t qHashArrayImpl(const FNTYPES &a, size_t seed,
+                             std::index_sequence<I...>) noexcept {
+    return qHashMulti(seed, a[I]...);
+}
+
+inline size_t qHash(const FunctionSig &c, size_t seed = 0) noexcept {
+    seed = qHashMulti(seed, c.fnName);
+    seed =
+        qHashArrayImpl(c.types, seed, std::make_index_sequence<FNTYPES_SIZE>{});
+    seed = qHashMulti(seed, c.typesCount);
+    return seed;
+}
+#else
 struct WINGPLUGIN_EXPORT FunctionSig {
     QByteArray fnName;
     QVarLengthArray<int, 8> types;
@@ -102,6 +137,7 @@ struct WINGPLUGIN_EXPORT FunctionSig {
 inline size_t qHash(const FunctionSig &c, size_t seed) noexcept {
     return qHashMulti(seed, c.fnName, c.types);
 }
+#endif
 
 using CallTable = QHash<FunctionSig, QMetaMethod>;
 

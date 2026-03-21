@@ -23,6 +23,7 @@
 
 #include "wingplugin_global.h"
 
+#include <QCache>
 #include <QDebug>
 #include <QList>
 #include <QMetaType>
@@ -234,6 +235,34 @@ struct WINGPLUGIN_EXPORT WingRibbonToolBoxInfo {
     QList<Toolbox> toolboxs;
 };
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
+template <class Func>
+inline constexpr WingHex::FunctionSig getFunctionSig(Func &&, const char *fn) {
+    typedef QtPrivate::FunctionPointer<std::decay_t<Func>> FnPointerType;
+    int const *types =
+        QtPrivate::ConnectionTypes<typename FnPointerType::Arguments>::types();
+
+    Q_ASSERT(fn);
+
+    WingHex::FunctionSig sig;
+    sig.fnName = fn;
+    sig.types.fill(0);
+
+    if constexpr (FnPointerType::ArgumentCount > 0) {
+        Q_ASSERT(types);
+        if (types) {
+            static_assert(sig.types.size() >= FnPointerType::ArgumentCount);
+            std::copy(types, types + FnPointerType::ArgumentCount,
+                      sig.types.begin());
+            sig.typesCount = FnPointerType::ArgumentCount;
+        } else {
+            return {};
+        }
+    }
+
+    return sig;
+}
+#else
 template <class Func>
 inline WingHex::FunctionSig getFunctionSig(Func &&, const char *fn) {
     typedef QtPrivate::FunctionPointer<std::decay_t<Func>> FnPointerType;
@@ -258,43 +287,55 @@ inline WingHex::FunctionSig getFunctionSig(Func &&, const char *fn) {
 
     return sig;
 }
+#endif
 
 inline QByteArray getFunctionSig(const WingHex::FunctionSig &fn) {
     Q_ASSERT(!fn.fnName.isEmpty());
     auto len = fn.types.size();
+    QByteArray sig;
     if (len > 0) {
         QByteArrayList args;
+        args.reserve(len);
         for (qsizetype i = 0; i < len; ++i) {
             QMetaType type(fn.types[i]);
             if (type.isValid()) {
                 args.append(type.name());
             }
         }
-        return fn.fnName + '(' + args.join(',') + ')';
+        sig = fn.fnName + QByteArrayLiteral("(") + args.join(',') +
+              QByteArrayLiteral(")");
     } else {
-        return fn.fnName + QByteArray("()");
+        sig = fn.fnName + QByteArrayLiteral("()");
     }
+    return sig;
 }
 
 #define SETUP_CALL_CONTEXT(FN)                                                 \
     QMetaMethod m;                                                             \
     do {                                                                       \
-        static auto CALL = getFunctionSig(FN, __func__);                       \
-        if (CALL.fnName.isEmpty()) {                                           \
-            qWarning(                                                          \
-                "[InvokeCall] The parameters of '%s' contains "                \
-                "unregistered type. Please use Q_DECLARE_METATYPE and "        \
-                "qRegisterMetaType to make the type known to Qt meta system.", \
-                __func__);                                                     \
+        static QCache<WingPluginCalls const *, QMetaMethod> cache(10);         \
+        if (auto ref = cache.object(this)) {                                   \
+            m = *ref;                                                          \
         } else {                                                               \
-            auto fnMap = callTable();                                          \
-            if (fnMap.contains(CALL)) {                                        \
-                m = fnMap.value(CALL);                                         \
-                Q_ASSERT(m.isValid());                                         \
+            static auto CALL = getFunctionSig(FN, __func__);                   \
+            if (CALL.fnName.isEmpty()) {                                       \
+                qWarning(                                                      \
+                    "[InvokeCall] The parameters of '%s' contains "            \
+                    "unregistered type. Please use Q_DECLARE_METATYPE and "    \
+                    "qRegisterMetaType to make the type known to Qt meta "     \
+                    "system.",                                                 \
+                    __func__);                                                 \
             } else {                                                           \
-                auto sig = getFunctionSig(CALL);                               \
-                qDebug("[InvokeCall] '%s' is not found in call table.",        \
-                       sig.constData());                                       \
+                auto fnMap = callTable();                                      \
+                if (fnMap.contains(CALL)) {                                    \
+                    m = fnMap.value(CALL);                                     \
+                    Q_ASSERT(m.isValid());                                     \
+                    cache.insert(this, new QMetaMethod(m));                    \
+                } else {                                                       \
+                    auto sig = getFunctionSig(CALL);                           \
+                    qDebug("[InvokeCall] '%s' is not found in call table.",    \
+                           sig.constData());                                   \
+                }                                                              \
             }                                                                  \
         }                                                                      \
     } while (0)
@@ -317,8 +358,8 @@ Container<T> packup(Args &&...args) {
     return c;
 }
 
-inline static WingRibbonToolBoxInfo createRibbonToolBox(QString catagory,
-                                                        QString displayName) {
+inline static WingRibbonToolBoxInfo
+createRibbonToolBox(const QString &catagory, const QString &displayName) {
     WingRibbonToolBoxInfo info;
     info.catagory = catagory;
     info.displayName = displayName;
@@ -326,7 +367,7 @@ inline static WingRibbonToolBoxInfo createRibbonToolBox(QString catagory,
 }
 
 inline static WingRibbonToolBoxInfo
-createRibbonToolBox(QString catagory, QString displayName,
+createRibbonToolBox(const QString &catagory, const QString &displayName,
                     const WingRibbonToolBoxInfo::Toolbox &toolbox...) {
     WingRibbonToolBoxInfo info;
     info.catagory = catagory;
@@ -337,7 +378,7 @@ createRibbonToolBox(QString catagory, QString displayName,
 }
 
 inline static WingRibbonToolBoxInfo
-createRibbonToolBox(QString catagory,
+createRibbonToolBox(const QString &catagory,
                     const WingRibbonToolBoxInfo::Toolbox &toolbox...) {
     WingRibbonToolBoxInfo info;
     info.catagory = catagory;

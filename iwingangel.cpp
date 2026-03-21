@@ -31,7 +31,7 @@ WingHex::asRetCodes IWingAngel::registerEnums(const QString &type,
     if (r != asRetCodes::asSUCCESS) {
         return r;
     }
-    for (auto &&v : value.asKeyValueRange()) {
+    for (const auto &&v : value.asKeyValueRange()) {
         auto r = registerEnumValue(t, v.first.toUtf8(), v.second);
         if (r != asRetCodes::asSUCCESS) {
             return r;

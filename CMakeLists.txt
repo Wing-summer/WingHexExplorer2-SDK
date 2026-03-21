@@ -5,7 +5,19 @@ project(WingPlugin LANGUAGES CXX)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_CXX_STANDARD 17)
+
+if(NOT DEFINED WINGHEX_FORCE_CPP17)
+    option(WINGHEX_FORCE_CPP17 "Force using C++17" OFF)
+endif()
+
+if(NOT WINGHEX_FORCE_CPP17 AND "cxx_std_20" IN_LIST CMAKE_CXX_COMPILE_FEATURES)
+    set(CMAKE_CXX_STANDARD 20)
+    message(STATUS "Compile with C++20")
+else()
+    set(CMAKE_CXX_STANDARD 17)
+    message(STATUS "Compile with C++17")
+endif()
+
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
