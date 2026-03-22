@@ -217,7 +217,7 @@ struct asWingMethodPtr<AS_SINGLE_PTR_SIZE + 4 * sizeof(int)> {
 class WINGPLUGIN_EXPORT IWingGeneric {
 public:
     IWingGeneric();
-    ~IWingGeneric() = default;
+    virtual ~IWingGeneric() = default;
 
 public:
     virtual void *auxiliary() const = 0;
