@@ -32,6 +32,14 @@ namespace WingHex {
 
 class IWingPlugin;
 
+struct WINGPLUGIN_EXPORT MetadataInfo {
+    qsizetype begin;
+    qsizetype end;
+    QColor foreground;
+    QColor background;
+    QString comment;
+};
+
 class WINGPLUGIN_EXPORT IWingPluginCallsOp : public WingPluginCalls {
 public:
     explicit IWingPluginCallsOp();
@@ -168,9 +176,6 @@ public:
     Q_REQUIRED_RESULT qsizetype findPrevious(qsizetype begin,
                                              const QByteArray &ba) const;
 
-    Q_REQUIRED_RESULT QString bookMarkComment(qsizetype pos) const;
-    Q_REQUIRED_RESULT bool existBookMark(qsizetype pos) const;
-
     Q_REQUIRED_RESULT bool setLockedFile(bool b);
     Q_REQUIRED_RESULT bool setKeepSize(bool b);
     Q_REQUIRED_RESULT bool setStringVisible(bool b);
@@ -180,7 +185,7 @@ public:
 
     Q_REQUIRED_RESULT bool beginMarco(const QString &txt = {});
     Q_REQUIRED_RESULT bool endMarco();
-    Q_REQUIRED_RESULT bool isMacroEmpty();
+    Q_REQUIRED_RESULT bool isMacroEmpty() const;
     Q_REQUIRED_RESULT bool resetMarco();
 
     Q_REQUIRED_RESULT bool writeInt8(qsizetype offset, qint8 value);
@@ -257,7 +262,17 @@ public:
     Q_REQUIRED_RESULT bool setMetabgVisible(bool b);
     Q_REQUIRED_RESULT bool setMetaCommentVisible(bool b);
 
+    Q_REQUIRED_RESULT WingHex::MetadataInfo metadataInfo(qsizetype pos) const;
+    Q_REQUIRED_RESULT WingHex::MetadataInfo
+    metadataInfoByIndex(qsizetype index) const;
+    Q_REQUIRED_RESULT qint64 metadataCount() const;
+
     // bookmark
+    Q_REQUIRED_RESULT QString bookMarkComment(qsizetype pos) const;
+    Q_REQUIRED_RESULT bool existBookMark(qsizetype pos) const;
+    Q_REQUIRED_RESULT qint64 bookMarkPos(qsizetype index) const;
+    Q_REQUIRED_RESULT qint64 bookMarkCount() const;
+
     Q_REQUIRED_RESULT bool addBookMark(qsizetype pos, const QString &comment);
     Q_REQUIRED_RESULT bool modBookMark(qsizetype pos, const QString &comment);
     Q_REQUIRED_RESULT bool removeBookMark(qsizetype pos);
@@ -305,5 +320,6 @@ public:
 Q_DECLARE_METATYPE(const char *);
 Q_DECLARE_METATYPE(QModelIndex)
 Q_DECLARE_METATYPE(WingHex::HexPosition)
+Q_DECLARE_METATYPE(WingHex::MetadataInfo)
 
 #endif // IWINGPLUGINCALLS_H

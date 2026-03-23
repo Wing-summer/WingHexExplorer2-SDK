@@ -381,6 +381,22 @@ bool IWingPluginCallsOp::existBookMark(qsizetype pos) const {
     return ret;
 }
 
+qint64 IWingPluginCallsOp::bookMarkPos(qsizetype index) const {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::bookMarkPos);
+    qint64 ret = -1;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
+             index);
+    return ret;
+}
+
+qint64 IWingPluginCallsOp::bookMarkCount() const {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::bookMarkCount);
+    qint64 ret = -1;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
+    return ret;
+}
+
 bool IWingPluginCalls::switchDocument(int handle) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::switchDocument);
     bool ret = false;
@@ -461,7 +477,7 @@ bool IWingPluginCallsOp::endMarco() {
     return ret;
 }
 
-bool IWingPluginCallsOp::isMacroEmpty() {
+bool IWingPluginCallsOp::isMacroEmpty() const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::isMacroEmpty);
     bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
@@ -882,6 +898,30 @@ bool IWingPluginCallsOp::setMetaCommentVisible(bool b) {
     bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              b);
+    return ret;
+}
+
+MetadataInfo IWingPluginCallsOp::metadataInfoByIndex(qsizetype index) const {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::metadataInfoByIndex);
+    MetadataInfo info{-1, -1, {}, {}, {}};
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(info),
+             getSender(), index);
+    return info;
+}
+
+MetadataInfo IWingPluginCallsOp::metadataInfo(qsizetype pos) const {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::metadataInfo);
+    MetadataInfo info{-1, -1, {}, {}, {}};
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(info),
+             getSender(), pos);
+    return info;
+}
+
+qint64 IWingPluginCallsOp::metadataCount() const {
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::metadataCount);
+    qint64 ret = -1;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
     return ret;
 }
 
