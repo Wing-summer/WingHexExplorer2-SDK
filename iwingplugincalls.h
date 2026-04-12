@@ -48,7 +48,7 @@ public:
     bool existsServiceHost(const QString &puid) const;
 
 public:
-#if QT_VERSION <= QT_VERSION_CHECK(6, 7, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 7, 0)
     template <typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
@@ -61,7 +61,7 @@ public:
                             h.typeNames.data(), h.metaTypes.data()));
     }
 
-    template <typename Arg0, typename... Args>
+    template <typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
                   Args &&...arguments) const {
@@ -77,7 +77,7 @@ public:
                              std::forward<Args>(arguments)...);
     }
 
-    template <typename Arg0, typename... Args>
+    template <typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method,
                   Args &&...arguments) const {
@@ -85,10 +85,11 @@ public:
                              std::forward<Args>(arguments)...);
     }
 #else
-    template <typename... Args>
+    template <typename T, typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
-                  QMetaMethodReturnArgument r, Args &&...arguments) const {
+                  QTemplatedMetaMethodReturnArgument<T> r,
+                  Args &&...arguments) const {
         auto h =
             QtPrivate::invokeMethodHelper(r, std::forward<Args>(arguments)...);
         return invokeServiceImpl(
@@ -97,23 +98,25 @@ public:
                             h.typeNames.data(), h.metaTypes.data()));
     }
 
-    template <typename Arg0, typename... Args>
+    template <typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method, Qt::ConnectionType c,
                   Args &&...arguments) const {
-        return invokeService(puid, method, c, QMetaMethodReturnArgument{},
+        return invokeService(puid, method, c,
+                             QTemplatedMetaMethodReturnArgument<void>{},
                              std::forward<Args>(arguments)...);
     }
 
-    template <typename... Args>
+    template <typename T, typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method,
-                  QMetaMethodReturnArgument r, Args &&...arguments) const {
+                  QTemplatedMetaMethodReturnArgument<T> r,
+                  Args &&...arguments) const {
         return invokeService(puid, method, Qt::DirectConnection, r,
                              std::forward<Args>(arguments)...);
     }
 
-    template <typename Arg0, typename... Args>
+    template <typename... Args>
     QtPrivate::Invoke::IfNotOldStyleArgs<bool, Args...>
     invokeService(const QString &puid, const char *method,
                   Args &&...arguments) const {

@@ -40,3 +40,9 @@ QObject *IWingDevice::callReceiver() const { return _core->callReceiver(); }
 WingIODevice::WingIODevice(QObject *parent) : QIODevice(parent) {}
 
 bool WingIODevice::keepSize() const { return false; }
+
+bool WingIODevice::defaultIsKeepSize() const { return true; }
+
+bool WingIODevice::defaultIsLocked() const { return false; }
+
+bool WingIODevice::defaultIsOverwrite() const { return false; }

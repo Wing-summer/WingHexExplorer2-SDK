@@ -310,13 +310,169 @@ inline QByteArray getFunctionSig(const WingHex::FunctionSig &fn) {
     return sig;
 }
 
+// lighter QCache but without cost and ownership taking
+template <class Key, class T>
+class Cache {
+    struct Chain {
+        Chain() noexcept : prev(this), next(this) {}
+        Chain *prev;
+        Chain *next;
+    };
+
+    struct Node : public Chain {
+        using KeyType = Key;
+        using ValueType = T;
+
+        Key key;
+        T value;
+
+        Node(const Key &k,
+             T &&t) noexcept(std::is_nothrow_move_assignable_v<Key>)
+            : Chain(), key(k), value(t) {}
+        Node(Key &&k, T t) noexcept(std::is_nothrow_move_assignable_v<Key>)
+            : Chain(), key(std::move(k)), value(t) {}
+        static void createInPlace(Node *n, const Key &k, T o) {
+            new (n) Node{Key(k), o};
+        }
+        void emplace(T o) { value = o; }
+
+        Node(Node &&other)
+            : Chain(other), key(std::move(other.key)),
+              value(std::move(other.value)) {
+            Q_ASSERT(this->prev);
+            Q_ASSERT(this->next);
+            this->prev->next = this;
+            this->next->prev = this;
+        }
+
+    private:
+        Q_DISABLE_COPY(Node)
+    };
+
+    using Data = QHashPrivate::Data<Node>;
+
+    mutable Chain chain;
+    Data d;
+    qsizetype mx = 0;
+    qsizetype total = 0;
+
+    void unlink(Node *n) noexcept(std::is_nothrow_destructible_v<Node>) {
+        Q_ASSERT(n->prev);
+        Q_ASSERT(n->next);
+        n->prev->next = n->next;
+        n->next->prev = n->prev;
+        total--;
+        auto it = d.findBucket(n->key);
+        d.erase(it);
+    }
+    T relink(const Key &key) const noexcept {
+        if (isEmpty())
+            return T{};
+
+        Node *n = d.findNode(key);
+        if (!n)
+            return T{};
+
+        if (chain.next != n) {
+            Q_ASSERT(n->prev);
+            Q_ASSERT(n->next);
+            n->prev->next = n->next;
+            n->next->prev = n->prev;
+            n->next = chain.next;
+            chain.next->prev = n;
+            n->prev = &chain;
+            chain.next = n;
+        }
+        return n->value;
+    }
+
+    void trim(qsizetype m) noexcept(std::is_nothrow_destructible_v<Node>) {
+        while (chain.prev != &chain && total > m) {
+            Node *n = static_cast<Node *>(chain.prev);
+            unlink(n);
+        }
+    }
+
+    Q_DISABLE_COPY(Cache)
+
+public:
+    inline explicit Cache(qsizetype maxCost) noexcept : mx(maxCost) {}
+    inline ~Cache() {
+        static_assert(std::is_nothrow_destructible_v<Key>,
+                      "Types with throwing destructors are not supported in Qt "
+                      "containers.");
+        static_assert(std::is_nothrow_destructible_v<T>,
+                      "Types with throwing destructors are not supported in Qt "
+                      "containers.");
+
+        clear();
+    }
+
+    inline qsizetype maxCost() const noexcept { return mx; }
+    inline void
+    setMaxCost(qsizetype m) noexcept(std::is_nothrow_destructible_v<Node>) {
+        mx = m;
+        trim(mx);
+    }
+    inline qsizetype totalCost() const noexcept { return total; }
+
+    inline qsizetype size() const noexcept { return qsizetype(d.size); }
+    inline qsizetype count() const noexcept { return qsizetype(d.size); }
+    inline bool isEmpty() const noexcept { return !d.size; }
+
+    inline void clear() noexcept(std::is_nothrow_destructible_v<Node>) {
+        d.clear();
+        total = 0;
+        chain.next = &chain;
+        chain.prev = &chain;
+    }
+
+    inline bool insert(const Key &key, T object) {
+        if (1 > mx) {
+            remove(key);
+            return false;
+        }
+        trim(mx - 1);
+        auto result = d.findOrInsert(key);
+        Node *n = result.it.node();
+        if (result.initialized) {
+            result.it.node()->emplace(object);
+            relink(key);
+        } else {
+            Node::createInPlace(n, key, object);
+            n->prev = &chain;
+            n->next = chain.next;
+            chain.next->prev = n;
+            chain.next = n;
+        }
+        total++;
+        return true;
+    }
+    inline T object(const Key &key) const noexcept { return relink(key); }
+    inline bool contains(const Key &key) const noexcept {
+        return !isEmpty() && d.findNode(key) != nullptr;
+    }
+
+    inline bool
+    remove(const Key &key) noexcept(std::is_nothrow_destructible_v<Node>) {
+        if (isEmpty())
+            return false;
+        Node *n = d.findNode(key);
+        if (!n) {
+            return false;
+        } else {
+            unlink(n);
+            return true;
+        }
+    }
+};
+
 #define SETUP_CALL_CONTEXT(FN)                                                 \
     QMetaMethod m;                                                             \
     do {                                                                       \
-        static QCache<WingPluginCalls const *, QMetaMethod> cache(10);         \
-        if (auto ref = cache.object(this)) {                                   \
-            m = *ref;                                                          \
-        } else {                                                               \
+        static Cache<WingPluginCalls const *, QMetaMethod> cache(10);          \
+        m = cache.object(this);                                                \
+        if (!m.isValid()) {                                                    \
             static auto CALL = getFunctionSig(FN, __func__);                   \
             if (CALL.fnName.isEmpty()) {                                       \
                 qWarning(                                                      \
@@ -330,7 +486,7 @@ inline QByteArray getFunctionSig(const WingHex::FunctionSig &fn) {
                 if (fnMap.contains(CALL)) {                                    \
                     m = fnMap.value(CALL);                                     \
                     Q_ASSERT(m.isValid());                                     \
-                    cache.insert(this, new QMetaMethod(m));                    \
+                    cache.insert(this, m);                                     \
                 } else {                                                       \
                     auto sig = getFunctionSig(CALL);                           \
                     qDebug("[InvokeCall] '%s' is not found in call table.",    \

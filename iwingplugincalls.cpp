@@ -961,8 +961,17 @@ bool IWingPluginCallsOp::invokeServiceImpl(
     const QString &puid, const WingHex::MetaCallInfo &infos) const {
     SETUP_CALL_CONTEXT(&IWingPluginCallsOp::invokeServiceImpl);
     bool ret = false;
-    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             puid, infos);
+    auto r = qReturnArg(ret);
+    static_assert(std::is_same_v<decltype(r),
+#if QT_VERSION < QT_VERSION_CHECK(6, 7, 0)
+                                 QMetaMethodReturnArgument
+#else
+                                 QTemplatedMetaMethodReturnArgument<bool>
+#endif
+                                 >,
+                  "The return type of 'qReturnArg' is invalid, this may make "
+                  "'invokeService' fail when you want to invoke a service");
+    m.invoke(callReceiver(), Qt::DirectConnection, r, getSender(), puid, infos);
     return ret;
 }
 

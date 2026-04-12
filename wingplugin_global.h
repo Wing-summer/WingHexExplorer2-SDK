@@ -94,8 +94,9 @@ struct WINGPLUGIN_EXPORT PluginInfo {
 
 enum class AppTheme { Invalid, Dark, Light };
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
 constexpr int FNTYPES_SIZE = 9;
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 9, 0)
 using FNTYPES = std::array<int, FNTYPES_SIZE>;
 
 struct WINGPLUGIN_EXPORT FunctionSig {
@@ -127,7 +128,7 @@ inline size_t qHash(const FunctionSig &c, size_t seed = 0) noexcept {
 #else
 struct WINGPLUGIN_EXPORT FunctionSig {
     QByteArray fnName;
-    QVarLengthArray<int, 8> types;
+    QVarLengthArray<int, FNTYPES_SIZE> types;
 
     bool operator==(const FunctionSig &other) const {
         return fnName == other.fnName && types == other.types;

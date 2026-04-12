@@ -35,6 +35,11 @@ public:
 
     // can not change size during editing (default: changing-abled)
     virtual bool keepSize() const;
+
+    // some default values that can be changing during editing
+    virtual bool defaultIsKeepSize() const;
+    virtual bool defaultIsLocked() const;
+    virtual bool defaultIsOverwrite() const;
 };
 
 class WINGPLUGIN_EXPORT IWingDevice : public IWingPluginBase {
