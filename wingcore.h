@@ -40,9 +40,6 @@
 
 namespace WingHex {
 
-constexpr auto CALL_TABLE_PROPERTY = "__CALL_TABLE__";
-constexpr auto CALL_POINTER_PROPERTY = "__CALL_POINTER__";
-
 using MetaCallInfo = std::tuple<const char *, Qt::ConnectionType, qsizetype,
                                 const void *const *, const char *const *,
                                 const QtPrivate::QMetaTypeInterface *const *>;

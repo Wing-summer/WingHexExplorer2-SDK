@@ -21,6 +21,7 @@
 #ifndef WINGPLUGINCALLS_H
 #define WINGPLUGINCALLS_H
 
+#include <QEvent>
 #include <QMetaMethod>
 #include <QObject>
 
@@ -58,13 +59,23 @@ public:
     WingPluginCalls() = default;
     virtual ~WingPluginCalls() = default;
 
-protected:
+public:
     virtual WingHex::CallTable callTable() const = 0;
 
     virtual QObject *callReceiver() const = 0;
 
 private:
     Q_DISABLE_COPY_MOVE(WingPluginCalls)
+};
+
+class WINGPLUGIN_EXPORT CallTableEvent : public QEvent {
+    friend class WingPluginCallsCore;
+
+public:
+    explicit CallTableEvent(WingPluginCallsCorePrivate *ptr);
+
+private:
+    WingPluginCallsCorePrivate *d_ptr;
 };
 
 } // namespace WingHex

@@ -20,7 +20,6 @@
 
 #include "wingplugincalls.h"
 
-#include "wingcore.h"
 #include "wingplugincalls_p.h"
 
 #include <QDynamicPropertyChangeEvent>
@@ -40,39 +39,14 @@ QObject *WingPluginCallsCore::callReceiver() const { return d_ptr->_fnCaller; }
 CallTable WingPluginCallsCore::callTable() const { return d_ptr->_fnTable; }
 
 bool WingPluginCallsCore::eventFilter(QObject *watched, QEvent *event) {
-    if (event->type() == QEvent::DynamicPropertyChange) {
-        auto e = static_cast<QDynamicPropertyChangeEvent *>(event);
-        if (e) {
-            auto ppname = e->propertyName();
-            if (ppname == CALL_POINTER_PROPERTY) {
-                Q_D(WingPluginCallsCore);
-                if (d->_fnCaller) {
-                    std::abort();
-                }
-
-                auto var = watched->property(CALL_POINTER_PROPERTY);
-                if (!var.canConvert<quintptr>()) {
-                    std::abort();
-                }
-
-                d->_fnCaller =
-                    reinterpret_cast<QObject *>(var.value<quintptr>());
-            }
-
-            if (ppname == CALL_TABLE_PROPERTY) {
-                Q_D(WingPluginCallsCore);
-                if (!d->_fnTable.isEmpty()) {
-                    std::abort();
-                }
-
-                auto var = watched->property(CALL_TABLE_PROPERTY);
-                if (!var.canConvert<QHash<FunctionSig, QMetaMethod>>()) {
-                    std::abort();
-                }
-
-                d->_fnTable = var.value<QHash<FunctionSig, QMetaMethod>>();
-            }
+    if (d_ptr->_fnCaller == nullptr) {
+        if (event->type() == QEvent::User) {
+            auto e = static_cast<CallTableEvent *>(event);
+            *d_ptr = *e->d_ptr;
         }
     }
     return QObject::eventFilter(watched, event);
 }
+
+CallTableEvent::CallTableEvent(WingPluginCallsCorePrivate *ptr)
+    : QEvent(QEvent::User), d_ptr(ptr) {}

@@ -34,6 +34,7 @@ class WINGPLUGIN_EXPORT IWingPlugin : public IWingPluginBase,
                                       public IWingPluginCalls,
                                       public IWingHexEditorInterface {
     Q_OBJECT
+
 public:
     IWingPlugin();
 
@@ -123,7 +124,7 @@ protected:
     virtual const QObject *getSender() const override;
 
     // WingPluginCalls interface
-protected:
+public:
     virtual CallTable callTable() const override;
     virtual QObject *callReceiver() const override;
 

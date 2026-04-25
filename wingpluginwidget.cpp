@@ -20,7 +20,6 @@
 
 #include "wingpluginwidget.h"
 
-#include "WingPlugin/wingcore.h"
 #include "WingPlugin/wingplugincalls_p.h"
 #include "iwingplugin.h"
 
@@ -30,24 +29,8 @@ WingPluginWidget::WingPluginWidget(IWingPlugin *plg, QWidget *parent)
     : QWidget(parent), WingHex::IWingPluginAPICalls(),
       d_ptr(new WingPluginCallsCorePrivate) {
     Q_ASSERT(plg);
-
-    {
-        auto var = plg->property(CALL_POINTER_PROPERTY);
-        if (!var.canConvert<quintptr>()) {
-            std::abort();
-        }
-
-        d_ptr->_fnCaller = reinterpret_cast<QObject *>(var.value<quintptr>());
-    }
-
-    {
-        auto var = plg->property(CALL_TABLE_PROPERTY);
-        if (!var.canConvert<QHash<FunctionSig, QMetaMethod>>()) {
-            std::abort();
-        }
-
-        d_ptr->_fnTable = var.value<QHash<FunctionSig, QMetaMethod>>();
-    }
+    d_ptr->_fnCaller = plg->callReceiver();
+    d_ptr->_fnTable = plg->callTable();
 }
 
 WingPluginWidget::~WingPluginWidget() { delete d_ptr; }
@@ -62,24 +45,8 @@ WingPluginDialog::WingPluginDialog(IWingPlugin *plg, QWidget *parent)
     : QDialog(parent), WingHex::IWingPluginAPICalls(),
       d_ptr(new WingPluginCallsCorePrivate) {
     Q_ASSERT(plg);
-
-    {
-        auto var = plg->property(CALL_POINTER_PROPERTY);
-        if (!var.canConvert<quintptr>()) {
-            std::abort();
-        }
-
-        d_ptr->_fnCaller = reinterpret_cast<QObject *>(var.value<quintptr>());
-    }
-
-    {
-        auto var = plg->property(CALL_TABLE_PROPERTY);
-        if (!var.canConvert<QHash<FunctionSig, QMetaMethod>>()) {
-            std::abort();
-        }
-
-        d_ptr->_fnTable = var.value<QHash<FunctionSig, QMetaMethod>>();
-    }
+    d_ptr->_fnCaller = plg->callReceiver();
+    d_ptr->_fnTable = plg->callTable();
 }
 
 WingPluginDialog::~WingPluginDialog() { delete d_ptr; }
@@ -111,47 +78,16 @@ QObject *WingPluginWindow::callReceiver() const { return d_ptr->_fnCaller; }
 void WingPluginWindow::init(IWingPlugin *plg) {
     Q_ASSERT(plg);
     d_ptr = new WingPluginCallsCorePrivate;
-    {
-        auto var = plg->property(CALL_POINTER_PROPERTY);
-        if (!var.canConvert<quintptr>()) {
-            std::abort();
-        }
-
-        d_ptr->_fnCaller = reinterpret_cast<QObject *>(var.value<quintptr>());
-    }
-
-    {
-        auto var = plg->property(CALL_TABLE_PROPERTY);
-        if (!var.canConvert<QHash<FunctionSig, QMetaMethod>>()) {
-            std::abort();
-        }
-
-        d_ptr->_fnTable = var.value<QHash<FunctionSig, QMetaMethod>>();
-    }
+    d_ptr->_fnCaller = plg->callReceiver();
+    d_ptr->_fnTable = plg->callTable();
 }
 
 WingPluginMainWindow::WingPluginMainWindow(IWingPlugin *plg, QWidget *parent)
     : QMainWindow(parent), WingHex::IWingPluginAPICalls(),
       d_ptr(new WingPluginCallsCorePrivate) {
     Q_ASSERT(plg);
-
-    {
-        auto var = plg->property(CALL_POINTER_PROPERTY);
-        if (!var.canConvert<quintptr>()) {
-            std::abort();
-        }
-
-        d_ptr->_fnCaller = reinterpret_cast<QObject *>(var.value<quintptr>());
-    }
-
-    {
-        auto var = plg->property(CALL_TABLE_PROPERTY);
-        if (!var.canConvert<QHash<FunctionSig, QMetaMethod>>()) {
-            std::abort();
-        }
-
-        d_ptr->_fnTable = var.value<QHash<FunctionSig, QMetaMethod>>();
-    }
+    d_ptr->_fnCaller = plg->callReceiver();
+    d_ptr->_fnTable = plg->callTable();
 }
 
 WingPluginMainWindow::~WingPluginMainWindow() { delete d_ptr; }
