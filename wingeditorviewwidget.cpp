@@ -21,8 +21,10 @@
 #include "wingeditorviewwidget.h"
 #include "WingPlugin/wingplugincalls.h"
 
-WingHex::WingEditorViewWidget::WingEditorViewWidget(QWidget *parent)
-    : QWidget(parent), IWingEditorViewCalls(), _core(new WingPluginCallsCore) {
+WingHex::WingEditorViewWidget::WingEditorViewWidget(const Creator *creator,
+                                                    QWidget *parent)
+    : QWidget(parent), IWingEditorViewCalls(), _core(new WingPluginCallsCore),
+      _creator(creator) {
     this->installEventFilter(_core);
 }
 
@@ -51,13 +53,8 @@ bool WingHex::WingEditorViewWidget::hasCloneChildren() const {
 }
 
 void WingHex::WingEditorViewWidget::raiseView() {
-    constexpr auto VIEW_PROPERTY = "__VIEW__";
-    constexpr auto VIEW_ID_PROPERTY = "__ID__";
-
-    auto rawptr =
-        reinterpret_cast<QObject *>(property(VIEW_PROPERTY).value<quintptr>());
-    auto ptr = qobject_cast<QWidget *>(rawptr);
-    auto id = property(VIEW_ID_PROPERTY).toString();
+    auto ptr = callReceiver();
+    auto id = _creator->id();
     if (ptr && !id.isEmpty()) {
         QMetaObject::invokeMethod(ptr, "raiseAndSwitchView",
                                   Qt::DirectConnection, id);
@@ -86,11 +83,7 @@ void WingHex::WingEditorViewWidget::onWorkSpaceNotify(bool isWorkSpace) {
 
 QVariant
 WingHex::WingEditorViewWidget::viewProperty(const char *property) const {
-    constexpr auto VIEW_PROPERTY = "__VIEW__";
-    auto rawptr = reinterpret_cast<QObject *>(
-        this->property(VIEW_PROPERTY).value<quintptr>());
-    auto ptr = qobject_cast<QWidget *>(rawptr);
-    return ptr->property(property);
+    return callReceiver()->property(property);
 }
 
 const QObject *WingHex::WingEditorViewWidget::getSender() const { return this; }
@@ -101,4 +94,9 @@ QObject *WingHex::WingEditorViewWidget::callReceiver() const {
 
 WingHex::CallTable WingHex::WingEditorViewWidget::callTable() const {
     return _core->callTable();
+}
+
+const WingHex::WingEditorViewWidget::Creator *
+WingHex::WingEditorViewWidget::creator() const {
+    return _creator;
 }

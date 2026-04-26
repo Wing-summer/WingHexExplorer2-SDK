@@ -34,8 +34,11 @@ class WINGPLUGIN_EXPORT WingEditorViewWidget
       protected WingHex::IWingEditorViewCalls {
     Q_OBJECT
 
+    Q_DISABLE_COPY_MOVE(WingEditorViewWidget)
+
 public:
     class Creator {
+        Q_DISABLE_COPY_MOVE(Creator)
     public:
         Creator() = default;
 
@@ -51,7 +54,8 @@ public:
     };
 
 public:
-    explicit WingEditorViewWidget(QWidget *parent = nullptr);
+    explicit WingEditorViewWidget(const Creator *creator,
+                                  QWidget *parent = nullptr);
 
     virtual WingEditorViewWidget *clone() = 0;
 
@@ -70,6 +74,8 @@ public:
     bool isCommonFile() const;
 
     bool hasCloneChildren() const;
+
+    const Creator *creator() const;
 
 public slots:
     void raiseView();
@@ -104,6 +110,7 @@ protected:
 
 private:
     WingPluginCallsCore *_core;
+    const Creator *_creator;
 };
 
 } // namespace WingHex

@@ -26,6 +26,8 @@
 
 namespace WingHex {
 
+class WingEditorViewWidget;
+
 class WINGPLUGIN_EXPORT HexEditorContext : public QObject {
     Q_OBJECT
 
@@ -33,7 +35,7 @@ public:
     explicit HexEditorContext(QObject *parent = nullptr);
 
 public:
-    virtual QString docFileName() const = 0;
+    virtual QUrl docFileName() const = 0;
     virtual QFontMetricsF fontMetrics() const = 0;
 
 public:
@@ -117,6 +119,10 @@ public slots:
     virtual void update() = 0;
     virtual void update(const QRect &r) = 0;
     virtual void update(const QRegion &r) = 0;
+
+public:
+    virtual QList<WingEditorViewWidget *>
+    currentPluginEditorWidgets() const = 0;
 
 public:
     // helper

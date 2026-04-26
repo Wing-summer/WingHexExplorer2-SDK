@@ -49,7 +49,7 @@
 
 namespace WingHex {
 
-Q_DECL_UNUSED constexpr auto SDKVERSION = 20;
+Q_DECL_UNUSED constexpr auto SDKVERSION = 21;
 
 struct WINGPLUGIN_EXPORT WingDockWidgetInfo {
     QString widgetName;
