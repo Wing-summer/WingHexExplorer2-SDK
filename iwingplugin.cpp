@@ -23,7 +23,8 @@
 using namespace WingHex;
 
 IWingPlugin::IWingPlugin()
-    : IWingPluginBase(), IWingPluginCalls(), _core(new WingPluginCallsCore) {
+    : IWingPluginBase(), IWingPluginCalls(),
+      _core(new WingPluginCallsCore(this)) {
     this->installEventFilter(_core);
 }
 

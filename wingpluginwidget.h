@@ -45,12 +45,12 @@ public:
 
     // WingPluginCallConvertor interface
 protected:
-    virtual const QObject *getSender() const override;
+    virtual const QObject *getSender() const override final;
 
     // WingPluginCalls interface
 protected:
-    virtual CallTable callTable() const override;
-    virtual QObject *callReceiver() const override;
+    virtual CallTable callTable() const override final;
+    virtual QObject *callReceiver() const override final;
 
 private:
     WingPluginCallsCorePrivate *d_ptr;
@@ -72,8 +72,8 @@ protected:
 
     // WingPluginCalls interface
 protected:
-    virtual CallTable callTable() const override;
-    virtual QObject *callReceiver() const override;
+    virtual CallTable callTable() const override final;
+    virtual QObject *callReceiver() const override final;
 
 private:
     WingPluginCallsCorePrivate *d_ptr;
@@ -93,12 +93,12 @@ public:
 
     // WingPluginCallConvertor interface
 protected:
-    virtual const QObject *getSender() const override;
+    virtual const QObject *getSender() const override final;
 
     // WingPluginCalls interface
 protected:
-    virtual CallTable callTable() const override;
-    virtual QObject *callReceiver() const override;
+    virtual CallTable callTable() const override final;
+    virtual QObject *callReceiver() const override final;
 
 private:
     void init(IWingPlugin *plg);
@@ -119,12 +119,12 @@ public:
 
     // WingPluginCallConvertor interface
 protected:
-    virtual const QObject *getSender() const override;
+    virtual const QObject *getSender() const override final;
 
     // WingPluginCalls interface
 protected:
-    virtual CallTable callTable() const override;
-    virtual QObject *callReceiver() const override;
+    virtual CallTable callTable() const override final;
+    virtual QObject *callReceiver() const override final;
 
 private:
     WingPluginCallsCorePrivate *d_ptr;

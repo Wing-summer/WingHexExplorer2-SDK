@@ -29,8 +29,8 @@ using namespace WingHex;
 
 Q_DECLARE_METATYPE(QMetaMethod)
 
-WingPluginCallsCore::WingPluginCallsCore()
-    : QObject(), d_ptr(new WingPluginCallsCorePrivate) {}
+WingPluginCallsCore::WingPluginCallsCore(QObject *parent)
+    : QObject(parent), d_ptr(new WingPluginCallsCorePrivate) {}
 
 WingPluginCallsCore::~WingPluginCallsCore() { delete d_ptr; }
 

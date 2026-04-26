@@ -23,7 +23,7 @@
 using namespace WingHex;
 
 IWingDevice::IWingDevice(QObject *parent)
-    : IWingPluginBase(), _core(new WingPluginCallsCore) {
+    : IWingPluginBase(), _core(new WingPluginCallsCore(this)) {
     this->installEventFilter(_core);
 }
 

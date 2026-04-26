@@ -36,7 +36,7 @@ class WingPluginCallsCore : public QObject {
     Q_OBJECT
 
 public:
-    WingPluginCallsCore();
+    WingPluginCallsCore(QObject *parent);
     virtual ~WingPluginCallsCore();
 
 public:

@@ -23,8 +23,8 @@
 
 WingHex::WingEditorViewWidget::WingEditorViewWidget(const Creator *creator,
                                                     QWidget *parent)
-    : QWidget(parent), IWingEditorViewCalls(), _core(new WingPluginCallsCore),
-      _creator(creator) {
+    : QWidget(parent), IWingEditorViewCalls(),
+      _core(new WingPluginCallsCore(this)), _creator(creator) {
     this->installEventFilter(_core);
 }
 

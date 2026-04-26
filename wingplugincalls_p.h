@@ -33,6 +33,7 @@ class WingPluginCallsCorePrivate {
 public:
     WingHex::CallTable _fnTable;
     QObject *_fnCaller = nullptr;
+    QObject *_sender = nullptr; // for widget use
 };
 
 } // namespace WingHex

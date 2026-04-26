@@ -31,11 +31,12 @@ WingPluginWidget::WingPluginWidget(IWingPlugin *plg, QWidget *parent)
     Q_ASSERT(plg);
     d_ptr->_fnCaller = plg->callReceiver();
     d_ptr->_fnTable = plg->callTable();
+    d_ptr->_sender = plg;
 }
 
 WingPluginWidget::~WingPluginWidget() { delete d_ptr; }
 
-const QObject *WingPluginWidget::getSender() const { return this; }
+const QObject *WingPluginWidget::getSender() const { return d_ptr->_sender; }
 
 CallTable WingPluginWidget::callTable() const { return d_ptr->_fnTable; }
 
@@ -47,11 +48,12 @@ WingPluginDialog::WingPluginDialog(IWingPlugin *plg, QWidget *parent)
     Q_ASSERT(plg);
     d_ptr->_fnCaller = plg->callReceiver();
     d_ptr->_fnTable = plg->callTable();
+    d_ptr->_sender = plg;
 }
 
 WingPluginDialog::~WingPluginDialog() { delete d_ptr; }
 
-const QObject *WingPluginDialog::getSender() const { return this; }
+const QObject *WingPluginDialog::getSender() const { return d_ptr->_sender; }
 
 CallTable WingPluginDialog::callTable() const { return d_ptr->_fnTable; }
 
@@ -69,7 +71,7 @@ WingPluginWindow::WingPluginWindow(IWingPlugin *plg, QScreen *parent)
 
 WingPluginWindow::~WingPluginWindow() { delete d_ptr; }
 
-const QObject *WingPluginWindow::getSender() const { return this; }
+const QObject *WingPluginWindow::getSender() const { return d_ptr->_sender; }
 
 CallTable WingPluginWindow::callTable() const { return d_ptr->_fnTable; }
 
@@ -80,6 +82,7 @@ void WingPluginWindow::init(IWingPlugin *plg) {
     d_ptr = new WingPluginCallsCorePrivate;
     d_ptr->_fnCaller = plg->callReceiver();
     d_ptr->_fnTable = plg->callTable();
+    d_ptr->_sender = plg;
 }
 
 WingPluginMainWindow::WingPluginMainWindow(IWingPlugin *plg, QWidget *parent)
@@ -88,11 +91,14 @@ WingPluginMainWindow::WingPluginMainWindow(IWingPlugin *plg, QWidget *parent)
     Q_ASSERT(plg);
     d_ptr->_fnCaller = plg->callReceiver();
     d_ptr->_fnTable = plg->callTable();
+    d_ptr->_sender = plg;
 }
 
 WingPluginMainWindow::~WingPluginMainWindow() { delete d_ptr; }
 
-const QObject *WingPluginMainWindow::getSender() const { return this; }
+const QObject *WingPluginMainWindow::getSender() const {
+    return d_ptr->_sender;
+}
 
 CallTable WingPluginMainWindow::callTable() const { return d_ptr->_fnTable; }
 
