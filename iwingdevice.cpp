@@ -45,4 +45,4 @@ bool WingIODevice::defaultIsKeepSize() const { return true; }
 
 bool WingIODevice::defaultIsLocked() const { return false; }
 
-bool WingIODevice::defaultIsOverwrite() const { return false; }
+bool WingIODevice::defaultIsOverwrite() const { return true; }
