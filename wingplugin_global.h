@@ -90,6 +90,7 @@ struct WINGPLUGIN_EXPORT PluginInfo {
     QString author;
     QString license;
     QString url;
+    QByteArray certID;
 };
 
 enum class AppTheme { Invalid, Dark, Light };
