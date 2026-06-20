@@ -57,20 +57,20 @@ public:
     virtual qsizetype documentLastLine() const = 0;
     virtual qsizetype documentLastColumn() const = 0;
     virtual qsizetype documentLines() const = 0;
-    virtual int documentWidth() const = 0;
-    virtual int lineHeight() const = 0;
-    virtual int borderSize() const = 0;
+    virtual qreal documentWidth() const = 0;
+    virtual qreal lineHeight() const = 0;
+    virtual qreal borderSize() const = 0;
     virtual int hexLineWidth() const = 0;
     virtual int areaIndent() const = 0;
 
     virtual int addressWidth() const = 0;
-    virtual int headerHeight() const = 0;
-    virtual int hexColumnX() const = 0;
-    virtual int stringColumnX() const = 0;
-    virtual int endColumnX() const = 0;
+    virtual qreal headerHeight() const = 0;
+    virtual qreal hexColumnX() const = 0;
+    virtual qreal stringColumnX() const = 0;
+    virtual qreal endColumnX() const = 0;
     virtual qreal cellWidth() const = 0;
-    virtual int nCellsWidth(int n) const = 0;
-    virtual QRect lineRect(qsizetype line, qsizetype firstline) const = 0;
+    virtual qreal nCellsWidth(int n) const = 0;
+    virtual QRectF lineRect(qsizetype line, qsizetype firstline) const = 0;
 
 public:
     // HexCursor
