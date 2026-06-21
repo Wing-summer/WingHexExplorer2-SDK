@@ -475,8 +475,10 @@ public:
 #define SETUP_CALL_CONTEXT(FN)                                                 \
     QMetaMethod m;                                                             \
     do {                                                                       \
-        static Cache<WingPluginCalls const *, QMetaMethod> cache(10);          \
-        m = cache.object(this);                                                \
+        static QPair<WingPluginCalls const *, QMetaMethod> cache;              \
+        if (cache.first == this) {                                             \
+            m = cache.second;                                                  \
+        }                                                                      \
         if (!m.isValid()) {                                                    \
             static auto CALL = getFunctionSig(FN, __func__);                   \
             if (CALL.fnName.isEmpty()) {                                       \
@@ -491,7 +493,7 @@ public:
                 if (fnMap.contains(CALL)) {                                    \
                     m = fnMap.value(CALL);                                     \
                     Q_ASSERT(m.isValid());                                     \
-                    cache.insert(this, m);                                     \
+                    cache = {this, m};                                         \
                 } else {                                                       \
                     auto sig = getFunctionSig(CALL);                           \
                     qDebug("[InvokeCall] '%s' is not found in call table.",    \
