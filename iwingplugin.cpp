@@ -83,16 +83,6 @@ void IWingPlugin::onPaintHexEditorView(QPainter *painter, QWidget *w,
     Q_UNUSED(context);
 }
 
-std::optional<PragmaResult>
-IWingPlugin::eventOnScriptPragma(const QString &script,
-                                 const QStringList &comments) {
-    Q_UNUSED(script);
-    Q_UNUSED(comments);
-    return {};
-}
-
-void IWingPlugin::eventOnScriptPragmaInit() {}
-
 const QObject *IWingPlugin::getSender() const { return this; }
 
 CallTable IWingPlugin::callTable() const { return _core->callTable(); }

@@ -49,11 +49,9 @@ public:
         FileSaved = 1u << 5,
         FileSwitched = 1u << 6,
         FileClosed = 1u << 7,
-        ScriptPragma = 1u << 8,
-        PluginFileOpened = 1u << 9,
-        PluginFileClosed = 1u << 10,
-        ScriptPragmaInit = 1u << 11,
-        HexEditorViewPaint = 1u << 12
+        PluginFileOpened = 1u << 8,
+        PluginFileClosed = 1u << 9,
+        HexEditorViewPaint = 1u << 10
     };
     Q_DECLARE_FLAGS(RegisteredEvents, RegisteredEvent)
 
@@ -112,12 +110,6 @@ public:
 
     virtual void onPaintHexEditorView(QPainter *painter, QWidget *w,
                                       HexEditorContext *context);
-
-public:
-    virtual std::optional<PragmaResult>
-    eventOnScriptPragma(const QString &script, const QStringList &comments);
-
-    virtual void eventOnScriptPragmaInit();
 
     // WingPluginCallConvertor interface
 protected:
