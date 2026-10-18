@@ -1,5 +1,5 @@
 /*==============================================================================
-** Copyright (C) 2024-2027 WingSummer
+** Copyright (C) 2026-2029 WingSummer
 **
 ** You can redistribute this file and/or modify it under the terms of the
 ** BSD 3-Clause.
@@ -46,7 +46,10 @@ IWingPluginCoreBase::IWingPluginCoreBase() : IWingPluginBaseCalls() {}
 
 QString IWingPluginCoreBase::retranslate(const QString &str) { return str; }
 
-void IWingPluginCoreBase::onRegisterScriptObj(IWingAngel *o) { Q_UNUSED(o); }
+void IWingPluginCoreBase::onRegisterScriptObj(
+    WingScriptBind::ScopeBuilder scope) {
+    Q_UNUSED(scope);
+}
 
 IWingHexEditorInterface::IWingHexEditorInterface() {}
 

@@ -1,5 +1,5 @@
 /*==============================================================================
-** Copyright (C) 2024-2027 WingSummer
+** Copyright (C) 2026-2029 WingSummer
 **
 ** You can redistribute this file and/or modify it under the terms of the
 ** BSD 3-Clause.
@@ -21,14 +21,15 @@
 #ifndef IWINGPLUGINBASECALLS_H
 #define IWINGPLUGINBASECALLS_H
 
-#include "WingPlugin/iwingangel.h"
 #include "WingPlugin/wingplugin_global.h"
 #include "WingPlugin/wingplugincalls.h"
 
+#include <QDialog>
 #include <QFileDialog>
 #include <QIcon>
 #include <QLineEdit>
 #include <QList>
+#include <QMainWindow>
 #include <QMessageBox>
 #include <QObject>
 
@@ -50,13 +51,9 @@ public:
 
     bool raiseDockWidget(QWidget *w);
 
-    // theme
     WingHex::AppTheme currentAppTheme() const;
-
-    // not available for AngelScript
-    // only for plugin UI extenstion
-
     QDialog *createDialog(QWidget *content) const;
+    QMainWindow *createMainWindow(QWidget *content) const;
 
 public:
     void msgAboutQt(QWidget *parent = nullptr,
@@ -154,19 +151,6 @@ public:
     Q_REQUIRED_RESULT QColor dlgGetColor(const QString &caption,
                                          QWidget *parent = nullptr) const;
 };
-
-template <typename Accessor, typename... CallArgs>
-auto runGlobalAPI(Accessor accessor, CallArgs &&...args)
-    -> decltype((*accessor())(std::forward<CallArgs>(args)...)) {
-    auto p = accessor(); // call accessor to obtain pointer-to-callable
-    if (!p)
-        throw std::runtime_error("global-static accessor returned null");
-    auto &fn = *p;
-    if (!fn)
-        throw std::runtime_error(
-            "std::function inside global static is not initialized");
-    return fn(std::forward<CallArgs>(args)...);
-}
 
 } // namespace WingHex
 

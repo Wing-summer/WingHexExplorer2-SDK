@@ -1,5 +1,5 @@
 /*==============================================================================
-** Copyright (C) 2024-2027 WingSummer
+** Copyright (C) 2026-2029 WingSummer
 **
 ** You can redistribute this file and/or modify it under the terms of the
 ** BSD 3-Clause.
@@ -21,6 +21,7 @@
 #ifndef IWINGPLUGINBASE_H
 #define IWINGPLUGINBASE_H
 
+#include "WingPlugin/binding/builder.h"
 #include "WingPlugin/hexeditorcontext.h"
 #include "WingPlugin/iwingpluginbasecalls.h"
 #include "wingplugin_global.h"
@@ -35,7 +36,6 @@ WINGPLUGIN_EXPORT QString HOSTRESPIMG(
     const QString &name, const QString &suffix = QStringLiteral(".png"));
 
 class PluginPage;
-class IWingAngel;
 
 class WINGPLUGIN_EXPORT IWingPluginCoreBase : public QObject,
                                               public IWingPluginBaseCalls {
@@ -49,7 +49,7 @@ public:
     virtual QString retranslate(const QString &str);
 
 public:
-    virtual void onRegisterScriptObj(WingHex::IWingAngel *o);
+    virtual void onRegisterScriptObj(WingScriptBind::ScopeBuilder scope);
 };
 
 class WINGPLUGIN_EXPORT IWingHexEditorInterface {

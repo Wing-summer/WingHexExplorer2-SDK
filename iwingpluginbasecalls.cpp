@@ -1,5 +1,5 @@
 /*==============================================================================
-** Copyright (C) 2024-2027 WingSummer
+** Copyright (C) 2026-2029 WingSummer
 **
 ** You can redistribute this file and/or modify it under the terms of the
 ** BSD 3-Clause.
@@ -68,6 +68,14 @@ bool IWingPluginBaseCalls::raiseDockWidget(QWidget *w) {
 QDialog *IWingPluginBaseCalls::createDialog(QWidget *content) const {
     SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::createDialog);
     QDialog *ret = nullptr;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
+             content);
+    return ret;
+}
+
+QMainWindow *IWingPluginBaseCalls::createMainWindow(QWidget *content) const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::createMainWindow);
+    QMainWindow *ret = nullptr;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              content);
     return ret;

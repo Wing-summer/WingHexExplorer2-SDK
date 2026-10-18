@@ -49,10 +49,14 @@ add_library(
     wingplugincallconvertor.h
     wingpluginwidget.h
     wingpluginwidget.cpp
-    iwingangel.h
-    iwingangel.cpp
     hexeditorcontext.h
-    hexeditorcontext.cpp)
+    hexeditorcontext.cpp
+    # utils for binding
+    binding/registrationapi.h
+    binding/builder.h
+    binding/exception.h
+    binding/actions.h
+    binding/value.h)
 
 target_link_libraries(WingPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 target_link_libraries(WingPlugin PRIVATE Qt6::Core)

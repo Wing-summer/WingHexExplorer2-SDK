@@ -40,10 +40,11 @@ void HexEditorContext::renderHexBackground(QPainter *painter,
                       int((line - firstline + (headerAreaVisible() ? 1 : 0)) *
                           this->lineHeight()),
                   width, lineHeight());
-        if (line % 2)
+        if (line % 2) {
             painter->fillRect(linerect, this->bytesBackground());
-        else
+        } else {
             painter->fillRect(linerect, this->bytesAlterBackground());
+        }
     }
 }
 
