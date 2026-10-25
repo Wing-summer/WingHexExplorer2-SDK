@@ -78,6 +78,8 @@ public:
                                   bool isStatic = false) = 0;
     virtual void registerVariable(ScopeId scope, QAnyStringView name,
                                   const Value &value) = 0;
+    virtual void registerDefinitionFile(ScopeId scope,
+                                        QAnyStringView fileName) = 0;
 };
 
 class IScriptEngine {

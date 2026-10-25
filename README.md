@@ -9,6 +9,10 @@
 
 &emsp;&emsp;该仓库是 [WingHexExplorer2](https://github.com/Wing-summer/WingHexExplorer2) 的 SDK，用于开发羽云十六进制编辑器2的所有类型的插件。该仓库是 WingHexExplorer2 的密不可分的部分。该项目作者为寂静的羽夏。
 
+## 开发文档 / Development documentation
+
+- [Luau 定义文件注册 / Registering Luau definition files](docs/luau-script-definitions.md)
+
 ## 协议
 
 &emsp;&emsp;本仓库遵循`BSD 3-Clause`协议，以允许闭源商业开发。

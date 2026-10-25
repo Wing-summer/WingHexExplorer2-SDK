@@ -119,6 +119,10 @@ public:
     ScopeBuilder &addConstant(QAnyStringView name, const T &value) {
         return addVariable(name, value);
     }
+    ScopeBuilder &addDefinitionFile(QAnyStringView fileName) {
+        api_->registerDefinitionFile(scope_, fileName);
+        return *this;
+    }
 
 private:
     IRegistrationApi *api_;
