@@ -269,3 +269,36 @@ AppTheme IWingPluginBaseCalls::currentAppTheme() const {
              getSender());
     return theme;
 }
+
+QIcon IWingPluginBaseCalls::standardIcon(WingHex::StandardIcon icon) const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::standardIcon);
+    QIcon result;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(result),
+             getSender(), icon);
+    return result;
+}
+
+QPixmap IWingPluginBaseCalls::appAuthorPixmap() const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::appAuthorPixmap);
+    QPixmap result;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(result),
+             getSender());
+    return result;
+}
+
+QPixmap IWingPluginBaseCalls::standardPixmap(WingHex::StandardIcon icon) const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::standardPixmap);
+    QPixmap result;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(result),
+             getSender(), icon);
+    return result;
+}
+
+QByteArray
+IWingPluginBaseCalls::standardIconData(WingHex::StandardIcon icon) const {
+    SETUP_CALL_CONTEXT(&IWingPluginBaseCalls::standardIconData);
+    QByteArray result;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(result),
+             getSender(), icon);
+    return result;
+}

@@ -32,9 +32,6 @@ namespace WingHex {
 
 WINGPLUGIN_EXPORT QString PLUGINDIR();
 
-WINGPLUGIN_EXPORT QString HOSTRESPIMG(
-    const QString &name, const QString &suffix = QStringLiteral(".png"));
-
 class PluginPage;
 
 class WINGPLUGIN_EXPORT IWingPluginCoreBase : public QObject,

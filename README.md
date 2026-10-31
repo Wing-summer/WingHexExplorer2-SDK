@@ -1,7 +1,7 @@
 <h1 align="center">WingHexExplorer2 SDK</h1>
 
 <p align="center">
-<img alt="WingHexExplorer2" src="images/icon.png" />
+<img alt="WingHexExplorer2" src="images/application.svg" />
 </p>
 
 

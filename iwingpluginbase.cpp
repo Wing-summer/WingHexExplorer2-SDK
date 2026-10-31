@@ -38,10 +38,6 @@ QString WingHex::PLUGINDIR() {
     return QCoreApplication::applicationDirPath() + QStringLiteral("/plugin");
 }
 
-QString WingHex::HOSTRESPIMG(const QString &name, const QString &suffix) {
-    return QStringLiteral(":/com.wingsummer.winghex/images/") + name + suffix;
-}
-
 IWingPluginCoreBase::IWingPluginCoreBase() : IWingPluginBaseCalls() {}
 
 QString IWingPluginCoreBase::retranslate(const QString &str) { return str; }

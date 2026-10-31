@@ -32,6 +32,7 @@
 #include <QMainWindow>
 #include <QMessageBox>
 #include <QObject>
+#include <QPixmap>
 
 namespace WingHex {
 
@@ -52,6 +53,10 @@ public:
     bool raiseDockWidget(QWidget *w);
 
     WingHex::AppTheme currentAppTheme() const;
+    QIcon standardIcon(WingHex::StandardIcon icon) const;
+    QPixmap appAuthorPixmap() const;
+    QPixmap standardPixmap(WingHex::StandardIcon icon) const;
+    QByteArray standardIconData(WingHex::StandardIcon icon) const;
     QDialog *createDialog(QWidget *content) const;
     QMainWindow *createMainWindow(QWidget *content) const;
 
