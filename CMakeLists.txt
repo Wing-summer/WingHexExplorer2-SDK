@@ -46,6 +46,8 @@ add_library(
     iwingpluginbasecalls.cpp
     iwingplugincalls.h
     iwingplugincalls.cpp
+    winghexdocument.h
+    winghexdocument.cpp
     wingplugincallconvertor.h
     wingpluginwidget.h
     wingpluginwidget.cpp

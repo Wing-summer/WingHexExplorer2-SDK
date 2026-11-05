@@ -1,5 +1,5 @@
 /*==============================================================================
-** Copyright (C) 2024-2027 WingSummer
+** Copyright (C) 2026-2029 WingSummer
 **
 ** You can redistribute this file and/or modify it under the terms of the
 ** BSD 3-Clause.
@@ -49,7 +49,7 @@
 
 namespace WingHex {
 
-Q_DECL_UNUSED constexpr auto SDKVERSION = 21;
+Q_DECL_UNUSED constexpr auto SDKVERSION = 22;
 
 struct WINGPLUGIN_EXPORT WingDockWidgetInfo {
     QString widgetName;
@@ -93,7 +93,37 @@ struct WINGPLUGIN_EXPORT PluginInfo {
     QByteArray certID;
 };
 
+enum class DocumentType { InValid, File, Extension, Cloned };
+
 enum class AppTheme { Invalid, Dark, Light };
+
+Q_REQUIRED_RESULT inline QUrl fileUrl(const QString &filename) {
+    if (filename.isEmpty()) {
+        return {};
+    }
+    return QUrl::fromLocalFile(QFileInfo(filename).absoluteFilePath());
+}
+
+Q_REQUIRED_RESULT inline QUrl deviceUrl(const QString &ext,
+                                        const QString &file) {
+    if (ext.isEmpty() || file.isEmpty()) {
+        return {};
+    }
+    QUrl url;
+    url.setScheme(QStringLiteral("wdrv"));
+    url.setHost(ext);
+    // The first slash belongs to the URL, all remaining slashes to the device.
+    url.setPath(QLatin1Char('/') + file);
+    return url;
+}
+
+Q_REQUIRED_RESULT inline QUrl workspaceUrl(const QString &filename) {
+    auto url = fileUrl(filename);
+    if (!url.isEmpty()) {
+        url.setScheme(QStringLiteral("wingpro"));
+    }
+    return url;
+}
 
 constexpr int FNTYPES_SIZE = 9;
 

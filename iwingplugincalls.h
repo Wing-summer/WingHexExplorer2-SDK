@@ -31,6 +31,15 @@
 namespace WingHex {
 
 class IWingPlugin;
+class WingHexDocument;
+
+struct WINGPLUGIN_EXPORT DocumentInfo {
+    QUrl fileNameUrl;
+    QString workSpaceName;
+    DocumentType documentType = DocumentType::InValid;
+    bool isSaved = false;
+    bool isReadOnly = false;
+};
 
 struct WINGPLUGIN_EXPORT MetadataInfo {
     qsizetype begin;
@@ -179,91 +188,82 @@ public:
     Q_REQUIRED_RESULT qsizetype findPrevious(qsizetype begin,
                                              const QByteArray &ba) const;
 
-    Q_REQUIRED_RESULT bool setLockedFile(bool b);
-    Q_REQUIRED_RESULT bool setKeepSize(bool b);
-    Q_REQUIRED_RESULT bool setStringVisible(bool b);
-    Q_REQUIRED_RESULT bool setAddressVisible(bool b);
-    Q_REQUIRED_RESULT bool setHeaderVisible(bool b);
-    Q_REQUIRED_RESULT bool setAddressBase(quintptr base);
+    bool setLockedFile(bool b);
+    bool setKeepSize(bool b);
+    bool setStringVisible(bool b);
+    bool setAddressVisible(bool b);
+    bool setHeaderVisible(bool b);
+    bool setAddressBase(quintptr base);
 
     Q_REQUIRED_RESULT bool beginMarco(const QString &txt = {});
-    Q_REQUIRED_RESULT bool endMarco();
+    bool endMarco();
     Q_REQUIRED_RESULT bool isMacroEmpty() const;
-    Q_REQUIRED_RESULT bool resetMarco();
+    bool resetMarco();
 
-    Q_REQUIRED_RESULT bool writeInt8(qsizetype offset, qint8 value);
-    Q_REQUIRED_RESULT bool writeInt16(qsizetype offset, qint16 value);
-    Q_REQUIRED_RESULT bool writeInt32(qsizetype offset, qint32 value);
-    Q_REQUIRED_RESULT bool writeInt64(qsizetype offset, qint64 value);
-    Q_REQUIRED_RESULT bool writeUInt8(qsizetype offset, quint8 value);
-    Q_REQUIRED_RESULT bool writeUInt16(qsizetype offset, quint16 value);
-    Q_REQUIRED_RESULT bool writeUInt32(qsizetype offset, quint32 value);
-    Q_REQUIRED_RESULT bool writeUInt64(qsizetype offset, quint64 value);
-    Q_REQUIRED_RESULT bool writeFloat(qsizetype offset, float value);
-    Q_REQUIRED_RESULT bool writeDouble(qsizetype offset, double value);
-    Q_REQUIRED_RESULT bool writeString(qsizetype offset, const QString &value,
-                                       const QString &encoding = QString());
-    Q_REQUIRED_RESULT bool writeBytes(qsizetype offset, const QByteArray &data);
+    bool writeInt8(qsizetype offset, qint8 value);
+    bool writeInt16(qsizetype offset, qint16 value);
+    bool writeInt32(qsizetype offset, qint32 value);
+    bool writeInt64(qsizetype offset, qint64 value);
+    bool writeUInt8(qsizetype offset, quint8 value);
+    bool writeUInt16(qsizetype offset, quint16 value);
+    bool writeUInt32(qsizetype offset, quint32 value);
+    bool writeUInt64(qsizetype offset, quint64 value);
+    bool writeFloat(qsizetype offset, float value);
+    bool writeDouble(qsizetype offset, double value);
+    bool writeString(qsizetype offset, const QString &value,
+                     const QString &encoding = QString());
+    bool writeBytes(qsizetype offset, const QByteArray &data);
 
-    Q_REQUIRED_RESULT bool insertInt8(qsizetype offset, qint8 value);
-    Q_REQUIRED_RESULT bool insertInt16(qsizetype offset, qint16 value);
-    Q_REQUIRED_RESULT bool insertInt32(qsizetype offset, qint32 value);
-    Q_REQUIRED_RESULT bool insertInt64(qsizetype offset, qint64 value);
-    Q_REQUIRED_RESULT bool insertUInt8(qsizetype offset, quint8 value);
-    Q_REQUIRED_RESULT bool insertUInt16(qsizetype offset, quint16 value);
-    Q_REQUIRED_RESULT bool insertUInt32(qsizetype offset, quint32 value);
-    Q_REQUIRED_RESULT bool insertUInt64(qsizetype offset, quint64 value);
-    Q_REQUIRED_RESULT bool insertFloat(qsizetype offset, float value);
-    Q_REQUIRED_RESULT bool insertDouble(qsizetype offset, double value);
-    Q_REQUIRED_RESULT bool insertString(qsizetype offset, const QString &value,
-                                        const QString &encoding = QString());
-    Q_REQUIRED_RESULT bool insertBytes(qsizetype offset,
-                                       const QByteArray &data);
+    bool insertInt8(qsizetype offset, qint8 value);
+    bool insertInt16(qsizetype offset, qint16 value);
+    bool insertInt32(qsizetype offset, qint32 value);
+    bool insertInt64(qsizetype offset, qint64 value);
+    bool insertUInt8(qsizetype offset, quint8 value);
+    bool insertUInt16(qsizetype offset, quint16 value);
+    bool insertUInt32(qsizetype offset, quint32 value);
+    bool insertUInt64(qsizetype offset, quint64 value);
+    bool insertFloat(qsizetype offset, float value);
+    bool insertDouble(qsizetype offset, double value);
+    bool insertString(qsizetype offset, const QString &value,
+                      const QString &encoding = {});
+    bool insertBytes(qsizetype offset, const QByteArray &data);
 
-    Q_REQUIRED_RESULT bool appendInt8(qint8 value);
-    Q_REQUIRED_RESULT bool appendInt16(qint16 value);
-    Q_REQUIRED_RESULT bool appendInt32(qint32 value);
-    Q_REQUIRED_RESULT bool appendInt64(qint64 value);
-    Q_REQUIRED_RESULT bool appendUInt8(quint8 value);
-    Q_REQUIRED_RESULT bool appendUInt16(quint16 value);
-    Q_REQUIRED_RESULT bool appendUInt32(quint32 value);
-    Q_REQUIRED_RESULT bool appendUInt64(quint64 value);
-    Q_REQUIRED_RESULT bool appendFloat(float value);
-    Q_REQUIRED_RESULT bool appendDouble(double value);
-    Q_REQUIRED_RESULT bool appendString(const QString &value,
-                                        const QString &encoding = QString());
-    Q_REQUIRED_RESULT bool appendBytes(const QByteArray &data);
+    bool appendInt8(qint8 value);
+    bool appendInt16(qint16 value);
+    bool appendInt32(qint32 value);
+    bool appendInt64(qint64 value);
+    bool appendUInt8(quint8 value);
+    bool appendUInt16(quint16 value);
+    bool appendUInt32(quint32 value);
+    bool appendUInt64(quint64 value);
+    bool appendFloat(float value);
+    bool appendDouble(double value);
+    bool appendString(const QString &value, const QString &encoding = {});
+    bool appendBytes(const QByteArray &data);
 
-    Q_REQUIRED_RESULT bool removeBytes(qsizetype offset, qsizetype len);
+    bool removeBytes(qsizetype offset, qsizetype len);
 
     // cursor
-    Q_REQUIRED_RESULT bool moveTo(qsizetype line, qsizetype column,
-                                  int nibbleindex = 1,
-                                  bool clearSelection = true);
-    Q_REQUIRED_RESULT bool moveTo(qsizetype offset, bool clearSelection = true);
-    Q_REQUIRED_RESULT bool select(qsizetype offset, qsizetype length,
-                                  SelectionMode mode = SelectionMode::Add);
-    Q_REQUIRED_RESULT bool setInsertionMode(bool isinsert);
+    bool moveTo(qsizetype line, qsizetype column, int nibbleindex = 1,
+                bool clearSelection = true);
+    bool moveTo(qsizetype offset, bool clearSelection = true);
+    bool select(qsizetype offset, qsizetype length,
+                SelectionMode mode = SelectionMode::Add);
+    bool setInsertionMode(bool isinsert);
 
     // metadata
-    Q_REQUIRED_RESULT bool foreground(qsizetype begin, qsizetype length,
-                                      const QColor &fgcolor);
-    Q_REQUIRED_RESULT bool background(qsizetype begin, qsizetype length,
-                                      const QColor &bgcolor);
-    Q_REQUIRED_RESULT bool comment(qsizetype begin, qsizetype length,
-                                   const QString &comment);
+    bool foreground(qsizetype begin, qsizetype length, const QColor &fgcolor);
+    bool background(qsizetype begin, qsizetype length, const QColor &bgcolor);
+    bool comment(qsizetype begin, qsizetype length, const QString &comment);
+    bool metadata(qsizetype begin, qsizetype length, const QColor &fgcolor,
+                  const QColor &bgcolor, const QString &comment);
+    bool removeMetadata(qsizetype offset);
+    bool clearMetadata();
 
-    Q_REQUIRED_RESULT bool metadata(qsizetype begin, qsizetype length,
-                                    const QColor &fgcolor,
-                                    const QColor &bgcolor,
-                                    const QString &comment);
-
-    Q_REQUIRED_RESULT bool removeMetadata(qsizetype offset);
-    Q_REQUIRED_RESULT bool clearMetadata();
-    Q_REQUIRED_RESULT bool setMetaVisible(bool b);
-    Q_REQUIRED_RESULT bool setMetafgVisible(bool b);
-    Q_REQUIRED_RESULT bool setMetabgVisible(bool b);
-    Q_REQUIRED_RESULT bool setMetaCommentVisible(bool b);
+    bool setMetaVisible(bool b);
+    bool setMetafgVisible(bool b);
+    bool setMetabgVisible(bool b);
+    bool setMetaCommentVisible(bool b);
 
     Q_REQUIRED_RESULT WingHex::MetadataInfo metadataInfo(qsizetype pos) const;
     Q_REQUIRED_RESULT WingHex::MetadataInfo
@@ -276,10 +276,10 @@ public:
     Q_REQUIRED_RESULT qint64 bookMarkPos(qsizetype index) const;
     Q_REQUIRED_RESULT qint64 bookMarkCount() const;
 
-    Q_REQUIRED_RESULT bool addBookMark(qsizetype pos, const QString &comment);
-    Q_REQUIRED_RESULT bool modBookMark(qsizetype pos, const QString &comment);
-    Q_REQUIRED_RESULT bool removeBookMark(qsizetype pos);
-    Q_REQUIRED_RESULT bool clearBookMark();
+    bool addBookMark(qsizetype pos, const QString &comment);
+    bool modBookMark(qsizetype pos, const QString &comment);
+    bool removeBookMark(qsizetype pos);
+    bool clearBookMark();
 
 private slots:
     bool invokeServiceImpl(const QString &puid,
@@ -302,14 +302,17 @@ public:
 public:
     // document
     Q_REQUIRED_RESULT bool switchDocument(int handle);
-    Q_REQUIRED_RESULT bool raiseDocument(int handle);
+    bool raiseDocument(int handle);
+
+    Q_REQUIRED_RESULT WingHex::DocumentInfo documentInfo(int handle) const;
 
     // mainwindow
     Q_REQUIRED_RESULT int openFile(const QUrl &file);
-    WingHex::ErrFile closeFile(int handle);
+    int closeFile(int handle, bool force);
+    int closeFileHandle(int handle);
 
     Q_REQUIRED_RESULT int openCurrent();
-    Q_REQUIRED_RESULT WingHex::ErrFile closeCurrent();
+    int closeCurrent();
 };
 
 class WINGPLUGIN_EXPORT IWingPluginAPICalls : public IWingPluginCalls,
@@ -324,5 +327,7 @@ Q_DECLARE_METATYPE(const char *);
 Q_DECLARE_METATYPE(QModelIndex)
 Q_DECLARE_METATYPE(WingHex::HexPosition)
 Q_DECLARE_METATYPE(WingHex::MetadataInfo)
+
+Q_DECLARE_METATYPE(WingHex::DocumentInfo)
 
 #endif // IWINGPLUGINCALLS_H
