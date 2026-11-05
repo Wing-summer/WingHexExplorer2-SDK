@@ -534,7 +534,7 @@ bool IWingPluginCallsOp::writeUInt8(qsizetype offset, quint8 value) {
 }
 
 bool IWingPluginCallsOp::writeUInt16(qsizetype offset, quint16 value) {
-    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeInt16);
+    SETUP_CALL_CONTEXT(&IWingPluginCallsOp::writeUInt16);
     bool ret = false;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
              offset, value);
@@ -975,9 +975,33 @@ bool IWingPluginCallsOp::invokeServiceImpl(
     return ret;
 }
 
-ErrFile IWingPluginCalls::closeCurrent() {
+int IWingPluginCalls::closeCurrent() {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::closeCurrent);
-    ErrFile ret = ErrFile::Error;
+    int ret = ErrFile::Error;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
+    return ret;
+}
+
+bool IWingPluginCalls::isFileOpened(int handle) {
+    SETUP_CALL_CONTEXT(&IWingPluginCalls::isFileOpened);
+    bool ret = false;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
+             handle);
+    return ret;
+}
+
+QList<QUrl> IWingPluginCalls::openedFiles() {
+    SETUP_CALL_CONTEXT(&IWingPluginCalls::openedFiles);
+    QList<QUrl> ret;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
+             getSender());
+    return ret;
+}
+
+QList<QUrl> IWingPluginCalls::allOpenedFiles() {
+    SETUP_CALL_CONTEXT(&IWingPluginCalls::allOpenedFiles);
+    QList<QUrl> ret;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret),
              getSender());
     return ret;
@@ -991,11 +1015,11 @@ int IWingPluginCalls::openCurrent() {
     return ret;
 }
 
-ErrFile IWingPluginCalls::closeFile(int handle) {
+int IWingPluginCalls::closeFile(int handle, bool force) {
     SETUP_CALL_CONTEXT(&IWingPluginCalls::closeFile);
-    ErrFile ret = ErrFile::Error;
+    int ret = ErrFile::Error;
     m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
-             handle);
+             handle, force);
     return ret;
 }
 
@@ -1036,3 +1060,19 @@ IWingPluginAPICalls::IWingPluginAPICalls()
 
 IWingEditorViewCalls::IWingEditorViewCalls()
     : IWingPluginCallsOp(), IWingPluginBaseCalls() {}
+
+int IWingPluginCalls::closeFileHandle(int handle) {
+    SETUP_CALL_CONTEXT(&IWingPluginCalls::closeFileHandle);
+    int ret = ErrFile::Error;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
+             handle);
+    return ret;
+}
+
+DocumentInfo IWingPluginCalls::documentInfo(int handle) const {
+    SETUP_CALL_CONTEXT(&IWingPluginCalls::documentInfo);
+    DocumentInfo ret;
+    m.invoke(callReceiver(), Qt::DirectConnection, qReturnArg(ret), getSender(),
+             handle);
+    return ret;
+}
