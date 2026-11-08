@@ -363,6 +363,15 @@ enum class StandardIcon {
     ApplyAll = 125,
     ArrowUp = 126,
     ArrowDown = 127,
+    Compare = 128,
+    CompareSwap = 129,
+    CompareHorizontal = 130,
+    CompareVertical = 131,
+    FirstDifference = 132,
+    LastDifference = 133,
+    SyncScroll = 134,
+    CompareStop = 135,
+
 };
 Q_ENUM_NS(StandardIcon)
 
